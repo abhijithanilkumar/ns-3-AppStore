@@ -28,7 +28,7 @@ body>.navbar-transparent {
 }
 
 .navbar-transparent .navbar-nav > .active > a {
-    background-color: transparent;
+    background-color: #000000;
 }
 
 .navbar-form {
