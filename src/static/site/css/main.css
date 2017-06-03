@@ -4,6 +4,27 @@ html, body{
     height:100%;		/* For full height images */
 }
 
+
+.nav-wrapper .input-field input[type=search] {
+  height: 50px;
+}
+.nav-wrapper input[type="search"]:focus {
+  position: relative;
+  top: 10px;
+  width: 80%;
+}
+.input-field label {
+  max-height: 64px;
+}
+.nav-wrapper input[type="search"]:focus ~ .label-icon.active {
+  position: fixed;
+  left: 10px;
+}
+.nav-wrapper input[type="search"]:focus ~ .closed {
+  position: fixed;
+  right: 10px;
+}
+
 .starter-template {
   padding: 40px 15px;
   text-align: center;
@@ -20,15 +41,15 @@ html, body{
     margin-top: 55px;
     margin-bottom: 0;
 }
-
+/*
 body>.navbar-transparent {
-    background-color: transparent;
+    background-color: #000000;
     border-color: #000000;
     box-shadow: none;
 }
 
 .navbar-transparent .navbar-nav > .active > a {
-    background-color: transparent;
+    background-color: #000000;
 }
 
 .navbar-form {
@@ -47,9 +68,11 @@ body>.navbar-transparent {
 
 .navbar-nav > li > a {
     font-size: 16px;
+    font-weight: bold;
 }
 
 .navbar-brand {
+    font-size: 30px;
     font-weight: bold;
 }
 
@@ -57,6 +80,7 @@ body>.navbar-transparent {
     float: left;
     margin-right: 10px;
 }
+*/
 
 .btn {
     background-image: none;

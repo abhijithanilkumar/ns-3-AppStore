@@ -6,12 +6,11 @@
 {% block title %}{{ block.super }}Home{% endblock %}
 
 {% block navbar-left %}
-  {% include "_navbar.html" with active_link="home" %}
-{% endblock %}
-
-{% block navbar-right %}
   {% if not user.is_authenticated %}
-  <li><a href="{% url 'home' %}">Login</a></li>
+  <ul class="right hide-on-med-and-down">
+    <li><a href="sass.html">Sass</a></li>
+    <li><a href="badges.html">Components</a></li>
+  </ul>
   {% else %}
     {{ block.super }}
   {% endif %}
@@ -19,92 +18,7 @@
 
 {% block container %}
 <!-- Benefits of the Django application -->
-<a name="about"></a>
-<div class="container">
-  <div class="row">
-    <div class="col-lg-3">
-      <h2>Categories</h2>
-      <div class="card">
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item">Cras justo odio</li>
-          <li class="list-group-item">Dapibus ac facilisis in</li>
-          <li class="list-group-item">Vestibulum at eros</li>
-        </ul>
-      </div>
-    </div>
-    <div class="container col-lg-9">
-      <div class="container">
-        <div class="row">
-          <h2>New Releases</h2>
-          <div class="col-lg-4">
-            <div class="jumbotron">
-              <h3>Hello</h3>
-            </div>
-          </div>
-          <div class="col-lg-4">
-            <div class="card card-inverse" style="border-color: #333;">
-              <div class="card-block">
-                <h3 class="card-title">Special title treatment</h3>
-                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                <a href="#" class="btn">Go somewhere</a>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-lg-4">
-            <div class="jumbotron">
-              <h3>Hello</h3>
-            </div>
-          </div>
-          <div class="col-lg-4">
-            <div class="card card-inverse" style="border-color: #333;">
-              <div class="card-block">
-                <h3 class="card-title">Special title treatment</h3>
-                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                <a href="#" class="btn">Go somewhere</a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="container">
-        <div class="row">
-          <h2>Top Downloaded</h2>
-          <div class="col-lg-4">
-            <button type="button" class="btn-block">Hello
-            </button>
-          </div>
-          <div class="col-lg-4">
-            <div class="card card-inverse" style="border-color: #333;">
-              <div class="card-block">
-                <h3 class="card-title">Special title treatment</h3>
-                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                <a href="#" class="btn">Go somewhere</a>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-lg-4">
-            <div class="jumbotron">
-              <h3>Hello</h3>
-            </div>
-          </div>
-          <div class="col-lg-4">
-            <div class="card card-inverse" style="border-color: #333;">
-              <div class="card-block">
-                <h3 class="card-title">Special title treatment</h3>
-                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                <a href="#" class="btn">Go somewhere</a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+ <h1>Edit Me!</h1>
 
 {% endblock container %}
 
