@@ -132,6 +132,9 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script src="{% static 'materialize/js/materialize.min.js' %}"></script>
+    {% include 'material/includes/material_css.html' %}
+    <script src="{% static 'material/js/jquery.js' %}"></script>
+    {% include 'material/includes/material_js.html' %}
     <script>
       $(document).ready(function(){
           $(".dropdown-button").dropdown();
