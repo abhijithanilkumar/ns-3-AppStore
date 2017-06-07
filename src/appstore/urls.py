@@ -12,6 +12,7 @@ urlpatterns = [
     url(r'^about/$', views.AboutPage.as_view(), name='about'),
     url(r'^users/', include(profiles.urls, namespace='profiles')),
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^markdownx/', include('markdownx.urls')),
     url(r'^', include(accounts.urls, namespace='accounts')),
     url(r'^app/', include(apps.urls, namespace='apps')),
 ]
