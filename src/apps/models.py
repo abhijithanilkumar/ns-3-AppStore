@@ -39,7 +39,7 @@ class App(models.Model):
     downloads = models.PositiveIntegerField(default=0)
 
     def __str__(self):
-        return self.name
+        return self.title
 
 class Release(models.Model):
     app = models.ForeignKey(App)

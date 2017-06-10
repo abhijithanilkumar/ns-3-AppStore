@@ -65,3 +65,6 @@ local.env
 
 # DB file
 *.sqlite3
+
+# Migrations
+migrations/

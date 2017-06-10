@@ -14,6 +14,9 @@ body {
    flex: 1 0 auto;
  }
 
+.height-check {
+  height:200px;
+}
 
 .nav-wrapper .input-field input[type=search] {
   height: 50px;
