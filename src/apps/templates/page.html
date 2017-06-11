@@ -5,8 +5,8 @@
 {% block container %}
 <main>
   <div class="container">
-    <h2>My App</h2>
-    <b>Short description of the app</b>
+    <h2>{{app.title}}</h2>
+    <b>{{app.abstract}}</b>
     <div class="row card-panel blue-grey lighten-3">
       <div class="col s9">
         <ul class="tabs blue-grey lighten-3">
@@ -16,19 +16,25 @@
         </ul>
       </div>
       <div id="test1" class="col s9 flow-text">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        Nunc vitae scelerisque arcu, et vulputate lacus.
-        Maecenas sed orci justo. Integer vitae tempor elit, quis tempus est.
-        Fusce ut elit volutpat velit rhoncus fermentum ut et mi.
-        In ornare et velit non iaculis. Donec sit amet mollis ex.
-        Phasellus consectetur malesuada mauris sit amet elementum.
-        Mauris ut porttitor eros, vitae dapibus nunc.
-        Sed luctus porttitor tortor, vitae scelerisque purus vehicula ut.
-        Sed varius tempus nulla quis scelerisque. Phasellus non feugiat arcu, nec aliquam augue.
-        Aliquam sagittis porta neque, et egestas nisl fermentum et.
-        Vestibulum mollis augue ante, vel maximus nisl finibus et.
+        <br>
+        {{app.description|safe}}
       </div>
-      <div id="test2" class="col s9">Test 2</div>
+      <div id="test2" class="col s9">
+        <br>
+        {% for release in releases %}
+        <div class="divider"></div>
+        <div class="section">
+          <a href="#"><h4>{{release.version}}</h4></a>
+          <b>Released : </b>{{latest.date}}<br>
+          <b>Works with : </b>{{latest.require}}<br>
+          {% if release.notes %}
+            <b>Notes :</b>
+            <p>{{release.notes|safe}}</p>
+          {% endif %}
+        </div>
+        <div class="divider"></div>
+        {% endfor %}
+      </div>
       <div id="test3" class="col s9">Test 3</div>
       <div class="col s3 center">
         <div class="card-panel blue-grey">
@@ -37,9 +43,9 @@
           </button>
           <br>
           <span class="white-text">
-            <br><b>Version : </b>1.3<br>
-            <b>Released : </b>March 2017<br>
-            <b>Works with : </b>ns-3.26<br>
+            <br><b>Version : </b>{{latest.version}}<br>
+            <b>Released : </b>{{latest.date}}<br>
+            <b>Works with : </b>{{latest.require}}<br>
           </span>
         </div>
       </div>
