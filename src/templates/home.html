@@ -4,19 +4,9 @@
 
 {% block title %}{{ block.super }}Home{% endblock %}
 
-{% block navbar-left %}
-  {% if not user.is_authenticated %}
-  <ul class="right hide-on-med-and-down">
-    <li><a href="sass.html">Sass</a></li>
-    <li><a href="badges.html">Components</a></li>
-  </ul>
-  {% else %}
-    {{ block.super }}
-  {% endif %}
-{% endblock %}
-
 {% block container %}
 <!-- Benefits of the Django application -->
+<main>
  <div class="container">
    <div class="row">
      <br>
@@ -27,12 +17,12 @@
           {% endfor %}
       </div>
       <div class="col s9">
-        <div class="row">
+        <div class="row push-left">
           <h4 class="truncate">New Releases</h3>
           {% for app in new_releases %}
             <div class="col s12 m6">
               <a href="/app/{{app.id}}/">
-                <div class="card blue-grey darken-1 hoverable" style="height:180px">
+                <div class="card blue-grey darken-1 hoverable card-height">
                   <div class="card-content white-text truncate">
                     <span class="card-title">{{app.title}}</span>
                     <p>{{app.abstract}}</p>
@@ -43,12 +33,12 @@
           {% endfor %}
           <a class="right" href="">See More ...</a>
         </div>
-        <div class="row">
+        <div class="row push-left">
           <h4 class="truncate">Top Downloaded</h3>
             {% for app in top_downloaded %}
               <div class="col s12 m6">
                 <a href="/app/{{app.id}}/">
-                  <div class="card blue-grey darken-1 hoverable" style="height:180px">
+                  <div class="card blue-grey darken-1 hoverable card-height">
                     <div class="card-content white-text truncate">
                       <span class="card-title">{{app.title}}</span>
                       <p>{{app.abstract}}</p>
@@ -61,6 +51,7 @@
         </div>
    </div>
  </div>
+</main>
 {% endblock container %}
 
 {% block scripts %}

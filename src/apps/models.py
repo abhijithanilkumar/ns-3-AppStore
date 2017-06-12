@@ -50,6 +50,7 @@ class Release(models.Model):
     notes = MarkdownxField()
     dependencies = models.ManyToManyField('self', related_name='dependents', symmetrical='False', blank=True, null=True)
     filename = models.FileField(upload_to='release_files/%Y-%m-%d/', blank=True, null=True)
+    url = models.URLField(blank=True, null=True)
 
     def __str__(self):
         return '%s %s' % (self.app.title, self.version)

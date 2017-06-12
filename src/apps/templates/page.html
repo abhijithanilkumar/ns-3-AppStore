@@ -1,41 +1,50 @@
 {% extends "base.html" %}
 
+{% load staticfiles %}
+
 {% block title %}{{ block.super }}My App{% endblock %}
 
 {% block container %}
 <main>
-  <div class="container">
+  <div class="container push">
     <h2>{{app.title}}</h2>
     <b>{{app.abstract}}</b>
     <div class="row card-panel blue-grey lighten-3">
       <div class="col s9">
         <ul class="tabs blue-grey lighten-3">
-          <li class="tab col s3"><a class="active" href="#test1">Details</a></li>
-          <li class="tab col s3"><a href="#test2">Release History</a></li>
-          <li class="tab col s3"><a href="#test3">Authors</a></li>
+          <li class="tab col s4"><a class="active" href="#test1">Details</a></li>
+          <li class="tab col s4"><a href="#test2">Release History</a></li>
+          <li class="tab col s4"><a href="#test3">Authors</a></li>
         </ul>
+        <div class="divider black"></div>
       </div>
       <div id="test1" class="col s9 flow-text">
         <br>
         {{app.description|safe}}
       </div>
       <div id="test2" class="col s9">
-        <br>
         {% for release in releases %}
-        <div class="divider"></div>
         <div class="section">
           <a href="#"><h4>{{release.version}}</h4></a>
           <b>Released : </b>{{latest.date}}<br>
           <b>Works with : </b>{{latest.require}}<br>
           {% if release.notes %}
-            <b>Notes :</b>
+            <b>Release Notes :</b>
             <p>{{release.notes|safe}}</p>
           {% endif %}
         </div>
-        <div class="divider"></div>
+        <div class="divider black"></div>
         {% endfor %}
       </div>
-      <div id="test3" class="col s9">Test 3</div>
+      <div id="test3" class="col s9">
+        {% for author in authors %}
+        <div class="section">
+          <h4>{{author.name}}</h4>
+          <b>{{author.institution}}</b>
+        </div>
+        <div class="divider black"></div>
+        {% endfor %}
+      </div>
       <div class="col s3 center">
         <div class="card-panel blue-grey">
           <button class="btn center">

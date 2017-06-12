@@ -14,8 +14,16 @@ body {
    flex: 1 0 auto;
  }
 
-.height-check {
-  height:200px;
+.card-height {
+  height:180px;
+}
+
+.push {
+  padding-top: 50px;
+}
+
+.push-left {
+  padding-left: 10px;
 }
 
 .nav-wrapper .input-field input[type=search] {
