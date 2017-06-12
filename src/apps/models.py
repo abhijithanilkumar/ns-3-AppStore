@@ -7,6 +7,12 @@ import datetime
 
 # Create your models here.
 
+class NsRelease(models.Model):
+    name = models.CharField(max_length=4)
+
+    def __str__(self):
+        return u'%s-%s' % ("ns", self.name)
+
 class Author(models.Model):
     name = models.CharField(max_length=50)
     institution = models.CharField(max_length=255, null=True, blank=True)
@@ -45,7 +51,7 @@ class App(models.Model):
 class Release(models.Model):
     app = models.ForeignKey(App)
     version = models.CharField(max_length=31)
-    require = models.CharField(max_length=31)
+    require = models.ForeignKey(NsRelease)
     date = models.DateField(auto_now_add=True)
     notes = MarkdownxField()
     dependencies = models.ManyToManyField('self', related_name='dependents', symmetrical='False', blank=True, null=True)

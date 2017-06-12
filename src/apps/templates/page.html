@@ -27,7 +27,7 @@
         <div class="section">
           <a href="#"><h4>{{release.version}}</h4></a>
           <b>Released : </b>{{latest.date}}<br>
-          <b>Works with : </b>{{latest.require}}<br>
+          <b>Works with : </b><a href="https://www.nsnam.org/releases/">{{latest.require}}</a><br>
           {% if release.notes %}
             <b>Release Notes :</b>
             <p>{{release.notes|safe}}</p>
@@ -54,7 +54,7 @@
           <span class="white-text">
             <br><b>Version : </b>{{latest.version}}<br>
             <b>Released : </b>{{latest.date}}<br>
-            <b>Works with : </b>{{latest.require}}<br>
+            <b>Works with : </b><a class="white-text" href="https://www.nsnam.org/releases/">{{latest.require}}</a><br>
           </span>
         </div>
       </div>
