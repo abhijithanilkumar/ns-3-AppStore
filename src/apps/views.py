@@ -15,7 +15,10 @@ def appPage(request, num=0):
         for release in releases:
             release.notes = markdownify(release.notes)
         authors = app.authors.all()
-        latest = releases.latest('id')
+        if releases:
+            latest = releases.latest('id')
+        else:
+            latest = []
         return render(request, 'page.html', {'app':app, 'releases':releases, 'authors':authors, 'latest':latest})
     else:
         apps = App.objects.all()
