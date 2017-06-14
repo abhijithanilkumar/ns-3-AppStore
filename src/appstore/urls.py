@@ -5,6 +5,7 @@ from django.conf.urls.static import static
 import profiles.urls
 import accounts.urls
 import apps.urls
+import search.urls
 from . import views
 
 urlpatterns = [
@@ -15,6 +16,7 @@ urlpatterns = [
     url(r'^markdownx/', include('markdownx.urls')),
     url(r'^', include(accounts.urls, namespace='accounts')),
     url(r'^app/', include(apps.urls, namespace='apps')),
+    url(r'^search/', include(search.urls, namespace='search')),
 ]
 
 # User-uploaded files like profile pics need to be served in development

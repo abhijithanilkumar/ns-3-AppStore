@@ -29,6 +29,9 @@ class Tag(models.Model):
     def __str__(self):
         return self.name
 
+    def get_tag_name(self):
+        return self.name
+
 class App(models.Model):
     title = models.CharField(max_length=127, unique=True)
     abstract = models.CharField(max_length=255)
