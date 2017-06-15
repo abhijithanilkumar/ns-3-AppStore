@@ -2,7 +2,7 @@
 
 {% load staticfiles %}
 
-{% block title %}{{ block.super }}Home{% endblock %}
+{% block title %}{{ block.super }}Apps{% endblock %}
 
 {% block container %}
 <!-- Benefits of the Django application -->
@@ -12,15 +12,15 @@
      <br>
      <div class="col s3 collection">
         <h4 class="truncate">Categories</h3>
-          <a href="/app/" class="collection-item">All Apps</a>
+          <a href="/app/" class="collection-item active">All Apps</a>
           {% for tag in tags %}
             <a href="#!" class="collection-item">{{tag.name}}</a>
           {% endfor %}
       </div>
       <div class="col s9">
         <div class="row push-left">
-          <h4 class="truncate">New Releases</h3>
-          {% for app in new_releases %}
+          <h4 class="truncate">All Apps</h3>
+          {% for app in apps %}
             <div class="col s12 m6">
               <a href="/app/{{app.id}}/">
                 <div class="card blue-grey darken-1 hoverable card-height">
@@ -32,23 +32,6 @@
               </a>
             </div>
           {% endfor %}
-          <a class="right" href="/app/new/">See More ...</a>
-        </div>
-        <div class="row push-left">
-          <h4 class="truncate">Top Downloaded</h3>
-            {% for app in top_downloaded %}
-              <div class="col s12 m6">
-                <a href="/app/{{app.id}}/">
-                  <div class="card blue-grey darken-1 hoverable card-height">
-                    <div class="card-content white-text truncate">
-                      <span class="card-title">{{app.title}}</span>
-                      <p>{{app.abstract}}</p>
-                    </div>
-                  </div>
-                </a>
-              </div>
-            {% endfor %}
-          <a class="right" href="/app/new/">See More ...</a>
         </div>
       </div>
    </div>
