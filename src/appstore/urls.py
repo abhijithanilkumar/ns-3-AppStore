@@ -6,6 +6,7 @@ import profiles.urls
 import accounts.urls
 import apps.urls
 import search.urls
+import backend.urls
 from . import views
 
 urlpatterns = [
@@ -17,6 +18,7 @@ urlpatterns = [
     url(r'^', include(accounts.urls, namespace='accounts')),
     url(r'^app/', include(apps.urls, namespace='apps')),
     url(r'^search/', include(search.urls, namespace='search')),
+    url(r'^backend/', include(backend.urls, namespace='edit')),
 ]
 
 # User-uploaded files like profile pics need to be served in development
