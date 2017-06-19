@@ -3,10 +3,13 @@ from __future__ import unicode_literals
 
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from forms import CreateAppForm
 
 @login_required
 def createApp(request):
-    return render(request, 'create.html')
+    if request.method == 'GET':
+        form = CreateAppForm()
+    return render(request, 'create.html',{'form':form})
 
 @login_required
 def editApp(request, num):
