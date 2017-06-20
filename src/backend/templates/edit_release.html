@@ -1,16 +1,15 @@
-{% extends "base.html" %}
+{% extends "backend_base.html" %}
 
-{% load staticfiles %}
+{% load material_form %}
 
 {% block title %}{{ block.super }}Edit Release{% endblock %}
 
-{% block container %}
-<!-- Benefits of the Django application -->
-<main>
+{% block form_heading %}Edit an Existing Release{% endblock %}
 
-</main>
-{% endblock container %}
-
-{% block scripts %}
-<script src="{% static 'site/js/site.js' %}"></script>
-{% endblock scripts %}
+{% block form %}
+  <form method="POST">
+      {% csrf_token %}
+      {% form form=form %}{% endform %}
+      <button type="submit" name="_submit" class="btn">Submit</button>
+  </form>
+{% endblock form %}
