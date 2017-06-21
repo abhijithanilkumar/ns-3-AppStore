@@ -51,7 +51,7 @@
             <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
             {% if user.is_authenticated %}
             <ul class="right hide-on-med-and-down">
-              <li><a href="{% url 'profiles:show_self' %}">Profile</a></li>
+              <!--li><a href="{% url 'profiles:show_self' %}">Profile</a></li-->
               <li><a href="{% url 'accounts:logout' %}">Logout</a></li>
             </ul>
             {% else %}
@@ -73,17 +73,6 @@
       </nav>
     </div>
     {% endblock navbar %}
-
-    {% block messages %}
-      {% if messages %}
-        {% for message in messages %}
-          <div class="alert alert-{{ message.tags }}">  <!-- singular -->
-            <a class="close" data-dismiss="alert">×</a>
-            {{ message|safe }}
-          </div>
-        {% endfor %}
-      {% endif %}
-    {% endblock %}
 
     {% block splash %}
     <br><br>

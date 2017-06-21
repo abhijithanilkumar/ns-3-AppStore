@@ -8,7 +8,7 @@ from django.apps import apps
 
 @login_required
 def createApp(request):
-    if request.user.is_superuser:
+    if request.user.is_staff:
         if request.method == 'GET':
             form = CreateAppForm()
         elif request.method == 'POST':

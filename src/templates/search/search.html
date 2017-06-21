@@ -1,20 +1,15 @@
 {% extends 'base.html' %}
 
+{% load material_form %}
+
 {% block container %}
 <main>
   <div class="container">
     <h2>Search</h2>
 
     <form method="get" action=".">
-        <table>
-            {{ form.as_table }}
-            <tr>
-                <td>&nbsp;</td>
-                <td>
-                    <input type="submit" value="Search">
-                </td>
-            </tr>
-        </table>
+      {% form form=form %}{% endform %}
+      <button type="submit" name="_submit" class="btn">Submit</button>
 
         {% if query %}
             <h3>Results</h3>

@@ -7,5 +7,5 @@ django-authtools>=1.4.0
 easy-thumbnails>=2.3
 django-material==1.0.0
 django-markdownx==2.0.21
-pyelasticsearch==1.4
 django-haystack==2.6.1
+elasticsearch>=2.0.0,<3.0.0
