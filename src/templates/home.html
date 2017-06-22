@@ -7,14 +7,14 @@
 {% block container %}
 <!-- Benefits of the Django application -->
 <main>
- <div class="container">
+ <div class="container push">
    <div class="row">
      <br>
-     <div class="col s3 collection">
+     <div class="col s3 collection blue-grey lighten-5">
         <h4 class="truncate">Categories</h3>
-          <a href="/app/" class="collection-item">All Apps</a>
+          <a href="/app/" class="collection-item blue-grey lighten-5">All Apps</a>
           {% for tag in tags %}
-            <a href="#!" class="collection-item">{{tag.name}}</a>
+            <a href="#!" class="collection-item blue-grey lighten-5">{{tag.name}}</a>
           {% endfor %}
       </div>
       <div class="col s9">
@@ -23,10 +23,12 @@
           {% for app in new_releases %}
             <div class="col s12 m6">
               <a href="/app/{{app.id}}/">
-                <div class="card blue-grey darken-1 hoverable card-height">
-                  <div class="card-content white-text truncate">
-                    <span class="card-title">{{app.title}}</span>
-                    <p>{{app.abstract}}</p>
+                <div class="card horizontal blue-grey lighten-5 hoverable card-height">
+                  <div class="card-stacked">
+                    <div class="card-content truncate">
+                      <span class="card-title">{{app.title}}</span>
+                      <p class="black-text">{{app.abstract}}</p>
+                    </div>
                   </div>
                 </div>
               </a>
@@ -39,10 +41,10 @@
             {% for app in top_downloaded %}
               <div class="col s12 m6">
                 <a href="/app/{{app.id}}/">
-                  <div class="card blue-grey darken-1 hoverable card-height">
-                    <div class="card-content white-text truncate">
+                  <div class="card blue-grey lighten-5 hoverable card-height">
+                    <div class="card-content truncate">
                       <span class="card-title">{{app.title}}</span>
-                      <p>{{app.abstract}}</p>
+                      <p class="black-text">{{app.abstract}}</p>
                     </div>
                   </div>
                 </a>

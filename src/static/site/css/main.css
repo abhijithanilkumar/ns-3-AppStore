@@ -17,6 +17,13 @@ body {
   height:180px;
 }
 
+.img-resize {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  height:100px;
+  width: 100px;
+}
+
 .push {
   padding-top: 50px;
 }
