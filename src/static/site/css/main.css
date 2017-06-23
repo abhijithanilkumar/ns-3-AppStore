@@ -13,6 +13,34 @@ body {
    flex: 1 0 auto;
  }
 
+
+ .biggercircle{
+     position: absolute;
+     width: 64px;
+     height: 64px;
+     left: 10px;
+     overflow: hidden;
+     display: inline-block;
+     vertical-align: middle;
+     border-radius: 50%;
+ }
+
+ .relativebiggercircle{
+     position: relative;
+     width: 90px;
+     height: 90px;
+     top: 30px;
+     overflow: hidden;
+     display: inline-block;
+     vertical-align: middle;
+     border-radius: 50%;
+ }
+
+.icon-size {
+  width:100px;
+  height:100px;
+}
+
 .card-height {
   height:100px;
 }
@@ -21,8 +49,20 @@ body {
   padding-top: 50px;
 }
 
+.push-small {
+  padding-top: 20px;
+}
+
 .push-left {
   padding-left: 10px;
+}
+
+.push-left-extra {
+  padding-left: 40px;
+}
+
+.extend-down {
+  padding-bottom: 5px;
 }
 
 .nav-wrapper .input-field input[type=search] {

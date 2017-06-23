@@ -68,3 +68,6 @@ local.env
 
 # Migrations
 migrations/
+
+# Media
+app_icon_thumbnail/

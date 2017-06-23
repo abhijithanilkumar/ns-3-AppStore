@@ -9,28 +9,28 @@
 <main>
  <div class="container push">
    <div class="row">
-     <br>
-     <div class="col s3 collection blue-grey lighten-5">
+     <div class="col s3 offset-s1 collection blue-grey lighten-5">
         <h4 class="truncate"><b>Categories</b></h3>
-          <a href="/app/" class="collection-item blue-grey lighten-5 hoverable">All Apps</a>
+          <a href="/app/" class="collection-item blue-grey lighten-5 blue-text">All Apps</a>
           {% for tag in tags %}
-            <a href="#!" class="collection-item blue-grey lighten-5 hoverable">{{tag.name}}</a>
+            <a href="#!" class="collection-item blue-grey lighten-5 blue-text">{{tag.name}}</a>
           {% endfor %}
+          <br>
       </div>
-      <div class="col s9">
-        <div class="row push-left">
+      <div class="col s7">
+        <div class="row push-left-extra">
           <h4 class="truncate"><b>New Releases</b></h3>
           {% for app in new_releases %}
             <div class="col s12 m6">
               <a href="/app/{{app.id}}/">
                 <div class="card blue-grey lighten-5 hoverable card-height">
                   <div class="card-content truncate">
-                    <div class="col s2">
-                      <img src="https://www.w3schools.com/css/trolltunga.jpg" alt="" class="card-image circle responsive-img"> <!-- notice the "circle" class -->
+                    <div class="col s2 hide-on-med-and-down">
+                      <img src="/media/{{app.icon|default:'default_icon.png'}}" alt="" class="biggercircle">
                     </div>
                     <div class="col s10">
-                      <span class="card-title"><b>{{app.title}}</b></span>
-                      <p class="black-text">{{app.abstract}}</p>
+                      <span class="card-title push-left"><b>{{app.title}}</b></span>
+                      <p class="black-text push-left">{{app.abstract}}</p>
                     </div>
                   </div>
                 </div>
@@ -39,15 +39,15 @@
           {% endfor %}
           <a class="right" href="/app/new/">See More ...</a>
         </div>
-        <div class="row push-left">
+        <div class="row push-left-extra">
           <h4 class="truncate"><b>Top Downloaded</b></h3>
             {% for app in top_downloaded %}
               <div class="col s12 m6">
                 <a href="/app/{{app.id}}/">
                   <div class="card blue-grey lighten-5 hoverable card-height">
                     <div class="card-content truncate">
-                      <div class="col s2">
-                        <img src="https://www.w3schools.com/css/trolltunga.jpg" alt="" class="card-image circle responsive-img"> <!-- notice the "circle" class -->
+                      <div class="col s2 hide-on-med-and-down">
+                        <img src="/media/{{app.icon|default:'default_icon.png'}}" class="biggercircle"> <!-- notice the "circle" class -->
                       </div>
                       <div class="col s10">
                         <span class="card-title"><b>{{app.title}}</b></span>

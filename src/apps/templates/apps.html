@@ -9,29 +9,106 @@
 <main>
  <div class="container">
    <div class="row">
-     <br>
-     <div class="col s3 collection blue-grey lighten-5">
-        <h4 class="truncate">Categories</h3>
-          <a href="/app/" class="collection-item active">All Apps</a>
+     <div class="col s3 offset-s1 collection blue-grey lighten-5">
+        <h4 class="truncate"><b>Categories</b></h3>
+          <a href="/app/" class="collection-item white-text active">All Apps</a>
           {% for tag in tags %}
-            <a href="#!" class="collection-item blue-grey lighten-5">{{tag.name}}</a>
+            <a href="#!" class="collection-item blue-grey lighten-5 blue-text">{{tag.name}}</a>
           {% endfor %}
+          <br>
       </div>
-      <div class="col s9">
-        <div class="row push-left">
-          <h4 class="truncate">All Apps</h3>
-          {% for app in apps %}
-            <div class="col s12 m6">
-              <a href="/app/{{app.id}}/">
-                <div class="card blue-grey lighten-5 hoverable card-height">
-                  <div class="card-content truncate">
-                    <span class="card-title">{{app.title}}</span>
-                    <p class="black-text">{{app.abstract}}</p>
-                  </div>
-                </div>
-              </a>
+      <div class="col s7">
+        <div class="row push-left-extra">
+          <h4 class="truncate"><b>All Apps</b></h4>
+          <div class="row  blue-grey lighten-5">
+            <div class="col s2">
+              <span><b><p class="center">Sort By :</p></b></span>
             </div>
-          {% endfor %}
+            <div class="col s10">
+              <ul class="tabs  blue-grey lighten-5">
+                <li class="tab"><a class="active" href="#test1">Name</a></li>
+                <li class="tab"><a href="#test2">Downloads</a></li>
+                <li class="tab"><a href="#test3">Votes</a></li>
+                <li class="tab"><a href="#test4">Newest Release</a></li>
+              </ul>
+            </div>
+          </div>
+          <div id="test1">
+            {% for app in apps_name %}
+              <div class="col s12 m6">
+                <a href="/app/{{app.id}}/">
+                  <div class="card blue-grey lighten-5 hoverable card-height">
+                    <div class="card-content truncate">
+                      <div class="col s2 hide-on-med-and-down">
+                        <img src="/media/{{app.icon|default:'default_icon.png'}}" alt="" class="biggercircle">
+                      </div>
+                      <div class="col s10">
+                        <span class="card-title push-left"><b>{{app.title}}</b></span>
+                        <p class="black-text push-left">{{app.abstract}}</p>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            {% endfor %}
+          </div>
+          <div id="test2">
+            {% for app in apps_downloads %}
+              <div class="col s12 m6">
+                <a href="/app/{{app.id}}/">
+                  <div class="card blue-grey lighten-5 hoverable card-height">
+                    <div class="card-content truncate">
+                      <div class="col s2 hide-on-med-and-down">
+                        <img src="/media/{{app.icon|default:'default_icon.png'}}" alt="" class="biggercircle">
+                      </div>
+                      <div class="col s10">
+                        <span class="card-title push-left"><b>{{app.title}}</b></span>
+                        <p class="black-text push-left">{{app.abstract}}</p>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            {% endfor %}
+          </div>
+          <div id="test3">
+            {% for app in apps_votes %}
+              <div class="col s12 m6">
+                <a href="/app/{{app.id}}/">
+                  <div class="card blue-grey lighten-5 hoverable card-height">
+                    <div class="card-content truncate">
+                      <div class="col s2 hide-on-med-and-down">
+                        <img src="/media/{{app.icon|default:'default_icon.png'}}" alt="" class="biggercircle">
+                      </div>
+                      <div class="col s10">
+                        <span class="card-title push-left"><b>{{app.title}}</b></span>
+                        <p class="black-text push-left">{{app.abstract}}</p>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            {% endfor %}
+          </div>
+          <div id="test4">
+            {% for app in apps_new %}
+              <div class="col s12 m6">
+                <a href="/app/{{app.id}}/">
+                  <div class="card blue-grey lighten-5 hoverable card-height">
+                    <div class="card-content truncate">
+                      <div class="col s2 hide-on-med-and-down">
+                        <img src="/media/{{app.icon|default:'default_icon.png'}}" alt="" class="biggercircle">
+                      </div>
+                      <div class="col s10">
+                        <span class="card-title push-left"><b>{{app.title}}</b></span>
+                        <p class="black-text push-left">{{app.abstract}}</p>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            {% endfor %}
+          </div>
         </div>
       </div>
    </div>

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from models import App, Release, Tag
 from markdownx.utils import markdownify
 
@@ -12,6 +12,7 @@ def appPage(request, num=0):
         app = get_object_or_404(App, id=num)
         app.description = markdownify(app.description)
         releases = Release.objects.filter(app=app).order_by('-id')
+        tags = app.tags.all()
         for release in releases:
             release.notes = markdownify(release.notes)
         authors = app.authors.all()
@@ -19,11 +20,15 @@ def appPage(request, num=0):
             latest = releases.latest('id')
         else:
             latest = []
-        return render(request, 'page.html', {'app':app, 'releases':releases, 'authors':authors, 'latest':latest})
+        return render(request, 'page.html', {'app':app, 'tags':tags, 'releases':releases, 'authors':authors, 'latest':latest})
     else:
-        apps = App.objects.all()
+        apps_name = App.objects.all().order_by('title')
+        apps_downloads = App.objects.all().order_by('-downloads')
+        apps_new = App.objects.all().order_by('-latest_release_date')
+        apps_votes = App.objects.all().order_by('-votes')
         tags = Tag.objects.all()
-        return render(request, 'apps.html', {'apps':apps, 'tags':tags})
+        return render(request, 'apps.html', {'apps_name':apps_name,
+            'apps_downloads':apps_downloads, 'apps_new':apps_new, 'apps_votes':apps_votes, 'tags':tags})
 
 def topPage(request):
     apps = App.objects.all().order_by('-downloads')
@@ -34,3 +39,17 @@ def newPage(request):
     apps = App.objects.all().order_by('-latest_release_date')
     tags = Tag.objects.all()
     return render(request, 'apps.html', {'apps':apps, 'tags':tags})
+
+def download(request, num):
+    app = App.objects.get(id=num)
+    releases = Release.objects.filter(app=app).order_by('-id')
+    if releases:
+        release = release.latest('id')
+        url = release.url
+    elif app.coderepo:
+        url = app.coderepo
+    else:
+        url = '/app/'+num
+    app.downloads = app.downloads+1
+    app.save()
+    return redirect(url)
