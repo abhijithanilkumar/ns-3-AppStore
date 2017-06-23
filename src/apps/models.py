@@ -34,11 +34,12 @@ class Tag(models.Model):
 
 class App(models.Model):
     title = models.CharField(max_length=127, unique=True)
-    abstract = models.CharField(max_length=255)
+    abstract = models.CharField(max_length=255, default="NA")
     description = MarkdownxField()
+    icon = models.ImageField(upload_to='app_icon_thumbnail/%Y-%m-%d/', blank=True)
     authors = models.ManyToManyField(Author, blank=True)
     tags = models.ManyToManyField(Tag, blank=True)
-    editors = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True)
+    editors = models.ManyToManyField(settings.AUTH_USER_MODEL)
     latest_release_date = models.DateField(blank=True, null=True)
     website = models.URLField(blank=True, null=True)
     tutorial = models.URLField(blank=True, null=True)

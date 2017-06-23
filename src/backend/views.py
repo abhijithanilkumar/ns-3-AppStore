@@ -5,6 +5,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from forms import CreateAppForm, EditAppForm, ReleaseForm
 from django.apps import apps
+from util.img_util import scale_img
 
 @login_required
 def createApp(request):
@@ -35,7 +36,9 @@ def editApp(request, num):
         elif request.method == 'POST':
             form = EditAppForm(request.POST, instance=edit_app)
             if form.is_valid():
-                edited_app = form.save()
+                edited_app = form.save(commit=False)
+                if edited_app.icon:
+                    edited_app.icon = scale_img(edited_app.icon)
                 edited_app.save()
                 return render(request, 'message.html', {'message': "App Page edited Successfully!"})
     else:
