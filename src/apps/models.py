@@ -40,7 +40,7 @@ class App(models.Model):
     authors = models.ManyToManyField(Author, blank=True)
     tags = models.ManyToManyField(Tag, blank=True)
     editors = models.ManyToManyField(settings.AUTH_USER_MODEL)
-    latest_release_date = models.DateField(blank=True, null=True)
+    latest_release_date = models.DateField(auto_now_add=True)
     website = models.URLField(blank=True, null=True)
     tutorial = models.URLField(blank=True, null=True)
     coderepo = models.URLField(blank=True, null=True)

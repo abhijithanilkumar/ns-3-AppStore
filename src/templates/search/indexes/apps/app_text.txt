@@ -1,2 +1,6 @@
 {{ object.title }}
+{{ object.abstract }}
 {{ object.description }}
+{{ object.date }}
+{{ object.votes }}
+{{ object.downloads }}

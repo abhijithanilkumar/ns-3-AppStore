@@ -20,7 +20,8 @@ def appPage(request, num=0):
             latest = releases.latest('id')
         else:
             latest = []
-        return render(request, 'page.html', {'app':app, 'tags':tags, 'releases':releases, 'authors':authors, 'latest':latest})
+        editors = app.editors.all()
+        return render(request, 'page.html', {'app':app, 'editors':editors, 'tags':tags, 'releases':releases, 'authors':authors, 'latest':latest})
     else:
         apps_name = App.objects.all().order_by('title')
         apps_downloads = App.objects.all().order_by('-downloads')
@@ -29,16 +30,6 @@ def appPage(request, num=0):
         tags = Tag.objects.all()
         return render(request, 'apps.html', {'apps_name':apps_name,
             'apps_downloads':apps_downloads, 'apps_new':apps_new, 'apps_votes':apps_votes, 'tags':tags})
-
-def topPage(request):
-    apps = App.objects.all().order_by('-downloads')
-    tags = Tag.objects.all()
-    return render(request, 'apps.html', {'apps':apps, 'tags':tags})
-
-def newPage(request):
-    apps = App.objects.all().order_by('-latest_release_date')
-    tags = Tag.objects.all()
-    return render(request, 'apps.html', {'apps':apps, 'tags':tags})
 
 def download(request, num):
     app = App.objects.get(id=num)

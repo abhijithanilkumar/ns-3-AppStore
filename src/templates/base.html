@@ -18,6 +18,7 @@
 
     <!--Import Google Icon Font-->
     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
 
     <!-- Custom styles for this site -->
     {% block styles %}
@@ -59,9 +60,9 @@
             </ul>
             {% endif %}
             <div class="col s3 right hide-on-med-and-down">
-              <form>
+              <form action="/search">
                 <div class="input-field">
-                  <input id="search" type="search" required>
+                  <input id="search" type="search" name="q" required>
                   <label class="label-icon" for="search"><i class="material-icons">search</i></label>
                   <i class="material-icons">close</i>
                 </div>
