@@ -11,9 +11,9 @@
    <div class="row">
      <div class="col s3 offset-s1 collection blue-grey lighten-5">
         <h4 class="truncate"><b>Categories</b></h3>
-          <a href="/app/" class="collection-item blue-grey lighten-5 blue-text">All Apps</a>
+          <a href="/app/tag/" class="collection-item blue-grey lighten-5 blue-text">All Apps</a>
           {% for tag in tags %}
-            <a href="#!" class="collection-item blue-grey lighten-5 blue-text">{{tag.name}}</a>
+            <a href="/app/tag/{{tag.id}}" class="collection-item blue-grey lighten-5 blue-text">{{tag.name}}</a>
           {% endfor %}
           <br>
       </div>
