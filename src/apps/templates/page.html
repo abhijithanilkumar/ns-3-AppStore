@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+
+{% block title %}{{ block.super }}My App{% endblock %}
+
+{% block container %}
+<main>
+  <div class="container">
+    <div class="row">
+      <div class="col s1 hide-on-med-and-down">
+        <img src="/media/{{app.icon|default:'default_icon.png'}}" alt="" class="relativebiggercircle">
+      </div>
+      <div class="col s9">
+        <h3><b>{{app.title}}</b></h3>
+        <h6><b>{{app.abstract}}</b></h6>
+      </div>
+      {% if user.is_staff or user in editors %}
+      <div class="col s2">
+        <a href="/backend/edit/{{app.id}}"><btn class="btn center">Edit Page</btn></a>
+      </div>
+      {% endif %}
+    </div>
+    <div class="row">
+      <div class="col s2">
+        <i class="material-icons">star</i>
+        <i class="material-icons">star</i>
+        <i class="material-icons">star</i>
+        <i class="material-icons">star</i>
+        <i class="material-icons">star</i>
+      </div>
+      <p>{{app.downloads}} Downloads</p>
+    </div>
+    <div class="row">
+      {% for tag in tags %}
+      <div class="chip">
+        <a href="/app/tag/{{tag.id}}">{{tag.name}}</a>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="row card-panel blue-grey lighten-5">
+      <div class="col s9">
+        <ul class="tabs blue-grey lighten-5">
+          <li class="tab col s4"><a class="active" href="#test1">Details</a></li>
+          <li class="tab col s4"><a href="#test2">Release History</a></li>
+          <li class="tab col s4"><a href="#test3">Authors</a></li>
+        </ul>
+        <div class="divider black"></div>
+      </div>
+      <div id="test1" class="col s9 flow-text">
+        <br>
+        {{app.description|safe}}
+      </div>
+      <div id="test2" class="col s9">
+        {% for release in releases %}
+        <div class="section">
+          <div class="row">
+            <div class="col s2">
+              <a href="{{release.url}}"><h4>{{release.version}}</h4></a>
+            </div>
+            {% if user.is_staff or user in editors %}
+            <div class="col s4 offset-s6">
+              <br>
+              <a href="/backend/edit/release/{{release.id}}"><btn class="btn center">Edit Release</btn></a>
+            </div>
+            {% endif %}
+          </div>
+          <b>Released : </b>{{latest.date}}<br>
+          <b>Works with : </b><a href="https://www.nsnam.org/releases/">{{latest.require}}</a><br>
+          {% if release.notes %}
+            <b>Release Notes :</b>
+            <p>{{release.notes|safe}}</p>
+          {% endif %}
+        </div>
+        <div class="divider black"></div>
+        {% endfor %}
+        {% if user.is_staff or user in editors %}
+        <div class="row">
+          <div class="col s4">
+            <br>
+            <a href="/backend/create/release/{{app.id}}"><btn class="btn center">Add Release</btn></a>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+      <div id="test3" class="col s9">
+        {% for author in authors %}
+        <div class="section">
+          <div class="row">
+            <div class="col s8">
+              <a href="/app/author/{{author.id}}"><h5>{{author.name}}</h5><br></a>
+              <b>{{author.institution}}</b>
+            </div>
+            {% if user.is_staff or user in editors %}
+            <div class="col s4">
+              <br>
+              <a href="/backend/edit/{{app.id}}/author/{{author.id}}"><btn class="btn center">Edit Author</btn></a>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+        <div class="divider black"></div>
+        {% endfor %}
+        {% if user.is_staff or user in editors %}
+        <div class="row">
+          <div class="col s4">
+            <br>
+            <a href="/backend/create/author/{{app.id}}"><btn class="btn center">Add Author</btn></a>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+      <div class="col s3 center">
+        <div class="card-panel blue-grey lighten-1">
+          <a href="/app/download/{{app.id}}"><button class="btn center">
+            Download
+          </button>
+          </a>
+          <br>
+          <span class="white-text">
+            <br><b>Version : </b>{{latest.version}}<br>
+            <b>Released : </b>{{latest.date}}<br>
+            <b>Works with : </b><a class="white-text" href="https://www.nsnam.org/releases/">{{latest.require}}</a><br>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock container %}

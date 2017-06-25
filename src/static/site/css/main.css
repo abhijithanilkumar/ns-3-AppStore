@@ -1,7 +1,88 @@
-@import "//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css";
-
 html, body{
     height:100%;		/* For full height images */
+    font-family: sans-serif;
+}
+
+body {
+   display: flex;
+   min-height: 100vh;
+   flex-direction: column;
+ }
+
+ main {
+   flex: 1 0 auto;
+ }
+
+
+ .biggercircle{
+     position: absolute;
+     width: 64px;
+     height: 64px;
+     left: 10px;
+     overflow: hidden;
+     display: inline-block;
+     vertical-align: middle;
+     border-radius: 50%;
+ }
+
+ .relativebiggercircle{
+     position: relative;
+     width: 90px;
+     height: 90px;
+     top: 30px;
+     overflow: hidden;
+     display: inline-block;
+     vertical-align: middle;
+     border-radius: 50%;
+ }
+
+.icon-size {
+  width:100px;
+  height:100px;
+}
+
+.card-height {
+  height:100px;
+}
+
+.push {
+  padding-top: 50px;
+}
+
+.push-small {
+  padding-top: 20px;
+}
+
+.push-left {
+  padding-left: 10px;
+}
+
+.push-left-extra {
+  padding-left: 40px;
+}
+
+.extend-down {
+  padding-bottom: 5px;
+}
+
+.nav-wrapper .input-field input[type=search] {
+  height: 50px;
+}
+.nav-wrapper input[type="search"]:focus {
+  position: relative;
+  top: 10px;
+  width: 80%;
+}
+.input-field label {
+  max-height: 64px;
+}
+.nav-wrapper input[type="search"]:focus ~ .label-icon.active {
+  position: fixed;
+  left: 10px;
+}
+.nav-wrapper input[type="search"]:focus ~ .closed {
+  position: fixed;
+  right: 10px;
 }
 
 .starter-template {
@@ -21,14 +102,15 @@ html, body{
     margin-bottom: 0;
 }
 
+/*
 body>.navbar-transparent {
-    background-color: transparent;
-    border-color: transparent;
+    background-color: #000000;
+    border-color: #000000;
     box-shadow: none;
 }
 
 .navbar-transparent .navbar-nav > .active > a {
-    background-color: transparent;
+    background-color: #000000;
 }
 
 .navbar-form {
@@ -47,9 +129,11 @@ body>.navbar-transparent {
 
 .navbar-nav > li > a {
     font-size: 16px;
+    font-weight: bold;
 }
 
 .navbar-brand {
+    font-size: 30px;
     font-weight: bold;
 }
 
@@ -57,6 +141,7 @@ body>.navbar-transparent {
     float: left;
     margin-right: 10px;
 }
+*/
 
 .btn {
     background-image: none;

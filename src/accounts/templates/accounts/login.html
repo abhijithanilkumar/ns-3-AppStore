@@ -1,13 +1,17 @@
 {% extends "accounts/auth_base.html" %}
 
-{% load crispy_forms_tags %}
+{% load material_form %}
 
 {% block title %}{{ block.super }}Log In{% endblock %}
 
 {% block form_heading %}Please Log In{% endblock %}
 
 {% block form %}
-  {% crispy form %}
+  <form method="POST">
+      {% csrf_token %}
+      {% form form=form %}{% endform %}
+      <button type="submit" name="_submit" class="btn">Submit</button>
+  </form>
 
   <div class="form-message">
     <p>
@@ -15,4 +19,3 @@
     </p>
   </div>
 {% endblock form %}
-
