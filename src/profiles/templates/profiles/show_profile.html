@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+{% load thumbnail %}
+
+{% block title %}{{ block.super }}Profile{% endblock %}
+
+{% block container %}
+<main>
+  <div class="container profile-head">
+    <div class="row">
+      <div class="col s10">
+        <h1>{{ show_user.get_full_name }}</h1>
+        {% if editable %}
+        <a href="{% url 'profiles:edit_self' %}" class="btn btn-info">Edit Profile</a>
+        {% endif %}
+      </div>
+      <div class="col s2"><img title="profile picture" class="responsive-img circle" src="{% thumbnail show_user.profile.picture|default:'default_profile.png' 140x140 crop %}">
+      </div>
+    </div>
+  </div>
+  <div class="container push">
+    <div class="row">
+      <div class="col s4">
+        <b>Email : </b>{{show_user.email}}<br>
+        <b>Joined : </b>{{show_user.date_joined}}<br>
+        <b>Last Seen : </b>{{show_user.last_login}}</br>
+      </div>
+      <div class="col s8">
+        <b>Bio : </b>{{show_user.profile.bio}}
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock %}

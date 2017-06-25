@@ -1,0 +1,21 @@
+{% extends "accounts/auth_base.html" %}
+
+{% load material_form %}
+
+{% block title %}{{ block.super }}Sign Up{% endblock %}
+
+{% block form_heading %}Signing Up is Free{% endblock %}
+
+{% block form %}
+  <form method="POST">
+      {% csrf_token %}
+      {% form form=form %}{% endform %}
+      <button type="submit" name="_submit" class="btn">Submit</button>
+  </form>
+
+  <div class="form-message">
+    <p>
+      Already signed up? <a href="{% url 'accounts:login' %}">Log in</a>.
+    </p>
+  </div>
+{% endblock form %}

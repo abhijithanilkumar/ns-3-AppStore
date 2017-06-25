@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+{% load material_form %}
+{% load thumbnail %}
+
+{% block title %}{{ block.super }}Profile{% endblock %}
+
+<!-- Benefits of the Django application -->
+{% block container %}
+<main>
+<div class="container form-box">
+  <div class="center">
+    <h2>Edit Profile</h2>
+  </div>
+  <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      {% form form=user_form %}{% endform %}
+      {% form form=profile_form %}{% endform %}
+      <button type="submit" name="_submit" class="btn">Submit</button>
+      <a class="right valign-wrapper" href="{% url 'accounts:password-change' %}">Change Password?</a>
+  </form>
+</div>
+</main>
+{% endblock %}

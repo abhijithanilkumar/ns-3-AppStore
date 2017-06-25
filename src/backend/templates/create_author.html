@@ -1,0 +1,15 @@
+{% extends "backend_base.html" %}
+
+{% load material_form %}
+
+{% block title %}{{ block.super }}New Author{% endblock %}
+
+{% block form_heading %}Add a New Author{% endblock %}
+
+{% block form %}
+  <form method="POST">
+      {% csrf_token %}
+      {% form form=form %}{% endform %}
+      <button type="submit" name="_submit" class="btn">Submit</button>
+  </form>
+{% endblock form %}
