@@ -24,9 +24,6 @@ def search(request):
     sqs_app_new = sqs_app.order_by('-date')
     sqs_app_votes = sqs_app.order_by('-votes')
     sqs_tag = sqs_tag.filter(title__contains=query)
-    sqs_author = sqs_author.filter(title__contains=query, inst__contains=query)
-    print "Hello"
-    for s in sqs_app_name:
-        print s
+    sqs_author = sqs_author.filter(title__contains=query).filter(inst__contains=query)
     return render(request, 'search.html', {'tags':tags, 'sqs_app_name':sqs_app_name, 'sqs_tag':sqs_tag, 'sqs_author':sqs_author,
         'sqs_app_downloads':sqs_app_downloads, 'sqs_app_votes':sqs_app_votes, 'sqs_app_new':sqs_app_new})

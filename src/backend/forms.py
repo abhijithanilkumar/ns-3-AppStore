@@ -74,3 +74,22 @@ class ReleaseForm(forms.ModelForm):
             'app',
             'date',
         ]
+
+class AuthorForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(forms.ModelForm, self).__init__(*args, **kwargs)
+        self.fields['name'].label = "Name"
+        self.fields['name'].required = True
+        self.fields['institution'].label = "Institution"
+        self.fields['institution'].required = True
+
+    def clean(self):
+        return self.cleaned_data
+
+    class Meta:
+        model = apps.get_model('apps', 'Author')
+        fields = [
+            'name',
+            'institution'
+        ]

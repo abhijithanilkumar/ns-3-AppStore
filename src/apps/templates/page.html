@@ -34,7 +34,7 @@
     <div class="row">
       {% for tag in tags %}
       <div class="chip">
-        {{tag.name}}
+        <a href="/app/tag/{{tag.id}}">{{tag.name}}</a>
       </div>
       {% endfor %}
     </div>
@@ -86,11 +86,29 @@
       <div id="test3" class="col s9">
         {% for author in authors %}
         <div class="section">
-          <h4>{{author.name}}</h4>
-          <b>{{author.institution}}</b>
+          <div class="row">
+            <div class="col s8">
+              <a href="/app/author/{{author.id}}"><h5>{{author.name}}</h5><br></a>
+              <b>{{author.institution}}</b>
+            </div>
+            {% if user.is_staff or user in editors %}
+            <div class="col s4">
+              <br>
+              <a href="/backend/edit/{{app.id}}/author/{{author.id}}"><btn class="btn center">Edit Author</btn></a>
+            </div>
+            {% endif %}
+          </div>
         </div>
         <div class="divider black"></div>
         {% endfor %}
+        {% if user.is_staff or user in editors %}
+        <div class="row">
+          <div class="col s4">
+            <br>
+            <a href="/backend/create/author/{{app.id}}"><btn class="btn center">Add Author</btn></a>
+          </div>
+        </div>
+        {% endif %}
       </div>
       <div class="col s3 center">
         <div class="card-panel blue-grey lighten-1">

@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from forms import CreateAppForm, EditAppForm, ReleaseForm
+from forms import CreateAppForm, EditAppForm, ReleaseForm, AuthorForm
 from django.apps import apps
 from util.img_util import scale_img
 
@@ -89,3 +89,47 @@ def editRelease(request, num):
     else:
         return render(request, 'message.html', {'message': "You are not authorized to view this page!"})
     return render(request, 'edit_release.html', {'form':form})
+
+@login_required
+def createAuthor(request, num):
+    App = apps.get_model('apps', 'App')
+    try:
+        app = App.objects.get(id=num)
+    except:
+        return render(request, 'message.html', {'message': "Requested App does not Exist!"})
+    if request.user.is_staff or request.user in app.editors.all():
+        if request.method == 'GET':
+            form = AuthorForm()
+        elif request.method == 'POST':
+            form = AuthorForm(request.POST)
+            if form.is_valid():
+                new_author = form.save()
+                new_author.save()
+                app.authors.add(new_author)
+                app.save()
+                return render(request, 'message.html', {'message': "New Author created Successfully!"})
+    else:
+        return render(request, 'message.html', {'message': "You are not authorized to view this page!"})
+    return render(request, 'create_author.html', {'form':form})
+
+@login_required
+def editAuthor(request, appnum, num):
+    App = apps.get_model('apps', 'App')
+    Author = apps.get_model('apps', 'Author')
+    try:
+        edit_author = Author.objects.get(id=num)
+        app = App.objects.get(id=appnum)
+    except:
+        return render(request, 'message.html', {'message': "Requested App does not Exist!"})
+    if request.user.is_staff or request.user in app.editors.all():
+        if request.method == 'GET':
+            form = AuthorForm(instance=edit_author)
+        elif request.method == 'POST':
+            form = AuthorForm(request.POST, instance=edit_author)
+            if form.is_valid():
+                edited_author = form.save()
+                edited_author.save()
+                return render(request, 'message.html', {'message': "Author details edited Successfully!"})
+    else:
+        return render(request, 'message.html', {'message': "You are not authorized to view this page!"})
+    return render(request, 'edit_author.html', {'form':form})
