@@ -32,8 +32,6 @@ def download(request, num):
         url = app.coderepo
     else:
         url = '/app/'+num
-    app.downloads = app.downloads+1
-    app.save()
     return redirect(url)
 
 def tagSearch(request, num=0):
