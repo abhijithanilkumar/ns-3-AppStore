@@ -26,7 +26,7 @@ def download(request, num):
     app = App.objects.get(id=num)
     releases = Release.objects.filter(app=app).order_by('-id')
     if releases:
-        release = release.latest('id')
+        release = releases.latest('id')
         url = release.url
     elif app.coderepo:
         url = app.coderepo
