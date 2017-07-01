@@ -6,7 +6,7 @@
 
 {% block container %}
 <main>
-  <div class="container">
+  <div class="container push">
     <div class="row">
       <div class="col s1 hide-on-med-and-down">
         <img src="/media/{{app.icon|default:'default_icon.png'}}" alt="" class="relativebiggercircle">
@@ -46,7 +46,7 @@
         </ul>
         <div class="divider black"></div>
       </div>
-      <div id="test1" class="col s9 flow-text">
+      <div id="test1" class="col s9">
         <br>
         {{app.description|safe}}
       </div>
@@ -110,18 +110,18 @@
         {% endif %}
       </div>
       <div class="col s3 center">
-        <div class="card-panel blue-grey lighten-1">
+        <div class="card-panel blue-grey lighten-3">
           <a href="/app/download/{{app.id}}"><button class="btn center">
             Download
           </button>
           </a>
           <br>
-          <span class="white-text">
+          <span class="black-text">
             <br><b>Version : </b>{{latest.version}}<br>
             <b>Released : </b>{{latest.date}}<br>
-            <b>Works with : </b><a class="white-text" href="https://www.nsnam.org/releases/">{{latest.require}}</a><br>
-            <b>Source : </b><a class="white-text" href="{{app.coderepo}}">Link</a><br>
-            <b>Bake : </b><a class="white-text" href="/media/{{latest.filename}}">bakeconf.xml</a><br>
+            <b>Works with : </b><a href="https://www.nsnam.org/releases/">{{latest.require}}</a><br>
+            <b>Source : </b><a href="{{app.coderepo}}">Link</a><br>
+            <b>Bake : </b><a href="/media/{{latest.filename}}">bakeconf.xml</a><br>
           </span>
         </div>
       </div>
