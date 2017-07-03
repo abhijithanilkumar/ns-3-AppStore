@@ -64,3 +64,11 @@ class Release(models.Model):
 
     def __str__(self):
         return '%s %s' % (self.app.title, self.version)
+
+class Comment(models.Model):
+    app = models.ForeignKey(App)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)
+    date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return 'Comment on %s by %s' % (self.app.title, self.user.get_full_name)
