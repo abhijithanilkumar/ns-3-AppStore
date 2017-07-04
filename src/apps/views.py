@@ -2,8 +2,10 @@
 from __future__ import unicode_literals
 
 from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
 from models import App, Release, Tag, Author
 from markdownx.utils import markdownify
+from forms import CommentForm
 
 # Create your views here.
 
@@ -70,3 +72,21 @@ def authorSearch(request, num):
     tags = Tag.objects.all()
     return render(request, 'apps_author.html', {'apps_name':apps_name, 'active_author':active_author,
         'apps_downloads':apps_downloads, 'apps_new':apps_new, 'apps_votes':apps_votes, 'tags':tags})
+
+@login_required
+def feedback(request, num):
+    try:
+        app = App.objects.get(id=num)
+    except:
+        return render(request, 'home.html')
+    if request.method == 'GET':
+        form = CommentForm()
+    elif request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.app = app
+            comment.user = request.user
+            comment.save()
+            return render(request, 'message.html', {'message': "Thank you for leaving your Feedback!"})
+    return render(request, 'comment.html', {'form':form})

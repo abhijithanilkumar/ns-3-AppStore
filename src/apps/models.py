@@ -66,9 +66,19 @@ class Release(models.Model):
         return '%s %s' % (self.app.title, self.version)
 
 class Comment(models.Model):
+    CHOICES = [
+        (1, 'Not Useful'),
+        (2, 'Needs Improvement'),
+        (3, 'Okay'),
+        (4, 'Great'),
+        (5, 'Awesome'),
+    ]
+
     app = models.ForeignKey(App)
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
-    date = models.DateTimeField(auto_now_add=True)
+    stars = models.PositiveIntegerField(choices=CHOICES)
+    content = MarkdownxField()
+    timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return 'Comment on %s by %s' % (self.app.title, self.user.get_full_name)

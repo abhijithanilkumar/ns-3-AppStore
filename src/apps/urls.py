@@ -8,4 +8,5 @@ urlpatterns = [
     url(r'^tag/$', views.tagSearch, name="allApps"),
     url(r'^tag/(?P<num>[0-9]+)/$', views.tagSearch, name="tagSearch"),
     url(r'^author/(?P<num>[0-9]+)/$', views.authorSearch, name="authorSearch"),
+    url(r'^feedback/(?P<num>[0-9]+)/$', views.feedback, name="feedback"),
 ]

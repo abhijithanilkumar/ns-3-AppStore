@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% load material_form %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}{{ block.super }}Feedback{% endblock %}
+
+{% block container %}
+<main>
+<div class="container form-box">
+  <div class="center">
+    <h2>Submit Feedback</h2>
+  </div>
+  <form method="POST">
+      {% csrf_token %}
+      {% form form=form %}{% endform %}
+      <button type="submit" name="_submit" class="btn">Submit</button>
+  </form>
+</div>
+</main>
+{% endblock container %}
