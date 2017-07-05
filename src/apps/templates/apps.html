@@ -27,7 +27,6 @@
             <div class="col s10">
               <ul class="tabs  blue-grey lighten-5">
                 <li class="tab"><a class="active" href="#test1">Name</a></li>
-                <li class="tab"><a href="#test2">Downloads</a></li>
                 <li class="tab"><a href="#test3">Votes</a></li>
                 <li class="tab"><a href="#test4">Newest Release</a></li>
               </ul>
@@ -35,25 +34,6 @@
           </div>
           <div id="test1">
             {% for app in apps_name %}
-              <div class="col s12 m6">
-                <a href="/app/{{app.id}}/">
-                  <div class="card blue-grey lighten-5 hoverable card-height">
-                    <div class="card-content truncate">
-                      <div class="col s2 hide-on-med-and-down">
-                        <img src="/media/{{app.icon|default:'default_icon.png'}}" alt="" class="biggercircle">
-                      </div>
-                      <div class="col s10">
-                        <span class="card-title push-left"><b>{{app.title}}</b></span>
-                        <p class="black-text push-left">{{app.abstract}}</p>
-                      </div>
-                    </div>
-                  </div>
-                </a>
-              </div>
-            {% endfor %}
-          </div>
-          <div id="test2">
-            {% for app in apps_downloads %}
               <div class="col s12 m6">
                 <a href="/app/{{app.id}}/">
                   <div class="card blue-grey lighten-5 hoverable card-height">

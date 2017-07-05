@@ -76,6 +76,7 @@ class Comment(models.Model):
 
     app = models.ForeignKey(App)
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
+    title = models.CharField(max_length=50)
     stars = models.PositiveIntegerField(choices=CHOICES)
     content = MarkdownxField()
     timestamp = models.DateTimeField(auto_now_add=True)

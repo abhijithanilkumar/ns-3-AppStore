@@ -39,27 +39,6 @@
           {% endfor %}
           <a class="right" href="/app/tag/">See More ...</a>
         </div>
-        <div class="row push-left-extra">
-          <h4 class="truncate"><b>Top Downloaded</b></h3>
-            {% for app in top_downloaded %}
-              <div class="col s12 m6">
-                <a href="/app/{{app.id}}/">
-                  <div class="card blue-grey lighten-5 hoverable card-height">
-                    <div class="card-content truncate">
-                      <div class="col s2 hide-on-med-and-down">
-                        <img src="/media/{{app.icon|default:'default_icon.png'}}" class="biggercircle"> <!-- notice the "circle" class -->
-                      </div>
-                      <div class="col s10">
-                        <span class="card-title"><b>{{app.title}}</b></span>
-                        <p class="black-text truncate">{{app.abstract}}</p>
-                      </div>
-                    </div>
-                  </div>
-                </a>
-              </div>
-            {% endfor %}
-          <a class="right" href="/app/tag/">See More ...</a>
-        </div>
       </div>
    </div>
  </div>

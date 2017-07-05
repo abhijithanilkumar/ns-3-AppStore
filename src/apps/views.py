@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-from models import App, Release, Tag, Author
+from models import App, Release, Tag, Author, Comment
 from markdownx.utils import markdownify
 from forms import CommentForm
 
@@ -22,7 +22,9 @@ def appPage(request, num=0):
     else:
         latest = []
     editors = app.editors.all()
-    return render(request, 'page.html', {'app':app, 'editors':editors, 'tags':tags, 'releases':releases, 'authors':authors, 'latest':latest})
+    comments = Comment.objects.filter(app=app)
+    return render(request, 'page.html', {'app':app, 'editors':editors, 'tags':tags, 'releases':releases, 'authors':authors, 'latest':latest,
+                                         'comments':comments})
 
 def download(request, num):
     app = App.objects.get(id=num)
@@ -88,5 +90,7 @@ def feedback(request, num):
             comment.app = app
             comment.user = request.user
             comment.save()
+            app.votes += 1
+            app.save()
             return render(request, 'message.html', {'message': "Thank you for leaving your Feedback!"})
     return render(request, 'comment.html', {'form':form})

@@ -7,6 +7,42 @@
 {% block container %}
 <main>
   <div class="container push">
+    <!-- Modal Structure -->
+    <div id="modal1" class="modal bottom-sheet">
+      {% if comments %}
+        {% for comment in comments %}
+        <div class="container modal-content">
+          <div class="row">
+            <div class="col s12 m12">
+              <div class="card-panel blue-grey">
+                <i class="tiny material-icons">star</i>
+                <i class="tiny material-icons">star</i>
+                <i class="tiny material-icons">star</i>
+                <i class="tiny material-icons">star</i>
+                <i class="tiny material-icons">star</i>
+                <b class="push-left white-text">{{comment.title}}</b>
+                <div class="row">
+                  <p class="white-text">
+                    {{comment.content|safe}}
+                  </p>
+                </div>
+                <div class="row">
+                  <p class="right white-text">By <b>{{comment.user.get_full_name}}</b> on <b>{{comment.timestamp}}</b></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      {% else %}
+        <div class="container">
+          <h5>No Comments to show!</h5>
+        </div>
+      {% endif %}
+      <div class="modal-footer">
+        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+      </div>
+    </div>
     <div class="row">
       <div class="col s1 hide-on-med-and-down">
         <img src="/media/{{app.icon|default:'default_icon.png'}}" alt="" class="relativebiggercircle">
@@ -22,12 +58,13 @@
       {% endif %}
     </div>
     <div class="row">
-      <div class="col s3">
-        <i class="material-icons">star</i>
-        <i class="material-icons">star</i>
-        <i class="material-icons">star</i>
-        <i class="material-icons">star</i>
-        <i class="material-icons">star</i>
+      <div class="col s6 m6">
+        <i class="tiny material-icons">star</i>
+        <i class="tiny material-icons">star</i>
+        <i class="tiny material-icons">star</i>
+        <i class="tiny material-icons">star</i>
+        <i class="tiny material-icons">star</i>
+        <a class="push-left waves-effect waves-light" href="#modal1">{{app.votes}} votes</a>
       </div>
     </div>
     <div class="row">
@@ -36,6 +73,11 @@
         <a href="/app/tag/{{tag.id}}">{{tag.name}}</a>
       </div>
       {% endfor %}
+    </div>
+    <div class="row">
+      <div class="col s2">
+        <a href="/app/feedback/{{app.id}}"><btn class="btn center">Rate the Page</btn></a>
+      </div>
     </div>
     <div class="row card-panel blue-grey lighten-5">
       <div class="col s9">
