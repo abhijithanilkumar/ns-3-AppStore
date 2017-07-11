@@ -47,11 +47,11 @@
       <div class="col s2 hide-on-med-and-down">
         <img src="/media/{{app.icon|default:'default_icon.png'}}" alt="" class="relativebiggercircle">
       </div>
-      <div class="col s10">
+      <div class="col s8">
         <h3><b>{{app.title}}</b></h3>
         <h6><b>{{app.abstract}}</b></h6>
         <div class="row">
-          <div class="col s12 m3 l2">
+          <div class="col s12 m4 l2">
             <i class="tiny material-icons">star</i>
             <i class="tiny material-icons">star</i>
             <i class="tiny material-icons">star</i>
@@ -59,7 +59,7 @@
             <i class="tiny material-icons">star</i>
           </div>
           <div class="col s12 m3 l2">
-            <a class="push-slight-left waves-effect waves-light" href="#modal1">{{app.votes}} votes</a>
+            <a class="waves-effect waves-light" href="#modal1">{{app.votes}} votes</a>
           </div>
         </div>
       </div>
@@ -82,7 +82,7 @@
       </div>
     </div>
     <div class="row card-panel blue-grey lighten-5">
-      <div class="col s9 m12 l6">
+      <div class="col s12 m8 l9">
         <ul class="tabs blue-grey lighten-5">
           <li class="tab col s4"><a class="active" href="#test1">Details</a></li>
           <li class="tab col s4"><a href="#test2">Release History</a></li>
@@ -90,11 +90,11 @@
         </ul>
         <div class="divider black"></div>
       </div>
-      <div id="test1" class="col s12">
+      <div id="test1" class="col s12 m8 l9">
         <br>
         {{app.description|safe}}
       </div>
-      <div id="test2" class="col s12">
+      <div id="test2" class="col s12 m8 l9">
         {% for release in releases %}
         <div class="section">
           <div class="row">
@@ -126,7 +126,7 @@
         </div>
         {% endif %}
       </div>
-      <div id="test3" class="col s12">
+      <div id="test3" class="col s12 m8 l9">
         {% for author in authors %}
         <div class="section">
           <div class="row">
@@ -153,21 +153,21 @@
         </div>
         {% endif %}
       </div>
-    </div>
-    <div class="col s12 m12 l6 center">
-      <div class="card-panel blue-grey lighten-3">
-        <a href="/app/download/{{app.id}}"><button class="btn center">
-          Download
-        </button>
-        </a>
-        <br>
-        <span class="black-text">
-          <br><b>Version : </b>{{latest.version}}<br>
-          <b>Released : </b>{{latest.date}}<br>
-          <b>Works with : </b><a href="https://www.nsnam.org/releases/">{{latest.require}}</a><br>
-          <b>Source : </b><a href="{{app.coderepo}}">Link</a><br>
-          <b>Bake : </b><a href="/media/{{latest.filename}}">bakeconf.xml</a><br>
-        </span>
+      <div class="col s12 m4 l3 center">
+        <div class="card-panel blue-grey lighten-3">
+          <a href="/app/download/{{app.id}}"><button class="btn center">
+            Download
+          </button>
+          </a>
+          <br>
+          <span class="black-text">
+            <br><b>Version : </b>{{latest.version}}<br>
+            <b>Released : </b>{{latest.date}}<br>
+            <b>Works with : </b><a href="https://www.nsnam.org/releases/">{{latest.require}}</a><br>
+            <b>Source : </b><a href="{{app.coderepo}}">Link</a><br>
+            <b>Bake : </b><a href="/media/{{latest.filename}}">bakeconf.xml</a><br>
+          </span>
+        </div>
       </div>
     </div>
   </div>
