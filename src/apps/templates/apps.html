@@ -7,9 +7,9 @@
 {% block container %}
 <!-- Benefits of the Django application -->
 <main>
- <div class="container">
+ <div class="container push">
    <div class="row">
-     <div class="col s3 offset-s1 collection blue-grey lighten-5">
+     <div class="col s12 m4 l3 collection blue-grey lighten-5">
         <h4 class="truncate"><b>Categories</b></h3>
           <a href="/app/tag/" class="collection-item white-text active">All Apps</a>
           {% for tag in tags %}
@@ -17,12 +17,12 @@
           {% endfor %}
           <br>
       </div>
-      <div class="col s7">
+      <div class="col s12 m8 l9">
         <div class="row push-left-extra">
           <h4 class="truncate"><b>All Apps</b></h4>
           <div class="row  blue-grey lighten-5">
             <div class="col s2">
-              <span><b><p class="center">Sort By :</p></b></span>
+              <span><b><p class="center">Sort By</p></b></span>
             </div>
             <div class="col s10">
               <ul class="tabs  blue-grey lighten-5">
@@ -43,7 +43,7 @@
                       </div>
                       <div class="col s10">
                         <span class="card-title push-left"><b>{{app.title}}</b></span>
-                        <p class="black-text push-left">{{app.abstract}}</p>
+                        <p class="black-text push-left truncate">{{app.abstract}}</p>
                       </div>
                     </div>
                   </div>
@@ -62,7 +62,7 @@
                       </div>
                       <div class="col s10">
                         <span class="card-title push-left"><b>{{app.title}}</b></span>
-                        <p class="black-text push-left">{{app.abstract}}</p>
+                        <p class="black-text push-left truncate">{{app.abstract}}</p>
                       </div>
                     </div>
                   </div>
@@ -75,13 +75,13 @@
               <div class="col s12 m6">
                 <a href="/app/{{app.id}}/">
                   <div class="card blue-grey lighten-5 hoverable card-height">
-                    <div class="card-content truncate">
+                    <div class="card-content">
                       <div class="col s2 hide-on-med-and-down">
                         <img src="/media/{{app.icon|default:'default_icon.png'}}" alt="" class="biggercircle">
                       </div>
                       <div class="col s10">
                         <span class="card-title push-left"><b>{{app.title}}</b></span>
-                        <p class="black-text push-left">{{app.abstract}}</p>
+                        <p class="black-text push-left truncate">{{app.abstract}}</p>
                       </div>
                     </div>
                   </div>

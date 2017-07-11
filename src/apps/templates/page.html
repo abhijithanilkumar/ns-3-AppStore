@@ -44,28 +44,30 @@
       </div>
     </div>
     <div class="row">
-      <div class="col s1 hide-on-med-and-down">
+      <div class="col s2 hide-on-med-and-down">
         <img src="/media/{{app.icon|default:'default_icon.png'}}" alt="" class="relativebiggercircle">
       </div>
-      <div class="col s9">
+      <div class="col s10">
         <h3><b>{{app.title}}</b></h3>
         <h6><b>{{app.abstract}}</b></h6>
+        <div class="row">
+          <div class="col s12 m3 l2">
+            <i class="tiny material-icons">star</i>
+            <i class="tiny material-icons">star</i>
+            <i class="tiny material-icons">star</i>
+            <i class="tiny material-icons">star</i>
+            <i class="tiny material-icons">star</i>
+          </div>
+          <div class="col s12 m3 l2">
+            <a class="push-slight-left waves-effect waves-light" href="#modal1">{{app.votes}} votes</a>
+          </div>
+        </div>
       </div>
       {% if user.is_staff or user in editors %}
       <div class="col s2">
         <a href="/backend/edit/{{app.id}}"><btn class="btn center">Edit Page</btn></a>
       </div>
       {% endif %}
-    </div>
-    <div class="row">
-      <div class="col s6 m6">
-        <i class="tiny material-icons">star</i>
-        <i class="tiny material-icons">star</i>
-        <i class="tiny material-icons">star</i>
-        <i class="tiny material-icons">star</i>
-        <i class="tiny material-icons">star</i>
-        <a class="push-left waves-effect waves-light" href="#modal1">{{app.votes}} votes</a>
-      </div>
     </div>
     <div class="row">
       {% for tag in tags %}
@@ -80,7 +82,7 @@
       </div>
     </div>
     <div class="row card-panel blue-grey lighten-5">
-      <div class="col s9 m12">
+      <div class="col s9 m12 l6">
         <ul class="tabs blue-grey lighten-5">
           <li class="tab col s4"><a class="active" href="#test1">Details</a></li>
           <li class="tab col s4"><a href="#test2">Release History</a></li>
@@ -152,7 +154,7 @@
         {% endif %}
       </div>
     </div>
-    <div class="col s3 center">
+    <div class="col s12 m12 l6 center">
       <div class="card-panel blue-grey lighten-3">
         <a href="/app/download/{{app.id}}"><button class="btn center">
           Download
