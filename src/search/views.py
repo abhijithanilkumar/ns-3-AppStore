@@ -20,10 +20,9 @@ def search(request):
     sqs_author = sqs_author.models(Author)
     sqs_app = sqs_app.filter(title__contains=query).filter(abstract__contains=query).filter(description__contains=query)
     sqs_app_name = sqs_app.order_by('title')
-    sqs_app_downloads = sqs_app.order_by('-downloads')
     sqs_app_new = sqs_app.order_by('-date')
     sqs_app_votes = sqs_app.order_by('-votes')
     sqs_tag = sqs_tag.filter(title__contains=query)
     sqs_author = sqs_author.filter(title__contains=query).filter(inst__contains=query)
     return render(request, 'search.html', {'tags':tags, 'sqs_app_name':sqs_app_name, 'sqs_tag':sqs_tag, 'sqs_author':sqs_author,
-        'sqs_app_downloads':sqs_app_downloads, 'sqs_app_votes':sqs_app_votes, 'sqs_app_new':sqs_app_new})
+        'sqs_app_votes':sqs_app_votes, 'sqs_app_new':sqs_app_new})

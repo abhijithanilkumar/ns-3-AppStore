@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+
+{% block title %}{{ block.super }}My App{% endblock %}
+
+{% block container %}
+<main>
+  <div class="container push">
+    <h3 class="center">Download Instructions</h3>
+    <br>
+    <div class="divider black"></div>
+    {% if bake %}
+      <h4>Using bakeconf.xml</h4>
+      <p>Download the <a href="/media/{{bake}}">bakeconf.xml</a> and build the module using bake.</p>
+      <div class="divider black"></div>
+    {% endif %}
+    {% if code %}
+      <h4>From Source</h4>
+      <p>Download the <a href="{{code}}">source code</a> and add it to either src/ or contrib/ folder. Then reconfigure ns-3 in the usual way.</p>
+      <div class="divider black"></div>
+    {% endif %}
+    {% if website %}
+      <h4>Visit the Website</h4>
+      <p>Follow the installation instruction in the <a href="{{website}}">website</a></p>
+      <div class="divider black"></div>
+    {% endif %}
+    {% if not bake and not code and not source %}
+      <p>Sorry the owner of this module has not posted any installation instructions.</p>
+    {% endif %}
+  </div>
+</main>
+{% endblock container %}

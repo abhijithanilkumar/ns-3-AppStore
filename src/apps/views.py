@@ -29,14 +29,17 @@ def appPage(request, num=0):
 def download(request, num):
     app = App.objects.get(id=num)
     releases = Release.objects.filter(app=app).order_by('-id')
+    bake = 0
+    code = 0
+    website = 0
     if releases:
         release = releases.latest('id')
-        url = release.url
-    elif app.coderepo:
-        url = app.coderepo
-    else:
-        url = '/app/'+num
-    return redirect(url)
+        bake = release.filename
+    if app.coderepo:
+        code = app.coderepo
+    if app.website:
+        website = app.website
+    return render(request, 'download.html', {'bake':bake, 'code':code, 'website':website})
 
 def tagSearch(request, num=0):
     if num:
