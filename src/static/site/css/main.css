@@ -161,16 +161,12 @@ body>.navbar-transparent {
     font-weight: bold;
 }
 
+*/
+
 .navbar-brand {
     font-size: 30px;
     font-weight: bold;
 }
-
-.navbar-brand > img {
-    float: left;
-    margin-right: 10px;
-}
-*/
 
 .btn {
     background-image: none;
