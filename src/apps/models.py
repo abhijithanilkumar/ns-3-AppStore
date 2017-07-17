@@ -52,6 +52,10 @@ class App(models.Model):
     def __str__(self):
         return self.title
 
+    @property
+    def stars_percentage(self):
+        return 100 * self.stars / self.votes / 5 if self.votes != 0 else 0
+
 class Release(models.Model):
     app = models.ForeignKey(App)
     version = models.CharField(max_length=31)

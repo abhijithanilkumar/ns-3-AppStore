@@ -7,7 +7,80 @@
 {% block container %}
 <!-- Benefits of the Django application -->
 <main>
- <div class="container push">
+  <div class="container">
+    <div class="row">
+      <div class="s6">
+      </div>
+      <div class="s2">
+      {% for app in new_releases %}
+        <div class="app_button">
+        <a href="">
+          <div class="partial">
+            <table border="0" width="100%">
+              <tr valign="top">
+                <td width="64" rowspan="2">
+                  <div class="app_icon">
+                    <img src="{{ app.icon_url }}"/>
+                  </div>
+                </td>
+                <td align="left">
+                  <h5>{{ app.title }}</h5>
+                </td>
+              </tr>
+              <tr valign="top">
+                <td valign="top">
+                  <div class="description">
+                    {% if app.abstract %}
+                      {{ app.abstract }}
+                    {% endif %}
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </div>
+
+          <div class="full">
+            <table border="0" width="100%">
+              <tr valign="top">
+                <td width="64" rowspan="2">
+                  <div class="app_icon">
+                    <img src="{{ app.icon_url }}"/>
+                  </div>
+                </td>
+                <td align="left">
+                  <h5>{{ app.title }}</h5>
+                </td>
+              </tr>
+              <tr valign="top">
+                <td>
+                  <div class="description">
+                    {% if app.abstract %}
+                      {{ app.abstract }}
+                    {% endif %}
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td></td>
+                <td valign="baseline">
+                  <div class="stars">
+                    <i class="stars-empty icon-cy-stars-empty"></i>
+                    <i class="stars-full icon-cy-stars-filled" style="width: {{ app.stars_percentage }}%"></i>
+                  </div>
+                  <span class="votes">
+                    ({{ app.votes }})
+                  </span>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+    </div>
+  </div>
+ <!--div class="container push">
    <div class="row">
      <div class="col s12 m4 l3 collection blue-grey lighten-5">
         <h4 class="truncate"><b>Categories</b></h3>
@@ -17,6 +90,7 @@
           {% endfor %}
           <br>
       </div>
+
       <div class="col s12 m8 l9">
         <div class="row push-left-extra">
           <h4 class="truncate"><b>New Releases</b></h3>
@@ -41,7 +115,7 @@
         </div>
       </div>
    </div>
- </div>
+ </div-->
 </main>
 {% endblock container %}
 
