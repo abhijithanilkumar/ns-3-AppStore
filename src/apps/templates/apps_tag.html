@@ -24,21 +24,18 @@
       <div class="col s12 m8 l9">
         <div class="row push-left-extra">
           <h4 class="truncate"><b>Apps with Tag : {{active_tag.name}}</b></h4>
-          <div class="row  blue-grey lighten-5">
-            <div class="col s2">
-              <span><b><p class="center">Sort By :</p></b></span>
+            <div class="row">
+              <div class="col s2 l2 m2">
+                <span><b><p class="center">Sort By</p></b></span>
+              </div>
+              <div class="col s10 l5 m10 blue-grey lighten-5">
+                <ul class="tabs  blue-grey lighten-5">
+                  <li class="tab"><a class="active" href="#test1">Name</a></li>
+                  <li class="tab"><a href="#test3">Votes</a></li>
+                  <li class="tab"><a href="#test4">Newest Release</a></li>
+                </ul>
+              </div>
             </div>
-            <div class="col s10 btn-group">
-              <button class="btn btn-small">Name</button>
-              <button class="btn btn-small">Name</button>
-              <button class="btn btn-small">Name</button>
-              <!--ul class="tabs  blue-grey lighten-5">
-                <li class="tab"><a class="active" href="#test1">Name</a></li>
-                <li class="tab"><a href="#test3">Votes</a></li>
-                <li class="tab"><a href="#test4">Newest Release</a></li>
-              </ul-->
-            </div>
-          </div>
           <div id="test1">
             {% for app in apps_name %}
               <div class="col s12 m6">
