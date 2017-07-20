@@ -1,4 +1,3 @@
-{% load url from future %}
 {% load static %}
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
@@ -17,7 +16,7 @@
 
   {% block more_head %}{% endblock %}
 
-  <title>Cytoscape App Store {% block title %}{% endblock %}</title>
+  <title>ns-3 App Store {% block title %}{% endblock %}</title>
 
   {# Google Analytics Snippet #}
   <script type="text/javascript">
@@ -42,15 +41,7 @@
         <a href="{% url 'default-page' %}"><img src="{% get_static_prefix %}common/img/logo.png"></a>
         <ul class="nav pull-right">
           {# Submit App menu #}
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Submit an App <b class="caret"></b></a>
-            <ul class="dropdown-menu">
-              <li><a href="{% url 'submit-app' %}">Submit a 3.0 App</a></li>
-              <li><a href="http://www.cytoscape.org/plugin_submit.html" target="_blank">Submit a 2.x Plugin</a></li>
-              <li class="divider"></li>
-              <li><a target="_blank" href="http://wiki.cytoscape.org/Cytoscape_3/AppDeveloper">Guide to 3.0 App Development</a></li>
-            </ul>
-          </li>
+            <a href="#">Submit an App <b class="caret"></b></a>
           {# Search field #}
           <li>
             <form action="{% url 'search' %}" method="get" class="navbar-search pull-right">
@@ -65,14 +56,14 @@
               </a>
               <ul class="dropdown-menu">
                 {% if user.is_staff %}
-                  <li><a href="{% url 'pending-apps' %}">Pending Apps</a></li>
-                  <li><a href="{% url 'cy2x-plugins' %}">2.x Plugins Management</a></li>
+                  <li><a href="">Pending Apps</a></li>
+                  <li><a href="">2.x Plugins Management</a></li>
                 {% endif %}
-                <li><a href="{% url 'logout' %}?next={{ request.get_full_path|escape }}">Sign out</a></li>
+                <li><a href="{% url 'accounts:logout' %}">Sign out</a></li>
               </ul>
             </li>
           {% else %}
-            <li {% ifequal navbar_selected 'signin' %}class="active"{% endifequal %}><a href="{% url 'login' %}?next={{ request.get_full_path|escape }}">Sign In</a></li>
+            <li {% ifequal navbar_selected 'signin' %}class="active"{% endifequal %}><a href="{% url 'accounts:login' %}">Sign In</a></li>
           {% endif %}
         </ul>
       </div>
