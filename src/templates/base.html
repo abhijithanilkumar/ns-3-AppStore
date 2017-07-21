@@ -38,13 +38,10 @@
   <div class="navbar navbar-inverse navbar-static-top">
     <div class="navbar-inner">
       <div class="container">
-        <a href="{% url 'default-page' %}"><img src="{% get_static_prefix %}common/img/logo.png"></a>
+        <a href=""><img src="{% get_static_prefix %}common/img/logo.png"></a>
         <ul class="nav pull-right">
-          {# Submit App menu #}
-            <a href="#">Submit an App <b class="caret"></b></a>
-          {# Search field #}
           <li>
-            <form action="{% url 'search' %}" method="get" class="navbar-search pull-right">
+            <form action="{% url 'search:searchpage' %}" method="get" class="navbar-search pull-right">
               <input type="text" name="q" value="{{ search_query }}" class="search-query" placeholder="Search the App Store">
             </form>
           </li>
@@ -81,15 +78,15 @@
     {# Footer #}
     <hr style="margin-top: 6em;">
     <footer style="text-align: center;">
-      {% ifnotequal footer_selected 'about' %}<a href="{% url 'about' %}">{% endifnotequal %}About{% ifnotequal footer_selected 'about' %}</a>{% endifnotequal %}
+      {% ifnotequal footer_selected 'about' %}<a href="">{% endifnotequal %}About{% ifnotequal footer_selected 'about' %}</a>{% endifnotequal %}
       &bull;
-      {% ifnotequal footer_selected 'contact' %}<a href="{% url 'contact' %}">{% endifnotequal %}Contact Us{% ifnotequal footer_selected 'contact' %}</a>{% endifnotequal %}
+      {% ifnotequal footer_selected 'contact' %}<a href="">{% endifnotequal %}Contact Us{% ifnotequal footer_selected 'contact' %}</a>{% endifnotequal %}
 
       <span class="footer-divider"></span>
 
-      <a href="{% url 'wall_of_apps' %}">Wall of Apps</a>
+      <a href="">Wall of Apps</a>
       &bull;
-      <a href="{% url 'all_stats' %}">All Stats</a>
+      <a href="">All Stats</a>
     </footer>
   </div>
 
