@@ -9,6 +9,19 @@ from forms import CommentForm
 
 # Create your views here.
 
+def findTags():
+    min_tag_count = 3
+    num_of_top_tags = 20
+    tag_cloud_max_font_size_em = 2.0
+    tag_cloud_min_font_size_em = 1.0
+    tag_cloud_delta_font_size_em = tag_cloud_max_font_size_em - tag_cloud_min_font_size_em
+
+
+    top_tags = Tag.objects.all()
+    not_top_tags = []
+
+    return top_tags, not_top_tags
+
 def appPage(request, num=0):
     app = get_object_or_404(App, id=num)
     app.description = markdownify(app.description)
@@ -23,8 +36,16 @@ def appPage(request, num=0):
         latest = []
     editors = app.editors.all()
     comments = Comment.objects.filter(app=app)
-    return render(request, 'page.html', {'app':app, 'editors':editors, 'tags':tags, 'releases':releases, 'authors':authors, 'latest':latest,
-                                         'comments':comments})
+    context = {
+        'app':app,
+        'editors':editors,
+        'tags':tags,
+        'releases':releases,
+        'authors':authors,
+        'latest':latest,
+        'comments':comments,
+    }
+    return render(request, 'page.html', context)
 
 def download(request, num):
     app = App.objects.get(id=num)
@@ -39,7 +60,12 @@ def download(request, num):
         code = app.coderepo
     if app.website:
         website = app.website
-    return render(request, 'download.html', {'bake':bake, 'code':code, 'website':website})
+    context = {
+        'bake':bake,
+        'code':code,
+        'website':website,
+    }
+    return render(request, 'download.html', context)
 
 def tagSearch(request, num=0):
     if num:

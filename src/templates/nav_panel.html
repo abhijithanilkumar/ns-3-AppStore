@@ -24,7 +24,7 @@
                 {% ifequal navbar_selected_link "all" %}
                   All Apps
                 {% else %}
-                  <a href="/apps/">All Apps</a>
+                  <a href="/app/tag/">All Apps</a>
                 {% endifequal %}
               </h4>
             </td>
@@ -47,9 +47,9 @@
         <ul class="nav nav-list" id="top-tags">
           {% for tag in top_tags %}
             <li {% ifequal tag.name selected_tag_name %} class="active" {% endifequal %}>
-            <a href="{% url 'tag_page' tag.name %}"><h5>
-              <span class="title">{{ tag.fullname }}</span>
-              <span class="count">({{ tag.count }})</span>
+            <a href=""><h5>
+              <span class="title">{{ tag.name }}</span>
+              <!--span class="count">({{ tag.count }})</span-->
             </h5></a></li>
           {% endfor %}
           <li class="divider"></li>
@@ -58,9 +58,9 @@
         <ul class="nav nav-list" id="not-top-tags">
           {% for tag in not_top_tags %}
             <li {% ifequal tag.name selected_tag_name %} class="active" {% endifequal %}>
-            <a href="{% url 'tag_page' tag.name %}"><h5>
-              <span class="title">{{ tag.fullname }}</span>
-              <span class="count">({{ tag.count }})</span>
+            <a href=""><h5>
+              <span class="title">{{ tag.name }}</span>
+              <!--span class="count">({{ tag.count }})</span-->
             </h5></a></li>
           {% endfor %}
         </ul>
