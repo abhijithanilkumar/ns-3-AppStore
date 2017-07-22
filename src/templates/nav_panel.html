@@ -47,7 +47,7 @@
         <ul class="nav nav-list" id="top-tags">
           {% for tag in top_tags %}
             <li {% ifequal tag.name selected_tag_name %} class="active" {% endifequal %}>
-            <a href=""><h5>
+            <a href="/app/tag/{{ tag.id }}"><h5>
               <span class="title">{{ tag.name }}</span>
               <!--span class="count">({{ tag.count }})</span-->
             </h5></a></li>
@@ -58,7 +58,7 @@
         <ul class="nav nav-list" id="not-top-tags">
           {% for tag in not_top_tags %}
             <li {% ifequal tag.name selected_tag_name %} class="active" {% endifequal %}>
-            <a href=""><h5>
+            <a href="/app/tag/{{ tag.id }}"><h5>
               <span class="title">{{ tag.name }}</span>
               <!--span class="count">({{ tag.count }})</span-->
             </h5></a></li>
@@ -68,7 +68,7 @@
 
       <div id="cy-tag-cloud">
         {% for tag in all_tags %}
-        <a {% ifequal tag.name selected_tag_name %} class="cy-tag-cloud-active" {% endifequal %} style="font-size: {{ tag.font_size_em }}em" href="{% url 'tag_page' tag.name %}">{{tag.fullname}}</a>
+        <a {% ifequal tag.name selected_tag_name %} class="cy-tag-cloud-active" {% endifequal %} style="font-size: {{ tag.font_size_em }}em" href="/app/tag/{{ tag.id }}">{{tag.name}}</a>
         {% endfor %}
       </div>
     </div>

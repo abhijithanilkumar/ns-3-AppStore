@@ -16,7 +16,6 @@ def findTags():
     tag_cloud_min_font_size_em = 1.0
     tag_cloud_delta_font_size_em = tag_cloud_max_font_size_em - tag_cloud_min_font_size_em
 
-
     top_tags = Tag.objects.all()
     not_top_tags = []
 
@@ -78,17 +77,26 @@ def tagSearch(request, num=0):
         apps_downloads = apps.order_by('-downloads')
         apps_new = apps.order_by('-latest_release_date')
         apps_votes = apps.order_by('-votes')
-        tags = Tag.objects.all()
-        return render(request, 'apps_tag.html', {'apps_name':apps_name, 'active_tag':active_tag,
-            'apps_downloads':apps_downloads, 'apps_new':apps_new, 'apps_votes':apps_votes, 'tags':tags})
+        top_tags, not_top_tags = findTags()
+        context = {
+            'top_tags':top_tags,
+            'not_top_tags':not_top_tags,
+            'tag':active_tag,
+            'selected_tag_name':active_tag.name,
+        }
+        return render(request, 'apps_tag.html', context)
     else:
         apps_name = App.objects.all().order_by('title')
         apps_downloads = App.objects.all().order_by('-downloads')
         apps_new = App.objects.all().order_by('-latest_release_date')
         apps_votes = App.objects.all().order_by('-votes')
-        tags = Tag.objects.all()
-        return render(request, 'apps.html', {'apps_name':apps_name,
-            'apps_downloads':apps_downloads, 'apps_new':apps_new, 'apps_votes':apps_votes, 'tags':tags})
+        top_tags, not_top_tags = findTags()
+        context = {
+            'top_tags':top_tags,
+            'not_top_tags':not_top_tags,
+            'navbar_selected_link':"all",
+        }
+        return render(request, 'apps.html', context)
 
 def authorSearch(request, num):
     try:

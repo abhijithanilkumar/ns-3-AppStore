@@ -1,105 +1,25 @@
-{% extends "base.html" %}
+{% extends "nav_panel.html" %}
 
-{% load staticfiles %}
+{% block title %}
+- {{ tag.name }} category
+{% endblock %}
 
-{% block title %}{{ block.super }}{{active_tag.name}}{% endblock %}
-
-{% block container %}
-<!-- Benefits of the Django application -->
-<main>
- <div class="container push">
-   <div class="row">
-     <div class="col s12 m4 l3 collection blue-grey lighten-5">
-        <h4 class="truncate"><b>Categories</b></h3>
-          <a href="/app/tag/" class="collection-item blue-grey lighten-5 blue-text">All Apps</a>
-          {% for tag in tags %}
-            {% if tag.id == active_tag.id %}
-              <a href="/app/tag/{{tag.id}}" class="collection-item white-text active">{{tag.name}}</a>
-            {% else %}
-              <a href="/app/tag/{{tag.id}}" class="collection-item blue-grey lighten-5 blue-text">{{tag.name}}</a>
-            {% endif %}
-          {% endfor %}
-          <br>
-      </div>
-      <div class="col s12 m8 l9">
-        <div class="row push-left-extra">
-          <h4 class="truncate"><b>Apps with Tag : {{active_tag.name}}</b></h4>
-            <div class="row">
-              <div class="col s2 l2 m2">
-                <span><b><p class="center">Sort By</p></b></span>
-              </div>
-              <div class="col s10 l5 m10 blue-grey lighten-5">
-                <ul class="tabs  blue-grey lighten-5">
-                  <li class="tab"><a class="active" href="#test1">Name</a></li>
-                  <li class="tab"><a href="#test3">Votes</a></li>
-                  <li class="tab"><a href="#test4">Newest Release</a></li>
-                </ul>
-              </div>
-            </div>
-          <div id="test1">
-            {% for app in apps_name %}
-              <div class="col s12 m6">
-                <a href="/app/{{app.id}}/">
-                  <div class="card blue-grey lighten-5 hoverable card-height">
-                    <div class="card-content truncate">
-                      <div class="col s2 hide-on-med-and-down">
-                        <img src="/media/{{app.icon|default:'default_icon.png'}}" alt="" class="biggercircle">
-                      </div>
-                      <div class="col s10">
-                        <span class="card-title push-left"><b>{{app.title}}</b></span>
-                        <p class="black-text push-left truncate">{{app.abstract}}</p>
-                      </div>
-                    </div>
-                  </div>
-                </a>
-              </div>
-            {% endfor %}
-          </div>
-          <div id="test3">
-            {% for app in apps_votes %}
-              <div class="col s12 m6">
-                <a href="/app/{{app.id}}/">
-                  <div class="card blue-grey lighten-5 hoverable card-height">
-                    <div class="card-content truncate">
-                      <div class="col s2 hide-on-med-and-down">
-                        <img src="/media/{{app.icon|default:'default_icon.png'}}" alt="" class="biggercircle">
-                      </div>
-                      <div class="col s10">
-                        <span class="card-title push-left"><b>{{app.title}}</b></span>
-                        <p class="black-text push-left truncate">{{app.abstract}}</p>
-                      </div>
-                    </div>
-                  </div>
-                </a>
-              </div>
-            {% endfor %}
-          </div>
-          <div id="test4">
-            {% for app in apps_new %}
-              <div class="col s12 m6">
-                <a href="/app/{{app.id}}/">
-                  <div class="card blue-grey lighten-5 hoverable card-height">
-                    <div class="card-content truncate">
-                      <div class="col s2 hide-on-med-and-down">
-                        <img src="/media/{{app.icon|default:'default_icon.png'}}" alt="" class="biggercircle">
-                      </div>
-                      <div class="col s10">
-                        <span class="card-title push-left"><b>{{app.title}}</b></span>
-                        <p class="black-text push-left truncate">{{app.abstract}}</p>
-                      </div>
-                    </div>
-                  </div>
-                </a>
-              </div>
-            {% endfor %}
-          </div>
-        </div>
-      </div>
-   </div>
- </div>
-</main>
-{% endblock container %}
-
-{% block scripts %}
-<script src="{% static 'site/js/site.js' %}"></script>
-{% endblock scripts %}
+{% block main %}
+  <div class="row" style="margin-bottom: 2em;">
+    <div class="span12">
+      <h1>{{ tag.name|capfirst }}</h1>
+      <p>
+      <a href='"{{ tag.name }}"' target="_blank">
+        <i class="icon-comment"></i>
+        Search for posts about {{ tag.name }} &rarr;
+      </a>
+      </p>
+      <p>
+      <a href="" target="_blank">
+        <i class="icon-question-sign"></i>
+        Ask a question about {{ tag.name }} &rarr;
+      </a>
+      </p>
+    </div>
+  </div>
+{% endblock %}
