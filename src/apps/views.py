@@ -73,12 +73,9 @@ def tagSearch(request, num=0):
             active_tag = Tag.objects.get(id=num)
         except:
             return render(request, 'home.html')
-        apps_name = apps.order_by('title')
-        apps_downloads = apps.order_by('-downloads')
-        apps_new = apps.order_by('-latest_release_date')
-        apps_votes = apps.order_by('-votes')
         top_tags, not_top_tags = findTags()
         context = {
+            'apps':apps,
             'top_tags':top_tags,
             'not_top_tags':not_top_tags,
             'tag':active_tag,
@@ -86,12 +83,10 @@ def tagSearch(request, num=0):
         }
         return render(request, 'apps_tag.html', context)
     else:
-        apps_name = App.objects.all().order_by('title')
-        apps_downloads = App.objects.all().order_by('-downloads')
-        apps_new = App.objects.all().order_by('-latest_release_date')
-        apps_votes = App.objects.all().order_by('-votes')
+        apps = App.objects.all().order_by('title')
         top_tags, not_top_tags = findTags()
         context = {
+            'apps':apps,
             'top_tags':top_tags,
             'not_top_tags':not_top_tags,
             'navbar_selected_link':"all",

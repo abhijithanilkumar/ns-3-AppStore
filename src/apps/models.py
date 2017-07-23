@@ -48,6 +48,7 @@ class App(models.Model):
     stars = models.PositiveIntegerField(default=0)
     votes = models.PositiveIntegerField(default=0)
     downloads = models.PositiveIntegerField(default=0)
+    has_releases = models.BooleanField(default=False)
 
     def __str__(self):
         return self.title
@@ -55,6 +56,10 @@ class App(models.Model):
     @property
     def stars_percentage(self):
         return 100 * self.stars / self.votes / 5 if self.votes != 0 else 0
+
+    def update_has_releases(self):
+        self.has_releases = (Release.objects.filter(app=self).count > 0)
+        self.save()
 
 class Release(models.Model):
     app = models.ForeignKey(App)

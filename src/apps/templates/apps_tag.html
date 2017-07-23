@@ -1,4 +1,5 @@
 {% extends "nav_panel.html" %}
+{% load app_buttons %}
 
 {% block title %}
 - {{ tag.name }} category
@@ -22,4 +23,5 @@
       </p>
     </div>
   </div>
+  {% list_of_apps apps %}
 {% endblock %}

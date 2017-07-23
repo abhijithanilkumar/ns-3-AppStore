@@ -1,4 +1,5 @@
 {% extends "nav_panel.html" %}
+{% load app_buttons %}
 
 {% block main %}
   <style type="text/css">
@@ -11,148 +12,20 @@
       <a href="https://github.com/abhijithanilkumar/ns-3-AppStore/wiki" class="btn btn-warning">Get Started with the App Store &raquo;</a>
     </div>
   </div>
+  <div class="row">{% app_buttons new_releases %}</div>
   <div class="row">
-    <div class="span4" id="left">
-    {% for app in new_releases %}
-      {% if not forloop.counter|divisibleby:2 %}
-        <div class="app_button">
-          <a href="/app/{{app.id}}">
-            <div class="partial">
-              <table border="0" width="100%">
-                <tr valign="top">
-                  <td width="64" rowspan="2">
-                    <div class="app_icon">
-                      <img src="/media/{{ app.icon }}"/>
-                    </div>
-                  </td>
-                  <td align="left">
-                    <h5>{{ app.title }}</h5>
-                  </td>
-                </tr>
-                <tr valign="top">
-                  <td valign="top">
-                    <div class="description">
-                      {% if app.abstract %}
-                        {{ app.abstract }}
-                      {% endif %}
-                    </div>
-                  </td>
-                </tr>
-              </table>
-            </div>
-
-            <div class="full">
-              <table border="0" width="100%">
-                <tr valign="top">
-                  <td width="64" rowspan="2">
-                    <div class="app_icon">
-                      <img src="/media/{{ app.icon }}"/>
-                    </div>
-                  </td>
-                  <td align="left">
-                    <h5>{{ app.title }}</h5>
-                  </td>
-                </tr>
-                <tr valign="top">
-                  <td>
-                    <div class="description">
-                      {% if app.abstract %}
-                        {{ app.abstract }}
-                      {% endif %}
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td></td>
-                  <td valign="baseline">
-                    <div class="stars">
-                      <i class="stars-empty icon-cy-stars-empty"></i>
-                      <i class="stars-full icon-cy-stars-filled" style="width: {{ app.stars_percentage }}%"></i>
-                    </div>
-                    <span class="votes">
-                    ({{ app.votes }})
-                    </span>
-                  </td>
-                </tr>
-              </table>
-            </div>
-          </a>
-        </div>
-      {% endif %}
-    {% endfor %}
-    </div>
-    <div class="span4" id="right">
-    {% for app in new_releases %}
-      {% if forloop.counter|divisibleby:2 %}
-        <div class="app_button">
-          <a href="/app/{{app.id}}">
-            <div class="partial">
-              <table border="0" width="100%">
-                <tr valign="top">
-                  <td width="64" rowspan="2">
-                    <div class="app_icon">
-                      <img src="/media/{{ app.icon }}"/>
-                    </div>
-                  </td>
-                  <td align="left">
-                    <h5>{{ app.title }}</h5>
-                  </td>
-                </tr>
-                <tr valign="top">
-                  <td valign="top">
-                    <div class="description">
-                      {% if app.abstract %}
-                        {{ app.abstract }}
-                      {% endif %}
-                    </div>
-                  </td>
-                </tr>
-              </table>
-            </div>
-
-            <div class="full">
-              <table border="0" width="100%">
-                <tr valign="top">
-                  <td width="64" rowspan="2">
-                    <div class="app_icon">
-                      <img src="/media/{{ app.icon }}"/>
-                    </div>
-                  </td>
-                  <td align="left">
-                    <h5>{{ app.title }}</h5>
-                  </td>
-                </tr>
-                <tr valign="top">
-                  <td>
-                    <div class="description">
-                      {% if app.abstract %}
-                        {{ app.abstract }}
-                      {% endif %}
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td></td>
-                  <td valign="baseline">
-                    <div class="stars">
-                      <i class="stars-empty icon-cy-stars-empty"></i>
-                      <i class="stars-full icon-cy-stars-filled" style="width: {{ app.stars_percentage }}%"></i>
-                    </div>
-                    <span class="votes">
-                    ({{ app.votes }})
-                    </span>
-                  </td>
-                </tr>
-              </table>
-            </div>
-          </a>
-        </div>
-      {% endif %}
-    {% endfor %}
+    <div class="span8" style="text-align: right;">
+      <a href="/app/tag/#newest release">more newest releases &raquo;</a>
     </div>
   </div>
-  {% for app in new_releases %}
 
-  {% endfor %}
-<a style="display: none;" href="/media/fu.txt">fu skript kiddiez</a>
+  <!--div class="row"><div class="span8"><h2>Top Downloaded Apps</h2></div></div>
+  <div class="row">{% app_buttons downloaded_apps %}</div>
+  <div class="row">
+    <div class="span8" style="text-align: right;">
+      <a href="">more top downloads &raquo;</a>
+    </div>
+  </div-->
+
+  <a style="display: none;" href="/media/fu.txt">fu skript kiddiez</a>
 {% endblock %}

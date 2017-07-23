@@ -1,0 +1,76 @@
+{% load static %}
+
+<div class="app_button"
+  order_index="{{ order_index }}"
+  fullname="{{ app.title }}"
+  votes="{{ app.votes }}"
+  downloads="{{ app.downloads }}"
+  latest_release_date="{{ app.latest_release_date.isoformat }}"
+  onClick="window.location='';">
+
+  {% if app.has_releases %}
+    <i class="cy3-sticker" style="background-image: url('{% get_static_prefix %}apps/img/cy3_sticker.png');"></i>
+  {% endif %}
+
+  <a href="">
+    <div class="partial">
+      <table border="0" width="100%">
+        <tr valign="top">
+          <td width="64" rowspan="2">
+            <div class="app_icon">
+              <img src="/media/{{ app.icon }}"/>
+            </div>
+          </td>
+          <td align="left">
+            <h5>{{ app.title }}</h5>
+          </td>
+        </tr>
+        <tr valign="top">
+          <td valign="top">
+            <div class="description">
+              {% if app.abstract %}
+                {{ app.abstract }}
+              {% endif %}
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="full">
+      <table border="0" width="100%">
+        <tr valign="top">
+          <td width="64" rowspan="2">
+            <div class="app_icon">
+              <img src="/media/{{ app.icon }}"/>
+            </div>
+          </td>
+          <td align="left">
+            <h5>{{ app.title }}</h5>
+          </td>
+        </tr>
+        <tr valign="top">
+          <td>
+            <div class="description">
+              {% if app.abstract %}
+                {{ app.abstract }}
+              {% endif %}
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td></td>
+          <td valign="baseline">
+            <div class="stars">
+              <i class="stars-empty icon-cy-stars-empty"></i>
+              <i class="stars-full icon-cy-stars-filled" style="width: {{ app.stars_percentage }}%"></i>
+            </div>
+            <span class="votes">
+              ({{ app.votes }})
+            </span>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </a>
+</div>
