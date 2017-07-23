@@ -100,12 +100,14 @@ def authorSearch(request, num):
     except:
         return render(request, 'home.html')
     apps_name = apps.order_by('title')
-    apps_downloads = apps.order_by('-downloads')
-    apps_new = apps.order_by('-latest_release_date')
-    apps_votes = apps.order_by('-votes')
-    tags = Tag.objects.all()
-    return render(request, 'apps_author.html', {'apps_name':apps_name, 'active_author':active_author,
-        'apps_downloads':apps_downloads, 'apps_new':apps_new, 'apps_votes':apps_votes, 'tags':tags})
+    top_tags, not_top_tags = findTags()
+    context = {
+        'apps':apps,
+        'top_tags':top_tags,
+        'not_top_tags':not_top_tags,
+        'author_name':active_author.name,
+    }
+    return render(request, 'apps_author.html', context)
 
 @login_required
 def feedback(request, num):

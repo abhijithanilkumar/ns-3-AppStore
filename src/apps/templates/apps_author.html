@@ -1,101 +1,33 @@
 {% extends "base.html" %}
+{% load app_buttons %}
+{% load static %}
 
-{% load staticfiles %}
+{% block title %}
+- {{ author_name }}
+{% endblock %}
 
-{% block title %}{{ block.super }}{{active_tag.name}}{% endblock %}
+{% block more_head %}
+  <link rel="stylesheet" type="text/css" media="all" href="{% get_static_prefix %}apps/css/nav_panel.css"/>
+  <link rel="stylesheet" type="text/css" media="all" href="{% get_static_prefix %}apps/css/app_button.css"/>
+  <link rel="stylesheet" type="text/css" media="all" href="{% get_static_prefix %}apps/css/app_stars.css"/>
+{% endblock %}
 
-{% block container %}
-<!-- Benefits of the Django application -->
-<main>
- <div class="container push">
-   <div class="row">
-     <div class="col s12 m4 l3 collection blue-grey lighten-5">
-        <h4 class="truncate"><b>Categories</b></h3>
-          <a href="/app/tag/" class="collection-item blue-grey lighten-5 blue-text">All Apps</a>
-          {% for tag in tags %}
-            <a href="#!" class="collection-item blue-grey lighten-5 blue-text">{{tag.name}}</a>
-          {% endfor %}
-          <br>
-      </div>
-      <div class="col s12 m8 l9">
-        <div class="row push-left-extra">
-          <h4 class="truncate"><b>Apps with Author : {{active_author.name}}</b></h4>
-          <div class="row blue-grey lighten-5">
-            <div class="col s2">
-              <span><b><p class="center">Sort By</p></b></span>
+{% block content %}
+    <div class="row">
+        <div class="span8">
+            <div class="page-header">
+                <h1>{{ author_name }}</h1>
             </div>
-            <div class="col s10">
-              <ul class="tabs blue-grey lighten-5">
-                <li class="tab"><a class="active" href="#test1">Name</a></li>
-                <li class="tab"><a href="#test3">Votes</a></li>
-                <li class="tab"><a href="#test4">Newest Release</a></li>
-              </ul>
-            </div>
-          </div>
-          <div id="test1">
-            {% for app in apps_name %}
-              <div class="col s12 m6">
-                <a href="/app/{{app.id}}/">
-                  <div class="card blue-grey lighten-5 hoverable card-height">
-                    <div class="card-content truncate">
-                      <div class="col s2 hide-on-med-and-down">
-                        <img src="/media/{{app.icon|default:'default_icon.png'}}" alt="" class="biggercircle">
-                      </div>
-                      <div class="col s10">
-                        <span class="card-title push-left"><b>{{app.title}}</b></span>
-                        <p class="black-text push-left truncate">{{app.abstract}}</p>
-                      </div>
-                    </div>
-                  </div>
-                </a>
-              </div>
-            {% endfor %}
-          </div>
-          <div id="test3">
-            {% for app in apps_votes %}
-              <div class="col s12 m6">
-                <a href="/app/{{app.id}}/">
-                  <div class="card blue-grey lighten-5 hoverable card-height">
-                    <div class="card-content truncate">
-                      <div class="col s2 hide-on-med-and-down">
-                        <img src="/media/{{app.icon|default:'default_icon.png'}}" alt="" class="biggercircle">
-                      </div>
-                      <div class="col s10">
-                        <span class="card-title push-left"><b>{{app.title}}</b></span>
-                        <p class="black-text push-left truncate">{{app.abstract}}</p>
-                      </div>
-                    </div>
-                  </div>
-                </a>
-              </div>
-            {% endfor %}
-          </div>
-          <div id="test4">
-            {% for app in apps_new %}
-              <div class="col s12 m6">
-                <a href="/app/{{app.id}}/">
-                  <div class="card blue-grey lighten-5 hoverable card-height">
-                    <div class="card-content truncate">
-                      <div class="col s2 hide-on-med-and-down">
-                        <img src="/media/{{app.icon|default:'default_icon.png'}}" alt="" class="biggercircle">
-                      </div>
-                      <div class="col s10">
-                        <span class="card-title push-left"><b>{{app.title}}</b></span>
-                        <p class="black-text push-left truncate">{{app.abstract}}</p>
-                      </div>
-                    </div>
-                  </div>
-                </a>
-              </div>
-            {% endfor %}
-          </div>
         </div>
-      </div>
-   </div>
- </div>
-</main>
-{% endblock container %}
-
-{% block scripts %}
-<script src="{% static 'site/js/site.js' %}"></script>
-{% endblock scripts %}
+    </div>
+    <div class="row">
+        <div class="span8">
+            <h2 style="margin-bottom: 1em;">Apps</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="span12">
+            {% app_buttons apps %}
+        </div>
+    </div>
+{% endblock %}
