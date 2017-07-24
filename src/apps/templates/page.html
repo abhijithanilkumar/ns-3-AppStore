@@ -130,12 +130,12 @@
 			{# Details tab #}
 			<div class="tab-pane active" id="cy-app-details-tab">
 				{# Categories #}
-				{% if app.tags.all %}
+				{% if tags %}
 				<div class="row">
 					<div class="span8">
 						Categories:
-						{% for tag in app.tags.all %}
-						<a class="link" href="{% url 'tag_page' tag.name %}">{{ tag.fullname }}</a>{% if not forloop.last %}, {% endif %}
+						{% for tag in tags %}
+						<a class="link" href="/app/tag/{{ tag.id }}">{{ tag.name }}</a>{% if not forloop.last %}, {% endif %}
 						{% endfor %}
 					</div>
 				</div>
@@ -165,14 +165,14 @@
 				{# End Details #}
 
 				{# Authors #}
-				{% if app.authors.all %}
+				{% if authors %}
 				<div class="row">
 					<div class="span8">
 						Authors:
 						<ul>
-							{% for author in app.ordered_authors %}
+							{% for author in authors %}
 							<li>
-								<a href="{% url 'author_page' author.name %}">
+								<a href="/tag/author/{{ author.id }}">
 									{{ author.name }} {% if author.institution %} ({{ author.institution }}){% endif %}
 								</a>
 							</li>
@@ -188,7 +188,7 @@
 			{# Releases tab #}
 			{% if app.has_releases %}
 			<div class="tab-pane" id="cy-app-releases-tab">
-				{% for release in app.releases %}
+				{% for release in releases %}
 				<div class="row">
 					<div class="span8">
 						{# Release version #}
@@ -202,8 +202,8 @@
 
 						{# Works with #}
 						<p>
-							<strong>Works with</strong> Cytoscape
-							{{ release.works_with }}
+							<strong>Works with</strong> ns-
+							{{ release.require }}
 						</p>
 						{# End Works with #}
 
