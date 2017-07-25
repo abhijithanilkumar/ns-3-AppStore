@@ -40,7 +40,7 @@
 	</div>
 
 	{# Editor menu #}
-	{% if is_editor %}
+	{% if user.is_staff or user in editors %}
 	<div class="span3 offset1">
 		<div class="btn-group pull-right">
 			<a class="btn btn-warning dropdown-toggle" data-toggle="dropdown" href="#">
@@ -49,8 +49,8 @@
 				<span class="caret"></span>
 			</a>
 			<ul class="dropdown-menu pull-right">
-				<li><a href="{% url 'app_page_edit' app.name %}">Edit this page</a></li>
-				<li><a href="{% url 'submit-app' %}?expect_app_name={{ app.fullname }}">Submit a 3.0 app release</a></li>
+				<li><a href="">Edit this page</a></li>
+				<li><a href="">Submit a 3.0 app release</a></li>
 				<li class="divider"></li>
 				<li><a data-toggle="modal" href="#delete_ratings_modal">Delete all ratings</a></li>
 			</ul>
@@ -74,26 +74,26 @@
 		{# End Ratings #}
 
 		{# Downloads #}
-		{% if app.has_releases %}
-		<span class="app-usage-info-divider"></span>
-		<a href="{% url 'app_stats' app.name %}" target="_blank">
+		{#% if app.has_releases %#}
+		<!--span class="app-usage-info-divider"></span>
+		<a href="" target="_blank">
 			{{ app.downloads }} downloads
-		</a>
-		{% endif %}
+		</a-->
+		{#% endif %#}
 		{# End Downloads #}
 
 		<span class="app-usage-info-divider"></span>
 
 		{# badges #}
-		{% if app.has_releases %}
-		<img src="{% get_static_prefix %}apps/img/cy3_sticker.png" class="has-tooltip" data-toggle="tooltip" data-title="This app is available for Cytoscape 3.0 and above.">
-		{% endif %}
+		{#% if app.has_releases %#}
+		<!--img src="{% get_static_prefix %}apps/img/cy3_sticker.png" class="has-tooltip" data-toggle="tooltip" data-title="This app is available for Cytoscape 3.0 and above."-->
+		{#% endif %#}
 
-		{% if app.competition_winner_dec_2012 %}
-		<a href="http://nrnb.org/competitions.html" target="_blank">
+		{#% if app.competition_winner_dec_2012 %#}
+		<!--a href="http://nrnb.org/competitions.html" target="_blank">
 			<img src="{% get_static_prefix %}apps/img/trophy.png" class="has-tooltip" data-toggle="tooltip" data-title="This app won the December 2012 App Competition.">
-		</a>
-		{% endif %}
+		</a-->
+		{#% endif %#}
 
 		{% if app.coderepo %}
 		<a href="{{ app.coderepo }}" target="_blank">
@@ -252,46 +252,25 @@
 	{# Right-hand panels #}
 	<div class="span3 offset1">
 
-		{# 3.0 download panel #}
+		{# Download panel #}
 		{% if app.has_releases %}
 		<div class="well">
-			<h6 class="panel-title muted">CYTOSCAPE 3</h6>
+			<h6 class="panel-title muted">ns-3</h6>
 			<button class="btn btn-large btn-block" id="cy-app-install-btn">
 				<i></i> {# <-- download button icon will go here #}
 				<h4></h4> {# <-- download button text will go here #}
 			</button>
-			<p><strong>Version</strong> {{ cy3_latest_release.version }}</p>
+			<p><strong>Version</strong> {{ latest.version }}</p>
 			{% if app.license_text %}<p><strong>License</strong> <a href="{{ app.license_text }}" target="_blank">Click here</a></p>{% endif %}
-			<p><strong>Released</strong> {{ cy3_latest_release.created|date:'j M Y' }}</p>
-			<p><strong>Works with</strong> <a href="http://www.cytoscape.org" target="_blank">Cytoscape {{ cy3_latest_release.works_with }}</a></p>
-			<p><strong>Download Stats</strong> <a href="{% url 'app_stats' app.name %}" target="_blank">Click here</a>
+			<p><strong>Released</strong> {{ latest.date }}</p>
+			<p><strong>Works with</strong> <a href="https://www.nsnam.org/" target="_blank">ns-3 {{ latest.require }}</a></p>
+			{% if latest.filename %}<p><strong>Bake</strong> <a href="/media/{{ latest.filename }}" target="_blank">bakeconf.xml</a>{% endif %}
 		</div>
 		{% endif %}
-		{# end 3.0 download panel #}
-
-		{# 2.x download panel #}
-		{% if app.cy_2x_plugin_download %}
-		<div class="well">
-			<h6 class="panel-title muted">CYTOSCAPE 2</h6>
-			{% if app.has_releases %}
-			<p><strong>Version</strong> <a class="cy-app-2x-download-popover" href="{{ app.cy_2x_plugin_download }}">{{ app.cy_2x_plugin_version }}</a></p>
-			{% else %}
-			<button class="btn btn-large btn-primary btn-block cy-app-2x-download-popover" id="cy-app-install-btn" onClick="window.location.href='{{ app.cy_2x_plugin_download|escapejs }}'" >
-				<i class="icon-cy-install-download"></i>
-				<h4>Download</h4>
-			</button>
-			<p><strong>Version</strong> {{ app.cy_2x_plugin_version }}</p>
-			{% if app.license_text %}<p><strong>License</strong> <a href="{{ app.license_text }}" target="_blank">Click here</a></p>{% endif %}
-			{% endif %}
-			{% if app.cy_2x_plugin_release_date %}<p><strong>Released</strong> {{ app.cy_2x_plugin_release_date|date:'j M Y' }}</p>{% endif %}
-			{% if app.cy_2x_versions %}<p><strong>Works with</strong> <a href="http://www.cytoscape.org" target="_blank">Cytoscape {{ app.cy_2x_versions }}</a></p>{% endif %}
-			<p><strong>Download Stats</strong> <a href="http://chianti.ucsd.edu/cyto_web/plugins/plugindownloadstatistics.php">Click here</a></p>
-		</div>
-		{% endif %}
-		{# end 2.x download panel #}
+		{# end Download panel #}
 
 		{# in case there are no downloads... #}
-		{% if not app.has_releases and not app.cy_2x_plugin_download %}
+		{% if not app.has_releases %}
 		<div class="alert alert-error">
 			No download available.
 		</div>
@@ -304,12 +283,12 @@
 				<li class="nav-header">
 					Resources
 				</li>
-				<li><a href="https://groups.google.com/forum/?fromgroups#!newtopic/cytoscape-helpdesk" target="_blank">
+				<li><a href="" target="_blank">
 					<i class="icon-question-sign"></i>
 					Ask a question
 				</a></li>
 
-				<li><a href="https://groups.google.com/forum/?fromgroups#!searchin/cytoscape-helpdesk/{{ app.fullname }}" target="_blank">
+				<li><a href="" target="_blank">
 					<i class="icon-comment"></i>
 					Search posts
 				</a></li>

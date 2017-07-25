@@ -30,11 +30,13 @@ def appPage(request, num=0):
         release.notes = markdownify(release.notes)
     authors = app.authors.all()
     if releases:
-        latest = releases.latest('id')
+        latest = releases.latest('date')
     else:
         latest = []
     editors = app.editors.all()
     comments = Comment.objects.filter(app=app)
+    go_back_to_url = "/"
+    go_back_to_title = "home"
     context = {
         'app':app,
         'editors':editors,
@@ -42,7 +44,9 @@ def appPage(request, num=0):
         'releases':releases,
         'authors':authors,
         'latest':latest,
-        'comments':comments,
+        #'comments':comments,
+        'go_back_to_url':go_back_to_url,
+        'go_back_to_title':go_back_to_title,
     }
     return render(request, 'page.html', context)
 
@@ -53,7 +57,7 @@ def download(request, num):
     code = 0
     website = 0
     if releases:
-        release = releases.latest('id')
+        release = releases.latest('date')
         bake = release.filename
     if app.coderepo:
         code = app.coderepo

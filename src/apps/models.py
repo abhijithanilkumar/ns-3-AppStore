@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 from django.conf import settings
 from django.db import models
 from markdownx.models import MarkdownxField
-import datetime
+from datetime import datetime
 
 # Create your models here.
 
@@ -44,6 +44,7 @@ class App(models.Model):
     website = models.URLField(blank=True, null=True)
     tutorial = models.URLField(blank=True, null=True)
     coderepo = models.URLField(blank=True, null=True)
+    license_text = models.URLField(blank=True, null=True)
     contact = models.EmailField(blank=True, null=True)
     stars = models.PositiveIntegerField(default=0)
     votes = models.PositiveIntegerField(default=0)
@@ -61,11 +62,14 @@ class App(models.Model):
         self.has_releases = (Release.objects.filter(app=self).count > 0)
         self.save()
 
+    def update_latest_release_date(self):
+        self.latest_release_date = (Release.objects.filter(app=self).latest('date')).date
+
 class Release(models.Model):
     app = models.ForeignKey(App)
     version = models.CharField(max_length=31)
     require = models.ForeignKey(NsRelease)
-    date = models.DateField(auto_now_add=True)
+    date = models.DateField(default=datetime.now, blank=True)
     notes = MarkdownxField()
     dependencies = models.ManyToManyField('self', related_name='dependents', symmetrical='False', blank=True, null=True)
     filename = models.FileField(upload_to='release_files/%Y-%m-%d/', blank=True, null=True)
