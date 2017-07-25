@@ -193,7 +193,7 @@
 					<div class="span8">
 						{# Release version #}
 						<h4>
-							<a href="{% url 'release_download' app.name release.version %}">
+							<a href="{{ release.url }}">
 								{{ release.version }}
 							</a>
 							<small><abbr class="timeago" title="{{ release.created_iso }}"></abbr></small>
@@ -202,7 +202,7 @@
 
 						{# Works with #}
 						<p>
-							<strong>Works with</strong> ns-
+							<strong>Works with</strong>
 							{{ release.require }}
 						</p>
 						{# End Works with #}
@@ -263,7 +263,7 @@
 			<p><strong>Version</strong> {{ latest.version }}</p>
 			{% if app.license_text %}<p><strong>License</strong> <a href="{{ app.license_text }}" target="_blank">Click here</a></p>{% endif %}
 			<p><strong>Released</strong> {{ latest.date }}</p>
-			<p><strong>Works with</strong> <a href="https://www.nsnam.org/" target="_blank">ns-3 {{ latest.require }}</a></p>
+			<p><strong>Works with</strong> <a href="https://www.nsnam.org/" target="_blank">{{ latest.require }}</a></p>
 			{% if latest.filename %}<p><strong>Bake</strong> <a href="/media/{{ latest.filename }}" target="_blank">bakeconf.xml</a>{% endif %}
 		</div>
 		{% endif %}
@@ -388,9 +388,8 @@ $('.has-tooltip').tooltip();
 {% if app.has_releases %}
 AppPage.setup_install("{{ app.name|escapejs }}",
 	"{{ app.fullname|escapejs }}",
-	"{% url 'release_download' app.name cy3_latest_release.version %}",
-	"{{ cy3_latest_release.version }}",
-	"{% url 'getstarted_app_install' %}");
+	"{{ latest.version }}",
+	"");
 {% endif %}
 AppPage.setup_cy_2x_download_popover('{% get_static_prefix %}apps/img/plugins_dir.png');
 

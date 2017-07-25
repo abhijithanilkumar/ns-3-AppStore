@@ -13,7 +13,7 @@ var AppPage = (function($) {
 			 'success': function() { callback(true); },
 			 'error': function() { callback(false); }});
 	}
-	
+
 	function get_app_status(fullname, callback) {
 		$.getJSON(AppManagerURL + 'status/' + fullname,
 			{},
@@ -133,7 +133,7 @@ var AppPage = (function($) {
 					}
 				});
 			} else {
-				CyMsgs.add_msg('Want an easier way to install apps? <a href="' + install_app_help_url + '" target="_blank">Click here</a> to learn how!', 'info');
+				//CyMsgs.add_msg('Want an easier way to install apps? <a href="' + install_app_help_url + '" target="_blank">Click here</a> to learn how!', 'info');
 			}
 		});
 	}
@@ -147,13 +147,13 @@ var AppPage = (function($) {
             'trigger': 'hover',
 		});
 	}
-	
+
     /*
      ================================================================
        Stars
      ================================================================
     */
-    
+
     function rating_to_width_percent(rating) {
         return Math.ceil(100 * rating / 5);
     }
@@ -223,27 +223,27 @@ var AppPage = (function($) {
     function setup_details() {
         MarkdownUtil.format($('#cy-app-details-md'));
     }
-    
+
     /*
      ================================================================
        Release Notes
      ================================================================
     */
-    
+
     function setup_release_notes() {
         $('.cy-app-release-notes').each(function() {
             MarkdownUtil.format($(this));
         });
-        
+
         $('.timeago').timeago();
     }
-    
+
     /*
      ================================================================
        Init
      ================================================================
     */
-    
+
     return {
 	'setup_install': setup_install,
 	'setup_cy_2x_download_popover': setup_cy_2x_download_popover,
