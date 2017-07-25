@@ -1,15 +1,13 @@
 {% extends "backend_base.html" %}
 
-{% load material_form %}
 
-{% block title %}{{ block.super }}Edit App{% endblock %}
+{% block title %}{{ block.super }}Sign Up{% endblock %}
 
-{% block form_heading %}Edit an Existing App Page{% endblock %}
+{% block form_heading %}Edit App{% endblock %}
 
 {% block form %}
   <form method="POST" enctype="multipart/form-data">
-      {% csrf_token %}
-      {% form form=form %}{% endform %}
+      {{ form }}
       <button type="submit" name="_submit" class="btn">Submit</button>
   </form>
 {% endblock form %}

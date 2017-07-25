@@ -21,8 +21,8 @@ def findTags():
 
     return top_tags, not_top_tags
 
-def appPage(request, num=0):
-    app = get_object_or_404(App, id=num)
+def appPage(request, name):
+    app = get_object_or_404(App, name=name)
     app.description = markdownify(app.description)
     releases = Release.objects.filter(app=app).order_by('-id')
     tags = app.tags.all()

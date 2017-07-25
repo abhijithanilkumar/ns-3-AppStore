@@ -4,6 +4,8 @@ from django.conf import settings
 from django.db import models
 from markdownx.models import MarkdownxField
 from datetime import datetime
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 # Create your models here.
 
@@ -33,6 +35,7 @@ class Tag(models.Model):
         return self.name
 
 class App(models.Model):
+    name = models.CharField(max_length=127, unique=True, editable=False)
     title = models.CharField(max_length=127, unique=True)
     abstract = models.CharField(max_length=255, default="NA")
     description = MarkdownxField()
@@ -64,6 +67,11 @@ class App(models.Model):
 
     def update_latest_release_date(self):
         self.latest_release_date = (Release.objects.filter(app=self).latest('date')).date
+        self.save()
+
+    def update_name(self):
+        self.name = self.title.replace(" ","")
+        self.save()
 
 class Release(models.Model):
     app = models.ForeignKey(App)
@@ -96,3 +104,9 @@ class Comment(models.Model):
 
     def __str__(self):
         return 'Comment on %s by %s' % (self.app.title, self.user.get_full_name)
+
+@receiver(post_save, sender=App)
+def update_name(sender, instance=None, created=False, **kwargs):
+    if created:
+        instance.name = instance.title.replace(" ","").lower()
+        instance.save()
