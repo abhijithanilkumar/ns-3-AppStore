@@ -50,6 +50,7 @@ class EditAppForm(forms.ModelForm):
             'stars',
             'votes',
             'downloads',
+            'has_releases',
         ]
 
 class ReleaseForm(forms.ModelForm):

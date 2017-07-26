@@ -15,7 +15,6 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
 lib64/
 parts/
 sdist/
@@ -71,3 +70,4 @@ migrations/
 
 # Media
 app_icon_thumbnail/
+release_files/

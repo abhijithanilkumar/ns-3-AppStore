@@ -1,149 +1,44 @@
-{% extends "base.html" %}
+{% extends "nav_panel.html" %}
+{% load app_buttons %}
 
-{% load staticfiles %}
-
-{% block title %}{{ block.super }}Search{% endblock %}
-
-{% block container %}
-<!-- Benefits of the Django application -->
-<main>
- <div class="container">
-   <div class="row">
-     <div class="col s3 offset-s1 collection blue-grey lighten-5">
-        <h4 class="truncate"><b>Categories</b></h3>
-          <a href="/app/tag/" class="collection-item blue-grey lighten-5 blue-text">All Apps</a>
-          {% for tag in tags %}
-            <a href="#!" class="collection-item blue-grey lighten-5 blue-text">{{tag.name}}</a>
-          {% endfor %}
-          <br>
+{% block main %}
+  {% if sqs_tag %}
+    <div class="row"><div class="span8"><h3>Tags</h3></div></div>
+    <div class="row">
+      <div class="span8" style="margin-bottom: 1em;">
+        {% for tag in sqs_tag %}
+          <a class="link" href="/app/tag/{{ tag.id }}">{{tag.name}}</a>{% if not forloop.last %}, {% endif %}
+        {% endfor %}
       </div>
-      <div class="col s7">
-        {% if sqs_tag or sqs_app_name or sqs_author %}
-        <div class="row push-left-extra">
-          {% if sqs_tag %}
-          <h5><b>Tags</b></h5>
-          {% endif %}
-          {% for tag in sqs_tag %}
-          <div class="chip">
-            <a href="/app/tag/{{tag.object.id}}">{{tag.object.name}}</a>
-          </div>
-          {% endfor %}
-        </div>
-        <div class="row push-left-extra">
-          {% if sqs_author %}
-          <h5><b>Authors</b></h5>
-          {% endif %}
-          <ul>
-            {% for author in sqs_author %}
-              <a href="/app/author/{{author.object.id}}"><li>{{author.object.name}} ({{author.object.institution}})</li></a>
-            {% endfor %}
-          </ul>
-        </div>
-        <div class="row push-left-extra">
-          {% if sqs_app_name %}
-          <h5 class="truncate"><b>Apps</b></h5>
-          <div class="row  blue-grey lighten-5">
-            <div class="col s2">
-              <span><b><p class="center">Sort By :</p></b></span>
-            </div>
-            <div class="col s10">
-              <ul class="tabs  blue-grey lighten-5">
-                <li class="tab"><a class="active" href="#test1">Name</a></li>
-                <li class="tab"><a href="#test2">Downloads</a></li>
-                <li class="tab"><a href="#test3">Votes</a></li>
-                <li class="tab"><a href="#test4">Newest Release</a></li>
-              </ul>
-            </div>
-          </div>
-          {% endif %}
-          <div id="test1">
-            {% for app in sqs_app_name %}
-              <div class="col s12 m6">
-                <a href="/app/{{app.object.id}}/">
-                  <div class="card blue-grey lighten-5 hoverable card-height">
-                    <div class="card-content truncate">
-                      <div class="col s2 hide-on-med-and-down">
-                        <img src="/media/{{app.object.icon|default:'default_icon.png'}}" alt="" class="biggercircle">
-                      </div>
-                      <div class="col s10">
-                        <span class="card-title push-left"><b>{{app.object.title}}</b></span>
-                        <p class="black-text push-left">{{app.object.abstract}}</p>
-                      </div>
-                    </div>
-                  </div>
-                </a>
-              </div>
-            {% endfor %}
-          </div>
-          <div id="test2">
-            {% for app in sqs_app_downloads %}
-              <div class="col s12 m6">
-                <a href="/app/{{app.object.id}}/">
-                  <div class="card blue-grey lighten-5 hoverable card-height">
-                    <div class="card-content truncate">
-                      <div class="col s2 hide-on-med-and-down">
-                        <img src="/media/{{app.object.icon|default:'default_icon.png'}}" alt="" class="biggercircle">
-                      </div>
-                      <div class="col s10">
-                        <span class="card-title push-left"><b>{{app.object.title}}</b></span>
-                        <p class="black-text push-left">{{app.object.abstract}}</p>
-                      </div>
-                    </div>
-                  </div>
-                </a>
-              </div>
-            {% endfor %}
-          </div>
-          <div id="test3">
-            {% for app in sqs_app_votes %}
-              <div class="col s12 m6">
-                <a href="/app/{{app.object.id}}/">
-                  <div class="card blue-grey lighten-5 hoverable card-height">
-                    <div class="card-content truncate">
-                      <div class="col s2 hide-on-med-and-down">
-                        <img src="/media/{{app.object.icon|default:'default_icon.png'}}" alt="" class="biggercircle">
-                      </div>
-                      <div class="col s10">
-                        <span class="card-title push-left"><b>{{app.object.title}}</b></span>
-                        <p class="black-text push-left">{{app.object.abstract}}</p>
-                      </div>
-                    </div>
-                  </div>
-                </a>
-              </div>
-            {% endfor %}
-          </div>
-          <div id="test4">
-            {% for app in sqs_app_new %}
-              <div class="col s12 m6">
-                <a href="/app/{{app.object.id}}/">
-                  <div class="card blue-grey lighten-5 hoverable card-height">
-                    <div class="card-content truncate">
-                      <div class="col s2 hide-on-med-and-down">
-                        <img src="/media/{{app.object.icon|default:'default_icon.png'}}" alt="" class="biggercircle">
-                      </div>
-                      <div class="col s10">
-                        <span class="card-title push-left"><b>{{app.object.title}}</b></span>
-                        <p class="black-text push-left">{{app.object.abstract}}</p>
-                      </div>
-                    </div>
-                  </div>
-                </a>
-              </div>
-            {% endfor %}
-          </div>
-        </div>
-        {% else %}
-        <div class="row push-left-extra">
-          <h5>Sorry! No items match your search.</h5>
-        </div>
-        {% endif %}
-      </div>
-   </div>
- </div>
-</main>
-{% endblock container %}
+    </div>
+  {% endif %}
 
-{% block scripts %}
-<script src="{% static 'site/js/site.js' %}"></script>
-{% endblock scripts %}
+  {% if sqs_author %}
+    <div class="row"><div class="span8"><h3>Authors</h3></div></div>
+    <div class="row">
+      <div class="span8" style="margin-bottom: 1em;">
+        <ul>
+          {% for author in sqs_author %}
+              <li>
+              <a href="/app/author/{{ author.id }}">
+                {{ author.name }}
+                {% if author.institution %}
+                  ({{ author.institution }})
+                {% endif %}
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  {% endif %}
+
+  {% if sqs_app %}
+    <div class="row"><div class="span8"><h3>Apps</h3></div></div>
+    {% list_of_apps sqs_app True %}
+  {% endif %}
+
+  {% if not sqs_tag and not sqs_app and not sqs_author %}
+    <div class="row"><div class="span8"><h3>No results found</h3></div></div>
+  {% endif %}
+{% endblock %}

@@ -1,12 +1,17 @@
 from django.views import generic
 from django.shortcuts import render
 from apps.models import App, Tag
+from apps.views import findTags
 
 def homePage(request):
     new_releases = App.objects.all().order_by('-latest_release_date')[:4]
-    top_downloaded = App.objects.all().order_by('-downloads')[:4]
-    tags = Tag.objects.all()
-    return render(request, 'home.html', {'new_releases':new_releases, 'top_downloaded':top_downloaded, 'tags':tags})
+    top_tags, not_top_tags = findTags()
+    context = {
+        'new_releases':new_releases,
+        'top_tags':top_tags,
+        'not_top_tags':not_top_tags,
+    }
+    return render(request, 'home.html', context)
 
 
 class AboutPage(generic.TemplateView):

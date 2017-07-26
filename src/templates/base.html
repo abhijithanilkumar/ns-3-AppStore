@@ -1,135 +1,98 @@
-<!DOCTYPE html>
+{% load static %}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
 <html lang="en">
-    {% load staticfiles %}
-    {% load thumbnail %}
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="{% block description %}{% endblock description %}">
-    <meta name="author" content="Abhijith Anilkumar">
-    <link rel="shortcut icon" href="{% static 'site/ico/favicon.ico' %}">
+  <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+  <script type="text/javascript" src="{% get_static_prefix %}common/lib/bootstrap/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="{% get_static_prefix %}common/lib/js/jquery.cookie.js"></script>
 
-    <title>{% block title %}{% include "_brandname.html" %} :: {% endblock %}</title>
+  <link rel="stylesheet" type="text/css" media="all" href="{% get_static_prefix %}common/lib/bootstrap/css/bootstrap.min.css"/>
+  <link rel="stylesheet" type="text/css" media="all" href="{% get_static_prefix %}common/css/base.css"/>
 
-    <!-- Materialize core CSS -->
-    <link type="text/css" href="{% static 'materialize/css/materialize.min.css' %}" rel="stylesheet">
+  {% block more_head %}{% endblock %}
 
-    <!--Import Google Icon Font-->
-    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+  <title>ns-3 App Store {% block title %}{% endblock %}</title>
 
-    <!-- Custom styles for this site -->
-    {% block styles %}
-    <link href="{% static 'site/css/main.css' %}" rel="stylesheet">
-    {% endblock styles %}
+  {# Google Analytics Snippet #}
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-155159-10']);
+    _gaq.push(['_trackPageview']);
 
-    <!-- Custom tags for the head tag -->
-    {% block extrahead %}{% endblock extrahead %}
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+  {# End of Google Analytics Snippet #}
+</head>
 
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
-    <![endif]-->
-  </head>
-
-  <body>
-
-    {% block navbar %}
-    <div class="navbar-fixed">
-      <nav class="black lighten nav-border">
-        <div class="container">
-          <div class="nav-wrapper">
-            <a class="brand-logo navbar-brand" href="{% url 'home' %}">
-              {% block navbar-brand %}
-                <img src="{% static 'site/img/ns3logo.png' %}" alt="logo">
-                {% include "_brandname.html" %}
-              {% endblock %}
-            </a>
-            <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
-            {% if user.is_authenticated %}
-            <ul class="right hide-on-med-and-down">
-              <li><a href="{% url 'profiles:show_self' %}">Profile</a></li>
-              <li><a href="{% url 'accounts:logout' %}">Logout</a></li>
-            </ul>
-            {% else %}
-            <ul class="right hide-on-med-and-down">
-              <li><a href="{% url 'accounts:login' %}">Login</a></li>
-            </ul>
-            {% endif %}
-            <div class="col s3 right hide-on-med-and-down">
-              <form action="/search">
-                <div class="input-field">
-                  <input id="search" type="search" name="q" required>
-                  <label class="label-icon" for="search"><i class="material-icons">search</i></label>
-                  <i class="material-icons">close</i>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </nav>
-    </div>
-    {% endblock navbar %}
-
-    {% block splash %}
-    <br><br>
-    {% endblock splash %}
-
-    {% block container %}
-    <div class="container">
-
-      <div class="starter-template">
-        <h1>New Project</h1>
-        <p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p>
-      </div>
-
-    </div><!-- /.container -->
-    {% endblock container %}
-
-    <!-- Site footer -->
-    {% block footer %}
-    <footer class="page-footer black lighten">
+<body style="padding-top: 0;">
+  {# Navigation bar #}
+  <div class="navbar navbar-inverse navbar-static-top">
+    <div class="navbar-inner">
       <div class="container">
-        <div class="row">
-          <div class="col s12 m6">
-            <h5 class="white-text">ns-3 App Store</h5>
-            <p class="grey-text text-lighten-4">To know more about the App Store</p>
-          </div>
-          <div class="col m4 offset-m2 s12">
-            <h5 class="white-text">Links</h5>
-            <ul>
-              <li><a class="grey-text text-lighten-3" href="#!">About</a></li>
-              <li><a class="grey-text text-lighten-3" href="#!">Contact Us</a></li>
-            </ul>
-          </div>
-        </div>
+        <a href=""><img src="{% get_static_prefix %}common/img/logo.png"></a>
+        <ul class="nav pull-right">
+          <li>
+            <form action="{% url 'search:searchpage' %}" method="get" class="navbar-search pull-right">
+              <input type="text" name="q" value="{{ search_query }}" class="search-query" placeholder="Search the App Store">
+            </form>
+          </li>
+          {# User menu #}
+          {% if user.is_authenticated %}
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                {{ user.username }} <b class="caret"></b>
+              </a>
+              <ul class="dropdown-menu">
+                {% if user.is_staff %}
+                  <li><a href="">Pending Apps</a></li>
+                  <li><a href="">2.x Plugins Management</a></li>
+                {% endif %}
+                <li><a href="{% url 'accounts:logout' %}">Sign out</a></li>
+              </ul>
+            </li>
+          {% else %}
+            <li {% ifequal navbar_selected 'signin' %}class="active"{% endifequal %}><a href="{% url 'accounts:login' %}">Sign In</a></li>
+          {% endif %}
+        </ul>
       </div>
-      <div class="footer-copyright">
-        <div class="container center">
-          © 2017 Copyright Text
-        </div>
-      </div>
-    </footer>
-    {% endblock %}
+    </div>
+  </div>
 
-    <!-- Materialize core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-    <script src="{% static 'materialize/js/materialize.min.js' %}"></script>
-    {% include 'material/includes/material_css.html' %}
-    <script src="{% static 'material/js/jquery.js' %}"></script>
-    {% include 'material/includes/material_js.html' %}
-    <script>
-      $(document).ready(function(){
-          $(".dropdown-button").dropdown();
-          $(".button-collapse").sideNav();
-      });
-    </script>
-    {% block scripts %}
-    {% endblock scripts %}
-  </body>
+  <div class="container" style="padding-top: 4em;">
+    {# Alert boxes at the top #}
+    <div class="row"><div class="span6 offset3" id="cy-alerts"></div></div>
+    <script src="{% get_static_prefix %}common/js/msgs.js"></script>
+
+    {# Content #}
+    {% block content %}{% endblock %}
+
+    {# Footer #}
+    <hr style="margin-top: 6em;">
+    <footer style="text-align: center;">
+      Site design courtesy of <a href="http://www.cytoscape.org">Cytoscape project</a>
+    </footer>
+  </div>
+
+  {# Check browser version #}
+  <script type="text/javascript" src="{% get_static_prefix %}common/js/check_browser_version.js"></script>
+
+  {# Support for "Go back to..." links at the top #}
+  <script type="text/javascript">
+    $(window).on('pageshow', function() {
+      {% if go_back_to %}
+        $.cookie('go_back_to_title', '{{ go_back_to }}',  {'path': '/'});
+        $.cookie('go_back_to_url',   '{{ request.get_full_path }}', {'path': '/'});
+      {% endif %}
+    });
+  </script>
+</body>
 </html>
