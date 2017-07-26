@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-from models import App, Release, Tag, Author, Comment
+from models import App, Release, Tag, Author, Comment, Screenshot
 from markdownx.utils import markdownify
 from forms import CommentForm
 
@@ -26,6 +26,7 @@ def appPage(request, name):
     app.description = markdownify(app.description)
     releases = Release.objects.filter(app=app).order_by('-id')
     tags = app.tags.all()
+    screenshots = Screenshot.objects.filter(app=app)
     for release in releases:
         release.notes = markdownify(release.notes)
     authors = app.authors.all()
@@ -42,6 +43,7 @@ def appPage(request, name):
         'editors':editors,
         'tags':tags,
         'releases':releases,
+        'screenshots':screenshots,
         'authors':authors,
         'latest':latest,
         #'comments':comments,

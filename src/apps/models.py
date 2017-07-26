@@ -6,6 +6,7 @@ from markdownx.models import MarkdownxField
 from datetime import datetime
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from util.img_util import scale_img
 
 # Create your models here.
 
@@ -105,8 +106,22 @@ class Comment(models.Model):
     def __str__(self):
         return 'Comment on %s by %s' % (self.app.title, self.user.get_full_name)
 
+class Screenshot(models.Model):
+    app = models.ForeignKey(App)
+    screenshot = models.ImageField(upload_to='screenshot/%Y-%m-%d/')
+    thumbnail = models.ImageField(upload_to='thumbnail/%Y-%m-%d/')
+
+    def __str__(self):
+        return 'Screenshot of %s' % (self.app.title)
+
 @receiver(post_save, sender=App)
 def update_name(sender, instance=None, created=False, **kwargs):
     if created:
         instance.name = instance.title.replace(" ","").lower()
+        instance.save()
+
+@receiver(post_save, sender=Screenshot)
+def update_thumbnail(sender, instance=None, created=False, **kwargs):
+    if created:
+        instance.thumbnail = scale_img(instance.screenshot, instance.screenshot.name, 150, 'h')
         instance.save()

@@ -143,12 +143,12 @@
 				{# End Categories #}
 
 				{# Screenshots #}
-				{% if app.screenshot_set.all %}
+				{% if screenshots %}
 				<div class="row">
 					<div class="span8" id="cy-app-screenshots">
-						{% for screenshot in app.screenshot_set.all %}
-						<a href="{{ screenshot.screenshot.url }}" target="_blank">
-							<img src="{{ screenshot.thumbnail.url }}"/>
+						{% for screenshot in screenshots %}
+						<a href="/media/{{ screenshot.screenshot }}" target="_blank">
+							<img src="/media/{{ screenshot.thumbnail }}"/>
 						</a>
 						{% endfor %}
 					</div>
@@ -255,7 +255,6 @@
 		{# Download panel #}
 		{% if app.has_releases %}
 		<div class="well">
-			<h6 class="panel-title muted">ns-3</h6>
 			<button class="btn btn-large btn-block" id="cy-app-install-btn">
 				<i></i> {# <-- download button icon will go here #}
 				<h4></h4> {# <-- download button text will go here #}
@@ -263,7 +262,7 @@
 			<p><strong>Version</strong> {{ latest.version }}</p>
 			{% if app.license_text %}<p><strong>License</strong> <a href="{{ app.license_text }}" target="_blank">Click here</a></p>{% endif %}
 			<p><strong>Released</strong> {{ latest.date }}</p>
-			<p><strong>Works with</strong> <a href="https://www.nsnam.org/" target="_blank">{{ latest.require }}</a></p>
+			<p><strong>Works with</strong> <a href="https://www.nsnam.org/ns-3.26" target="_blank">{{ latest.require }}</a></p>
 			{% if latest.filename %}<p><strong>Bake</strong> <a href="/media/{{ latest.filename }}" target="_blank">bakeconf.xml</a>{% endif %}
 		</div>
 		{% endif %}
@@ -283,12 +282,17 @@
 				<li class="nav-header">
 					Resources
 				</li>
-				<li><a href="" target="_blank">
+				<li><a href="https://groups.google.com/forum/?fromgroups#!newtopic/ns-3-users" target="_blank">
 					<i class="icon-question-sign"></i>
 					Ask a question
 				</a></li>
 
-				<li><a href="" target="_blank">
+				<li><a href="https://www.nsnam.org/support/report-a-bug/" target="_blank">
+					<i class="icon-question-sign"></i>
+					Report a Bug
+				</a></li>
+
+				<li><a href="https://groups.google.com/forum/?fromgroups#!searchin/ns-3-users/{{ app.title }}" target="_blank">
 					<i class="icon-comment"></i>
 					Search posts
 				</a></li>
@@ -388,6 +392,7 @@ $('.has-tooltip').tooltip();
 {% if app.has_releases %}
 AppPage.setup_install("{{ app.name|escapejs }}",
 	"{{ app.fullname|escapejs }}",
+	"{{ latest.url }}",
 	"{{ latest.version }}",
 	"");
 {% endif %}
