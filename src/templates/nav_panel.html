@@ -47,7 +47,7 @@
         <ul class="nav nav-list" id="top-tags">
           {% for tag in top_tags %}
             <li {% ifequal tag.name selected_tag_name %} class="active" {% endifequal %}>
-            <a href="/app/tag/{{ tag.id }}"><h5>
+            <a href="/app/tag/{{ tag.identity }}"><h5>
               <span class="title">{{ tag.name }}</span>
               <!--span class="count">({{ tag.count }})</span-->
             </h5></a></li>
@@ -58,7 +58,7 @@
         <ul class="nav nav-list" id="not-top-tags">
           {% for tag in not_top_tags %}
             <li {% ifequal tag.name selected_tag_name %} class="active" {% endifequal %}>
-            <a href="/app/tag/{{ tag.id }}"><h5>
+            <a href="/app/tag/{{ tag.identity }}"><h5>
               <span class="title">{{ tag.name }}</span>
               <!--span class="count">({{ tag.count }})</span-->
             </h5></a></li>

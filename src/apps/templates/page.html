@@ -51,8 +51,14 @@
 			<ul class="dropdown-menu pull-right">
 				<li><a href="/backend/edit/{{ app.id }}">Edit this page</a></li>
 				<li><a href="/backend/create/release/{{ app.id }}">Submit a new release</a></li>
+				<li><a href="/backend/screenshots/{{ app.id }}">Add a new screenshot</a></li>
+				<li><a href="/backend/development/{{ app.id }}">Add/Edit Development Version Details</a></li>
 				<li class="divider"></li>
 				<!--li><a data-toggle="modal" href="#delete_ratings_modal">Delete all ratings</a></li-->
+				<li><a href="/backend/details/{{ app.id }}">Edit Details</a></li>
+				<li><a href="/backend/installation/{{ app.id }}">Add/Edit Installation</a></li>
+				<li><a href="/backend/maintenance/{{ app.id }}">Add/Edit Maintenance</a></li>
+				<li><a href="/backend/download/{{ app.id }}">Add/Edit Download</a></li>
 			</ul>
 		</div>
 	</div>
@@ -73,27 +79,7 @@
 		<span id="rating-count">({{ app.votes|escapejs }})</span>
 		{# End Ratings #}
 
-		{# Downloads #}
-		{#% if app.has_releases %#}
-		<!--span class="app-usage-info-divider"></span>
-		<a href="" target="_blank">
-			{{ app.downloads }} downloads
-		</a-->
-		{#% endif %#}
-		{# End Downloads #}
-
 		<span class="app-usage-info-divider"></span>
-
-		{# badges #}
-		{#% if app.has_releases %#}
-		<!--img src="{% get_static_prefix %}apps/img/cy3_sticker.png" class="has-tooltip" data-toggle="tooltip" data-title="This app is available for Cytoscape 3.0 and above."-->
-		{#% endif %#}
-
-		{#% if app.competition_winner_dec_2012 %#}
-		<!--a href="http://nrnb.org/competitions.html" target="_blank">
-			<img src="{% get_static_prefix %}apps/img/trophy.png" class="has-tooltip" data-toggle="tooltip" data-title="This app won the December 2012 App Competition.">
-		</a-->
-		{#% endif %#}
 
 		{% if app.coderepo %}
 		<a href="{{ app.coderepo }}" target="_blank">
@@ -122,6 +108,27 @@
 				</a>
 			</li>
 			{% endif %}
+			{% if app.installation %}
+			<li>
+				<a href="#cy-app-installation-tab" data-toggle="tab">
+					<b>Installation</b>
+				</a>
+			</li>
+			{% endif %}
+			{% if app.maintenance %}
+			<li>
+				<a href="#cy-app-maintenance-tab" data-toggle="tab">
+					<b>Maintenance</b>
+				</a>
+			</li>
+			{% endif %}
+			{% if app.development %}
+			<li>
+				<a href="#cy-app-development-tab" data-toggle="tab">
+					<b>Development</b>
+				</a>
+			</li>
+			{% endif %}
 		</ul>
 		{# End Tabs #}
 
@@ -135,7 +142,7 @@
 					<div class="span8">
 						Categories:
 						{% for tag in tags %}
-						<a class="link" href="/app/tag/{{ tag.id }}">{{ tag.name }}</a>{% if not forloop.last %}, {% endif %}
+						<a class="link" href="/app/tag/{{ tag.identity }}">{{ tag.name }}</a>{% if not forloop.last %}, {% endif %}
 						{% endfor %}
 					</div>
 				</div>
@@ -150,6 +157,11 @@
 						<a href="/media/{{ screenshot.screenshot }}" target="_blank">
 							<img src="/media/{{ screenshot.thumbnail }}"/>
 						</a>
+						{% if user.is_staff or user in editors %}
+						<a class="btn btn-warning" href="/backend/screenshotdelete/{{ screenshot.id }}" style="margin-bottom:120px">
+							x
+						</a>
+						{% endif %}
 						{% endfor %}
 					</div>
 				</div>
@@ -164,24 +176,6 @@
 				{% endif %}
 				{# End Details #}
 
-				{# Authors #}
-				{% if authors %}
-				<div class="row">
-					<div class="span8">
-						Authors:
-						<ul>
-							{% for author in authors %}
-							<li>
-								<a href="/tag/author/{{ author.id }}">
-									{{ author.name }} {% if author.institution %} ({{ author.institution }}){% endif %}
-								</a>
-							</li>
-							{% endfor %}
-						</ul>
-					</div>
-				</div>
-				{% endif %}
-				{# End Authors #}
 			</div>
 			{# End Details tab #}
 
@@ -196,7 +190,6 @@
 							<a href="{{ release.url }}">
 								{{ release.version }}
 							</a>
-							<small><abbr class="timeago" title="{{ release.created_iso }}"></abbr></small>
 						</h4>
 						{# End Release version #}
 
@@ -207,35 +200,23 @@
 						</p>
 						{# End Works with #}
 
-						{# Release #}
-						{% if release.releaseapi_set.count %}
-						{% with releaseapi=release.releaseapi_set.get %}
-						<p>
-							<strong>API</strong>
-							&nbsp;
-							<a target="_blank" href="{{ releaseapi.pom_xml_file.url }}">pom.xml</a>
-							&nbsp;
-							<a target="_blank" href="{{ releaseapi.javadocs_jar_file.url }}-extracted">Javadocs</a>
-						</p>
-						{% endwith %}
-						{% endif %}
-
-						{# Release dependencies #}
-						{% if release.dependents.count %}
-						<p>
-							<strong>Apps that depend on this release</strong>
-							<ul>
-								{% for dependent in release.dependents.all %}
-								<li><a href="{% url 'app_page' dependent.app.name %}" target="_blank">{{ dependent.app.fullname }}</a> {{ dependent.version }}</li>
-								{% endfor %}
-							</ul>
-						</p>
-						{% endif %}
-						{# End Release dependencies #}
-
 						{% if release.notes %}
 						<p><strong>Release Notes</strong></p>
 						<div class="cy-app-release-notes">{{ release.notes }}</div>
+						{% endif %}
+
+						{% if release.filename %}
+						<strong>Bakefile : </strong>
+						<a href="/media/{{ release.filename }}">Link</a>
+						<br><br>
+						{% endif %}
+						{% if user.is_staff or user in editors %}
+						<a class="btn btn-warning" href="/backend/edit/release/{{ release.id }}">
+							Edit Release
+						</a>
+						<a class="btn btn-warning" href="/backend/releasedelete/{{ release.id }}">
+							Delete Release
+						</a>
 						{% endif %}
 						{# End Release #}
 						<hr>
@@ -245,6 +226,48 @@
 			</div>
 			{% endif %}
 			{# End Releases tab #}
+
+			{# Installation tab #}
+			{% if app.installation %}
+			<div class="tab-pane" id="cy-app-installation-tab">
+				<div class="row">
+					<div class="span8">
+						<div class="cy-app-release-notes">{{ app.installation.installation|safe }}</div>
+						<hr>
+					</div>
+				</div>
+			</div>
+			{% endif %}
+			{# End Installation tab #}
+
+			{# Maintenance tab #}
+			{% if app.maintenance %}
+			<div class="tab-pane" id="cy-app-maintenance-tab">
+				<div class="row">
+					<div class="span8">
+						<div class="cy-app-release-notes">{{ app.maintenance.notes|safe }}</div>
+						<hr>
+					</div>
+				</div>
+			</div>
+			{% endif %}
+			{# End Maintenance tab #}
+
+			{# Development tab #}
+			{% if app.development %}
+			<div class="tab-pane" id="cy-app-development-tab">
+				<div class="row">
+					<div class="span8">
+						<div class="cy-app-release-notes">{{ app.development.notes|safe }}</div>
+					</div>
+				</div>
+				{% if app.development.filename %}
+					<b>Bakefile : </b><a href="/media/{{ app.development.filename }}/">Link</a>
+				{% endif %}
+				<hr>
+			</div>
+			{% endif %}
+			{# End Maintenance tab #}
 		</div>
 	</div>
 	{# End Tab content #}
@@ -253,23 +276,21 @@
 	<div class="span3 offset1">
 
 		{# Download panel #}
-		{% if app.has_releases %}
+		{% if app.download %}
 		<div class="well">
 			<button class="btn btn-large btn-block" id="cy-app-install-btn">
 				<i></i> {# <-- download button icon will go here #}
 				<h4></h4> {# <-- download button text will go here #}
 			</button>
 			<p><strong>Version</strong> {{ latest.version }}</p>
-			{% if app.license_text %}<p><strong>License</strong> <a href="{{ app.license_text }}" target="_blank">Click here</a></p>{% endif %}
 			<p><strong>Released</strong> {{ latest.date }}</p>
 			<p><strong>Works with</strong> <a href="https://www.nsnam.org/ns-3.26" target="_blank">{{ latest.require }}</a></p>
 			{% if latest.filename %}<p><strong>Bake</strong> <a href="/media/{{ latest.filename }}" target="_blank">bakeconf.xml</a>{% endif %}
 		</div>
-		{% endif %}
 		{# end Download panel #}
 
 		{# in case there are no downloads... #}
-		{% if not app.has_releases %}
+		{% else %}
 		<div class="alert alert-error">
 			No download available.
 		</div>
@@ -282,20 +303,22 @@
 				<li class="nav-header">
 					Resources
 				</li>
-				<li><a href="https://groups.google.com/forum/?fromgroups#!newtopic/ns-3-users" target="_blank">
-					<i class="icon-question-sign"></i>
-					Ask a question
-				</a></li>
+				{% if app.mailing_list %}
+				<li>
+					<a href="{{ app.mailing_list}}" target="_blank">
+						<i class="icon-question-sign"></i>
+						Ask a question
+					</a>
+				</li>
+				{% endif %}
 
-				<li><a href="https://www.nsnam.org/support/report-a-bug/" target="_blank">
+				{% if app.issue %}
+				<li>
+					<a href="{{ app.issue }}" target="_blank">
 					<i class="icon-question-sign"></i>
 					Report a Bug
 				</a></li>
-
-				<li><a href="https://groups.google.com/forum/?fromgroups#!searchin/ns-3-users/{{ app.title }}" target="_blank">
-					<i class="icon-comment"></i>
-					Search posts
-				</a></li>
+				{% endif %}
 
 				<li class="divider"></li>
 
@@ -305,15 +328,9 @@
 				</a></li>
 				{% endif %}
 
-				{% if app.tutorial %}
-				<li><a href="{{ app.tutorial }}" target="_blank">
-					<i class="icon-book"></i> Tutorial
-				</a></li>
-				{% endif %}
-
-				{% if app.citation %}
-				<li><a href="http://www.ncbi.nlm.nih.gov/pubmed/{{ app.citation }}" target="_blank">
-					<i class="icon-heart"></i> Cite this App
+				{% if app.documentation %}
+				<li><a href="{{ app.documentation }}" target="_blank">
+					<i class="icon-book"></i> Documentation
 				</a></li>
 				{% endif %}
 
@@ -356,24 +373,6 @@
 </div>
 {# End modal dialog #}
 
-{# License modal dialog #}
-{% if app.license_confirm and app.license_text %}
-<div class="modal hide fade in" id="license_modal">
-	<div class="modal-header">
-		<a class="close" data-dismiss="modal">&times;</a>
-		<h3>License Agreement</h3>
-	</div>
-	<div class="modal-body">
-		<iframe data-src="{{ app.license_text }}" width="500" height="400"></iframe>
-	</div>
-	<div class="modal-footer">
-		<a href="#" class="btn" data-dismiss="modal">Don't Accept</a>
-		<a href="#" class="btn btn-primary">Accept</a>
-	</div>
-</div>
-{% endif %}
-{# End license modal dialog #}
-
 {# Vote popover content #}
 <script type="text/html" id="rate-popover-content">
 <div class="rating-stars">
@@ -392,11 +391,10 @@ $('.has-tooltip').tooltip();
 {% if app.has_releases %}
 AppPage.setup_install("{{ app.name|escapejs }}",
 	"{{ app.fullname|escapejs }}",
-	"{{ latest.url }}",
+	"{{ app.download.download_link }}",
 	"{{ latest.version }}",
 	"");
 {% endif %}
-AppPage.setup_cy_2x_download_popover('{% get_static_prefix %}apps/img/plugins_dir.png');
 
 {% if app.details %}
 AppPage.setup_details();

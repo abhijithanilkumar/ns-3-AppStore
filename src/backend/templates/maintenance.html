@@ -1,0 +1,11 @@
+{% extends "backend_base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}{{ block.super }}Modiffy Maintenance{% endblock %}
+
+{% block form_heading %}Modify Maintenance Section{% endblock %}
+
+{% block form %}
+  {% crispy form %}
+{% endblock form %}

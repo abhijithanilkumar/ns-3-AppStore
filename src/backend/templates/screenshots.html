@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block more_head %}
+<link rel="stylesheet" type="text/css" media="all" href="{% get_static_prefix %}apps/css/app_page_edit.css" />
+<link rel="stylesheet" type="text/css" media="all" href="{% get_static_prefix %}apps/css/app_stars.css" />
+<script type="text/javascript" src="{% get_static_prefix %}common/lib/js/jquery.tmpl.min.js"></script>
+<script type="text/javascript" src="{% get_static_prefix %}common/lib/js/jquery.timeago.js"></script>
+<script type="text/javascript" src="{% get_static_prefix %}common/lib/js/Markdown.Converter.js"></script>
+<script type="text/javascript" src="{% get_static_prefix %}common/lib/js/Markdown.Sanitizer.js"></script>
+<script type="text/javascript" src="{% get_static_prefix %}common/js/setup_ajax_for_csrf.js"></script>
+<script type="text/javascript" src="{% get_static_prefix %}common/js/markdown_util.js"></script>
+<script type="text/javascript" src="{% get_static_prefix %}common/js/msgs.js"></script>
+<script type="text/javascript" src="{% get_static_prefix %}apps/js/jquery.tablednd.js"></script>
+{% endblock %}
+
+{% block title %}- Edit {{ app.fullname }}{% endblock %}
+
+{% block content %}
+
+
+<div class="row">
+  {# tabs #}
+  <div class="span8">
+
+    {# tab content #}
+    <div id="cy-app-info-content" class="tab-content">
+      {# details tab #}
+      <div class="tab-pane active" id="cy-app-details-tab">
+
+        {# screenshots #}
+        <div class="row"><div class="span8"><h6 class="muted">SCREENSHOTS</h6></div></div>
+
+        <div class="row">
+          <div class="span8" id="cy-app-screenshots">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="span4">
+            <button id="cy-app-screenshot-add-btn" class="btn btn-small">
+              <i class="icon-plus"></i> Add
+            </button>
+            <button id="cy-app-screenshot-delete-btn" class="btn btn-small disabled">
+              <i class="icon-trash"></i> Delete
+            </button>
+          </div>
+        </div>
+        {# end screenshots #}
+      </div>
+      {# end app details tab #}
+    </div>
+    {# end tab content #}
+  </div>
+  {# end tabs #}
+
+  {# right panels #}
+  <div class="span3 offset1">
+    {# save & cancel buttons #}
+    <div id="save-actions">
+      <a id="save-btn" class="btn btn-success disabled"><i class="icon-ok icon-white"></i> Save</a>
+      <a id="cancel-btn" class="btn btn-danger"><i class="icon-remove icon-white"></i> Cancel</a>
+    </div>
+    {# end save & cancel buttons #}
+
+  </div>
+  {# end right panels #}
+</div>
+
+{# file choosers #}
+<div style="visibility: hidden;">
+  <input type="file" name="files[]" id="cy-app-screenshot-file-chooser" multiple>
+</div>
+{# end file choosers #}
+
+{# cancel dialog #}
+<div class="modal hide fade in" id="cancel-modal">
+  <div class="modal-header">
+    <a class="close" data-dismiss="modal">&times;</a>
+    <h3>Cancel Editing</h3>
+  </div>
+  <div class="modal-body">
+    Are you sure you want to cancel editing this app page? All unsaved changes will be lost.
+  </div>
+  <div class="modal-footer">
+    <a href="/app/{{ app.name }}/" class="btn btn-danger">Yes, Discard Changes</a>
+    <a href="#" class="btn" data-dismiss="modal">No, Continue Editing</a>
+  </div>
+</div>
+{# end cancel dialog #}
+
+{# save dialog #}
+<div class="modal hide fade in" id="save-modal">
+  <div class="modal-header">
+    <h3>Saving App Page...</h3>
+  </div>
+  <div class="modal-body">
+  </div>
+</div>
+{# end save dialog #}
+
+{# messages popup #}
+<script type="text/html" id="cy-msg-tmpl">
+<div class="alert alert-${ type }">
+  <a class="close">&times;</a>
+  ${ msg }
+</div>
+</script>
+{# end messages popup #}
+
+<script type="text/javascript" src="{% get_static_prefix %}apps/js/app_page_edit.js"></script>
+
+<script type="text/javascript">
+$('[rel=tooltip]').tooltip();
+
+AppPageEdit.set_max_file_img_size({{ max_file_img_size_b }});
+AppPageEdit.setup_text_fields();
+AppPageEdit.setup_icon_selection({{ max_icon_dim_px }});
+
+AppPageEdit.setup_add_tag_btn();
+{% if app.tags %}
+{% for tag in app.tags.all %}
+AppPageEdit.add_tag('{{ tag.fullname|escapejs}}', false);
+{% endfor %}
+{% endif %}
+
+AppPageEdit.setup_screenshot_btns({{ thumbnail_height_px }});
+{% if screenshots %}
+{% for screenshot in screenshots %}
+AppPageEdit.add_screenshot('{{ screenshot.thumbnail.url|escapejs }}').attr('backend_id', '{{screenshot.id}}');
+{% endfor %}
+{% endif %}
+
+AppPageEdit.setup_details();
+AppPageEdit.set_app_page_url("/app/new-app/");
+AppPageEdit.set_loading_icon_url('{% get_static_prefix %}common/img/loading_small.gif');
+
+AppPageEdit.setup_cancel_btn();
+AppPageEdit.setup_save_btn();
+</script>
+{% endblock %}

@@ -1,6 +1,6 @@
 import datetime
 from haystack import indexes
-from models import App, Tag, Author
+from models import App, Tag
 
 class AppIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
@@ -23,17 +23,6 @@ class TagIndex(indexes.SearchIndex, indexes.Indexable):
 
     def get_model(self):
         return Tag
-
-    def index_queryset(self, using=None):
-        return self.get_model().objects.all()
-
-class AuthorIndex(indexes.SearchIndex, indexes.Indexable):
-    text = indexes.CharField(document=True, use_template=True)
-    title = indexes.CharField(model_attr='name')
-    inst = indexes.CharField(model_attr='institution')
-
-    def get_model(self):
-        return Author
 
     def index_queryset(self, using=None):
         return self.get_model().objects.all()

@@ -1,15 +1,17 @@
-{% extends "base.html" %}
+{% extends "base2.html" %}
 
 {% load crispy_forms_tags %}
 
-{% block content %}
-<main>
+{% block navbar %}
+{% endblock %}
+
+{% block container %}
 <div class="container form-box">
-  <div class="center">
+  <div class="text-center">
     <h2>{% block form_heading %}{% endblock %}</h2>
   </div>
   {% block form %}
   {% endblock %}
 </div>
-</main>
-{% endblock content %}
+
+{% endblock container %}

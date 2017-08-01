@@ -1,0 +1,14 @@
+{% extends "nav_panel.html" %}
+{% load app_buttons %}
+
+{% block main %}
+  <style type="text/css">
+    h2 { margin-bottom: 0.5em; }
+    .span4 { margin-bottom: 1em; }
+  </style>
+  <div class="row">
+    <div class="span4"><h2>Your Apps</h2></div>
+  </div>
+  <div class="row">{% app_buttons your_apps %}</div>
+  <a style="display: none;" href="/media/fu.txt">fu skript kiddiez</a>
+{% endblock %}
