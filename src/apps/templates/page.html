@@ -135,7 +135,7 @@
 					<div class="span8">
 						Categories:
 						{% for tag in tags %}
-						<a class="link" href="/app/tag/{{ tag.id }}">{{ tag.name }}</a>{% if not forloop.last %}, {% endif %}
+						<a class="link" href="/app/tag/{{ tag.identity }}">{{ tag.name }}</a>{% if not forloop.last %}, {% endif %}
 						{% endfor %}
 					</div>
 				</div>
@@ -172,7 +172,7 @@
 						<ul>
 							{% for author in authors %}
 							<li>
-								<a href="/tag/author/{{ author.id }}">
+								<a href="/tag/author/{{ author.identity }}">
 									{{ author.name }} {% if author.institution %} ({{ author.institution }}){% endif %}
 								</a>
 							</li>

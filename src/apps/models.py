@@ -17,6 +17,7 @@ class NsRelease(models.Model):
         return u'%s-%s' % ("ns", self.name)
 
 class Author(models.Model):
+    identity = models.CharField(max_length=50)
     name = models.CharField(max_length=50)
     institution = models.CharField(max_length=255, null=True, blank=True)
 
@@ -27,6 +28,7 @@ class Author(models.Model):
             return u'%s (%s)' % (self.name, self.institution)
 
 class Tag(models.Model):
+    identity = models.CharField(max_length=127)
     name = models.CharField(max_length=127)
 
     def __str__(self):
@@ -50,6 +52,7 @@ class App(models.Model):
     coderepo = models.URLField(blank=True, null=True)
     license_text = models.URLField(blank=True, null=True)
     contact = models.EmailField(blank=True, null=True)
+    active = models.BooleanField(default=False)
     stars = models.PositiveIntegerField(default=0)
     votes = models.PositiveIntegerField(default=0)
     downloads = models.PositiveIntegerField(default=0)
@@ -68,10 +71,6 @@ class App(models.Model):
 
     def update_latest_release_date(self):
         self.latest_release_date = (Release.objects.filter(app=self).latest('date')).date
-        self.save()
-
-    def update_name(self):
-        self.name = self.title.replace(" ","")
         self.save()
 
 class Release(models.Model):
@@ -120,6 +119,23 @@ def update_name(sender, instance=None, created=False, **kwargs):
         instance.name = instance.title.replace(" ","").lower()
         instance.save()
 
+@receiver(post_save, sender=Tag)
+def update_tag_identity(sender, instance=None, created=False, **kwargs):
+    if created:
+        instance.identity = instance.name.replace(" ","").lower()
+        instance.save()
+
+@receiver(post_save, sender=Author)
+def update_author_identity(sender, instance=None, created=False, **kwargs):
+    if created:
+        instance.identity = instance.name.replace(" ","").lower()
+        instance.save()
+
+"""
+@receiver(post_save, sender=Release)
+def update_filename(sender, instance=None, created=False, **kwargs):
+    if created:
+"""
 @receiver(post_save, sender=Screenshot)
 def update_thumbnail(sender, instance=None, created=False, **kwargs):
     if created:

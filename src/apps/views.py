@@ -72,11 +72,11 @@ def download(request, num):
     }
     return render(request, 'download.html', context)
 
-def tagSearch(request, num=0):
+def tagSearch(request, name):
     if num:
         try:
-            apps = App.objects.filter(tags__id=num)
-            active_tag = Tag.objects.get(id=num)
+            apps = App.objects.filter(tags__identity=name).filter(active=True)
+            active_tag = Tag.objects.get(identity=name)
         except:
             return render(request, 'home.html')
         top_tags, not_top_tags = findTags()
@@ -99,10 +99,10 @@ def tagSearch(request, num=0):
         }
         return render(request, 'apps.html', context)
 
-def authorSearch(request, num):
+def authorSearch(request, name):
     try:
-        apps = App.objects.filter(authors__id=num)
-        active_author = Author.objects.get(id=num)
+        apps = App.objects.filter(authors__identity=name).filter(active=True)
+        active_author = Author.objects.get(identity=name)
     except:
         return render(request, 'home.html')
     apps_name = apps.order_by('title')
