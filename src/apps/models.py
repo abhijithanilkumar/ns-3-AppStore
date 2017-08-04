@@ -113,6 +113,21 @@ class Screenshot(models.Model):
     def __str__(self):
         return 'Screenshot of %s' % (self.app.title)
 
+class Instructions(models.Model):
+    app = models.OneToOneField(App)
+    dependencies = models.MarkdownxField()
+    installation = models.MarkdownxField()
+
+    def __str__(self):
+        return '%s Instructions' % (self.app.title)
+
+class Maintenance(models.Model):
+    app = models.OneToOneField(App)
+    notes = models.MarkdownxField()
+
+    def __str__(self):
+        return '%s Maintenance' % (self.app.title)
+
 @receiver(post_save, sender=App)
 def update_name(sender, instance=None, created=False, **kwargs):
     if created:
