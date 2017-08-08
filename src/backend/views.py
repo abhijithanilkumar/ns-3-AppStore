@@ -3,7 +3,8 @@ from __future__ import unicode_literals
 
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from forms import CreateAppForm, EditAppForm, ReleaseForm, AuthorForm
+from forms import CreateAppForm, EditAppForm, ReleaseForm, AuthorForm, \
+        InstructionsForm, MaintenanceForm
 from django.apps import apps
 from util.img_util import scale_img
 
@@ -133,3 +134,73 @@ def editAuthor(request, appnum, num):
     else:
         return render(request, 'message.html', {'message': "You are not authorized to view this page!"})
     return render(request, 'edit_author.html', {'form':form})
+
+@login_required
+def modifyInstructions(request, num):
+    App = apps.get_model('apps', 'App')
+    Instructions = apps.get_model('apps', 'Instructions')
+    try:
+        app = App.objects.get(id=num)
+    except:
+        return render(request, 'message.html', {'message': "Requested App does not Exits!"})
+    if Instructions.objects.filter(app=app).exists():
+        exist = True
+        edit_instructions = Instructions.object.get(app=app)
+    if request.user.is_staff or request.user in app.editors.all():
+        if request.method == 'GET':
+            if exists:
+                form = InstructionsForm(instance=edit_instructions)
+            else:
+                form = AuthorForm()
+        elif request.method == 'POST':
+            if exists:
+                form = InstructionsForm(request.POST, instance=edit_instructions)
+            else:
+                form = InstructionsForm(request.POST)
+            if form.is_valid():
+                if exists:
+                    edited_instructions = form.save()
+                    edited_instructions.save()
+                else:
+                    instructions = form.save(commit=False)
+                    instructions.app = app
+                    instructions.save()
+                return render(request, 'message.html', {'message': "Instructions modified Successfully!"})
+    else:
+        return render(request, 'message.html', {'message': "You are not authorized to view this page!"})
+    return render(request, 'modify_instructions.html', {'form':form})
+
+@login_required
+def modifyDependencies(request, num):
+    App = apps.get_model('apps', 'App')
+    Maintenance = apps.get_model('apps', 'Maintenance')
+    try:
+        app = App.objects.get(id=num)
+    except:
+        return render(request, 'message.html', {'message': "Requested App does not Exits!"})
+    if Maintenance.objects.filter(app=app).exists():
+        exist = True
+        edit_maintenance = Maintenance.object.get(app=app)
+    if request.user.is_staff or request.user in app.editors.all():
+        if request.method == 'GET':
+            if exists:
+                form = MaintenanceForm(instance=edit_maintenance)
+            else:
+                form = MaintenanceForm()
+        elif request.method == 'POST':
+            if exists:
+                form = MaintenanceForm(request.POST, instance=edit_maintenance)
+            else:
+                form = MaintenanceForm(request.POST)
+            if form.is_valid():
+                if exists:
+                    edited_maintenance = form.save()
+                    edited_maintenance.save()
+                else:
+                    maintenance = form.save(commit=False)
+                    maintenance.app = app
+                    maintenance.save()
+                return render(request, 'message.html', {'message': "Maintenance notes modified Successfully!"})
+    else:
+        return render(request, 'message.html', {'message': "You are not authorized to view this page!"})
+    return render(request, 'modify_maintenance.html', {'form':form})

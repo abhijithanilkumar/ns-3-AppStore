@@ -94,3 +94,35 @@ class AuthorForm(forms.ModelForm):
             'name',
             'institution'
         ]
+
+class InstructionsForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(forms.ModelForm, self).__init__(*args, **kwargs)
+        self.fields['default_release'].label = "Default Release"
+        self.fields['dependencies'].label = "Instructions to setup dependencies (Markdown Supported)"
+        self.fields['installation'].label = "Installation instructions (Markdown Supported)"
+
+    def clean(self):
+        return self.cleaned_data
+
+    class Meta:
+        model = apps.get_model('apps', 'Instructions')
+        exclude = [
+            'app',
+        ]
+
+class MaintenanceForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(forms.ModelForm, self).__init__(*args, **kwargs)
+        self.fields['notes'].label = "Maintenance notes (Markdown Supported)"
+
+    def clean(self):
+        return self.cleaned_data
+
+    class Meta:
+        model = apps.get_model('apps', 'Maintenance')
+        exclude = [
+            'app',
+        ]

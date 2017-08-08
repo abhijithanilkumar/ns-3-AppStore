@@ -115,15 +115,16 @@ class Screenshot(models.Model):
 
 class Instructions(models.Model):
     app = models.OneToOneField(App)
-    dependencies = models.MarkdownxField()
-    installation = models.MarkdownxField()
+    default_release = models.OneToOneField(Release)
+    dependencies = MarkdownxField()
+    installation = MarkdownxField()
 
     def __str__(self):
         return '%s Instructions' % (self.app.title)
 
 class Maintenance(models.Model):
     app = models.OneToOneField(App)
-    notes = models.MarkdownxField()
+    notes = MarkdownxField()
 
     def __str__(self):
         return '%s Maintenance' % (self.app.title)
