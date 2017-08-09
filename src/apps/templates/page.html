@@ -53,8 +53,8 @@
 				<li><a href="/backend/create/release/{{ app.id }}">Submit a new release</a></li>
 				<li class="divider"></li>
 				<!--li><a data-toggle="modal" href="#delete_ratings_modal">Delete all ratings</a></li-->
-				<li><a href="/backend/create/release/{{ app.id }}">Add/Edit Dependencies</a></li>
-				<li><a href="/backend/create/release/{{ app.id }}">Add/Edit Instructions</a></li>
+				<li><a href="/backend/maintenance/{{ app.id }}">Add/Edit Maintenance</a></li>
+				<li><a href="/backend/instructions/{{ app.id }}">Add/Edit Instructions</a></li>
 			</ul>
 		</div>
 	</div>
@@ -124,11 +124,20 @@
 				</a>
 			</li>
 			{% endif %}
+			{% if app.instructions %}
 			<li>
 				<a href="#cy-app-instructions-tab" data-toggle="tab">
 					<b>Instructions</b>
 				</a>
 			</li>
+			{% endif %}
+			{% if app.maintenance %}
+			<li>
+				<a href="#cy-app-maintenance-tab" data-toggle="tab">
+					<b>Maintenance</b>
+				</a>
+			</li>
+			{% endif %}
 		</ul>
 		{# End Tabs #}
 
@@ -254,65 +263,45 @@
 			{# End Releases tab #}
 
 			{# Instructions tab #}
-			{% if app.has_releases %}
+			{% if app.instructions %}
 			<div class="tab-pane" id="cy-app-instructions-tab">
-				{% for release in releases %}
 				<div class="row">
 					<div class="span8">
-						{# Release version #}
 						<h4>
-							<a href="{{ release.url }}">
-								{{ release.version }}
-							</a>
-							<small><abbr class="timeago" title="{{ release.created_iso }}"></abbr></small>
+							Dependencies
 						</h4>
-						{# End Release version #}
-
-						{# Works with #}
-						<p>
-							<strong>Works with</strong>
-							{{ release.require }}
-						</p>
-						{# End Works with #}
-
-						{# Release #}
-						{% if release.releaseapi_set.count %}
-						{% with releaseapi=release.releaseapi_set.get %}
-						<p>
-							<strong>API</strong>
-							&nbsp;
-							<a target="_blank" href="{{ releaseapi.pom_xml_file.url }}">pom.xml</a>
-							&nbsp;
-							<a target="_blank" href="{{ releaseapi.javadocs_jar_file.url }}-extracted">Javadocs</a>
-						</p>
-						{% endwith %}
-						{% endif %}
-
-						{# Release dependencies #}
-						{% if release.dependents.count %}
-						<p>
-							<strong>Apps that depend on this release</strong>
-							<ul>
-								{% for dependent in release.dependents.all %}
-								<li><a href="{% url 'app_page' dependent.app.name %}" target="_blank">{{ dependent.app.fullname }}</a> {{ dependent.version }}</li>
-								{% endfor %}
-							</ul>
-						</p>
-						{% endif %}
-						{# End Release dependencies #}
-
-						{% if release.notes %}
-						<p><strong>Release Notes</strong></p>
-						<div class="cy-app-release-notes">{{ release.notes }}</div>
-						{% endif %}
-						{# End Release #}
+						<div class="cy-app-release-notes">{{ app.instructions.dependencies }}</div>
 						<hr>
 					</div>
 				</div>
-				{% endfor %} {# end looping thru each release #}
+				<div class="row">
+					<div class="span8">
+						<h4>
+							Installation
+						</h4>
+						<div class="cy-app-release-notes">{{ app.instructions.installation }}</div>
+						<hr>
+					</div>
+				</div>
 			</div>
 			{% endif %}
 			{# End Instructions tab #}
+
+			{# Instructions tab #}
+			{% if app.maintenance %}
+			<div class="tab-pane" id="cy-app-maintenance-tab">
+				<div class="row">
+					<div class="span8">
+						<h4>
+							Maintenance Notes
+						</h4>
+						<div class="cy-app-release-notes">{{ app.maintenance.notes }}</div>
+						<hr>
+					</div>
+				</div>
+			</div>
+			{% endif %}
+			{# End Maintenance tab #}
 		</div>
 	</div>
 	{# End Tab content #}
@@ -460,7 +449,11 @@ $('.has-tooltip').tooltip();
 {% if app.has_releases %}
 AppPage.setup_install("{{ app.name|escapejs }}",
 	"{{ app.fullname|escapejs }}",
-	"{{ latest.url }}",
+	{% if app.instructions %}
+		"{{ app.instructions.default_release.url }}",
+	{% else %}
+		"{{ latest.url }}",
+	{% endif %}
 	"{{ latest.version }}",
 	"");
 {% endif %}

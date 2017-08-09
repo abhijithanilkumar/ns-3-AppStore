@@ -137,6 +137,7 @@ def editAuthor(request, appnum, num):
 
 @login_required
 def modifyInstructions(request, num):
+    existing = False
     App = apps.get_model('apps', 'App')
     Instructions = apps.get_model('apps', 'Instructions')
     try:
@@ -144,21 +145,21 @@ def modifyInstructions(request, num):
     except:
         return render(request, 'message.html', {'message': "Requested App does not Exits!"})
     if Instructions.objects.filter(app=app).exists():
-        exist = True
-        edit_instructions = Instructions.object.get(app=app)
+        existing = True
+        edit_instructions = Instructions.objects.get(app=app)
     if request.user.is_staff or request.user in app.editors.all():
         if request.method == 'GET':
-            if exists:
+            if existing:
                 form = InstructionsForm(instance=edit_instructions)
             else:
-                form = AuthorForm()
+                form = InstructionsForm()
         elif request.method == 'POST':
-            if exists:
+            if existing:
                 form = InstructionsForm(request.POST, instance=edit_instructions)
             else:
                 form = InstructionsForm(request.POST)
             if form.is_valid():
-                if exists:
+                if existing:
                     edited_instructions = form.save()
                     edited_instructions.save()
                 else:
@@ -168,10 +169,11 @@ def modifyInstructions(request, num):
                 return render(request, 'message.html', {'message': "Instructions modified Successfully!"})
     else:
         return render(request, 'message.html', {'message': "You are not authorized to view this page!"})
-    return render(request, 'modify_instructions.html', {'form':form})
+    return render(request, 'instructions.html', {'form':form})
 
 @login_required
-def modifyDependencies(request, num):
+def modifyMaintenance(request, num):
+    existing = False
     App = apps.get_model('apps', 'App')
     Maintenance = apps.get_model('apps', 'Maintenance')
     try:
@@ -179,21 +181,21 @@ def modifyDependencies(request, num):
     except:
         return render(request, 'message.html', {'message': "Requested App does not Exits!"})
     if Maintenance.objects.filter(app=app).exists():
-        exist = True
-        edit_maintenance = Maintenance.object.get(app=app)
+        existing = True
+        edit_maintenance = Maintenance.objects.get(app=app)
     if request.user.is_staff or request.user in app.editors.all():
         if request.method == 'GET':
-            if exists:
+            if existing:
                 form = MaintenanceForm(instance=edit_maintenance)
             else:
                 form = MaintenanceForm()
         elif request.method == 'POST':
-            if exists:
+            if existing:
                 form = MaintenanceForm(request.POST, instance=edit_maintenance)
             else:
                 form = MaintenanceForm(request.POST)
             if form.is_valid():
-                if exists:
+                if existing:
                     edited_maintenance = form.save()
                     edited_maintenance.save()
                 else:
@@ -203,4 +205,4 @@ def modifyDependencies(request, num):
                 return render(request, 'message.html', {'message': "Maintenance notes modified Successfully!"})
     else:
         return render(request, 'message.html', {'message': "You are not authorized to view this page!"})
-    return render(request, 'modify_maintenance.html', {'form':form})
+    return render(request, 'maintenance.html', {'form':form})

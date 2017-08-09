@@ -9,4 +9,6 @@ urlpatterns = [
     url(r'^edit/release/(?P<num>[0-9]+)/$', views.editRelease, name="editRelease"),
     url(r'^create/author/(?P<num>[0-9]+)/$', views.createAuthor, name="createAuthor"),
     url(r'^edit/(?P<appnum>[0-9]+)/author/(?P<num>[0-9]+)/$', views.editAuthor, name="editAuthor"),
+    url(r'^maintenance/(?P<num>[0-9])/$', views.modifyMaintenance, name='modify_maintenance'),
+    url(r'^instructions/(?P<num>[0-9])/$', views.modifyInstructions, name='modify_instructions'),
 ]
