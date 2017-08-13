@@ -89,7 +89,7 @@ def tagSearch(request, name="all"):
         }
         return render(request, 'apps_tag.html', context)
     else:
-        apps = App.objects.all().order_by('title')
+        apps = App.objects.all().filter(active=True).order_by('title')
         top_tags, not_top_tags = findTags()
         context = {
             'apps':apps,
