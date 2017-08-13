@@ -22,35 +22,45 @@ def findTags():
     return top_tags, not_top_tags
 
 def appPage(request, name):
-    app = get_object_or_404(App, name=name)
-    app.description = markdownify(app.description)
-    releases = Release.objects.filter(app=app).order_by('-id')
-    tags = app.tags.all()
-    screenshots = Screenshot.objects.filter(app=app)
-    for release in releases:
-        release.notes = markdownify(release.notes)
-    authors = app.authors.all()
-    if releases:
-        latest = releases.latest('date')
+    if name == "inactive":
+        apps = App.objects.all().filter(active=False).order_by('title')
+        top_tags, not_top_tags = findTags()
+        context = {
+            'apps':apps,
+            'top_tags':top_tags,
+            'not_top_tags':not_top_tags,
+        }
+        return render(request, 'apps.html', context)
     else:
-        latest = []
-    editors = app.editors.all()
-    comments = Comment.objects.filter(app=app)
-    go_back_to_url = "/"
-    go_back_to_title = "home"
-    context = {
-        'app':app,
-        'editors':editors,
-        'tags':tags,
-        'releases':releases,
-        'screenshots':screenshots,
-        'authors':authors,
-        'latest':latest,
-        #'comments':comments,
-        'go_back_to_url':go_back_to_url,
-        'go_back_to_title':go_back_to_title,
-    }
-    return render(request, 'page.html', context)
+        app = get_object_or_404(App, name=name)
+        app.description = markdownify(app.description)
+        releases = Release.objects.filter(app=app).order_by('-id')
+        tags = app.tags.all()
+        screenshots = Screenshot.objects.filter(app=app)
+        for release in releases:
+            release.notes = markdownify(release.notes)
+        authors = app.authors.all()
+        if releases:
+            latest = releases.latest('date')
+        else:
+            latest = []
+        editors = app.editors.all()
+        comments = Comment.objects.filter(app=app)
+        go_back_to_url = "/"
+        go_back_to_title = "home"
+        context = {
+            'app':app,
+            'editors':editors,
+            'tags':tags,
+            'releases':releases,
+            'screenshots':screenshots,
+            'authors':authors,
+            'latest':latest,
+            #'comments':comments,
+            'go_back_to_url':go_back_to_url,
+            'go_back_to_title':go_back_to_title,
+        }
+        return render(request, 'page.html', context)
 
 def download(request, num):
     app = App.objects.get(id=num)

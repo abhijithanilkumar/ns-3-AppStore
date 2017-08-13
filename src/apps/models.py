@@ -50,7 +50,6 @@ class App(models.Model):
     website = models.URLField(blank=True, null=True)
     documentation = models.URLField(blank=True, null=True)
     coderepo = models.URLField(blank=True, null=True)
-    license_text = models.URLField(blank=True, null=True)
     contact = models.EmailField(blank=True, null=True)
     active = models.BooleanField(default=False)
     stars = models.PositiveIntegerField(default=0)

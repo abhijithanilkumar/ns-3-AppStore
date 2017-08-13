@@ -36,7 +36,9 @@ class EditAppForm(forms.ModelForm):
         self.fields['authors'].label = "Authors of the App"
         self.fields['tags'].label = "Tags related to the App"
         self.fields['website'].label = "Website of the App"
-        self.fields['tutorial'].label = "Tutorial Website Link"
+        self.fields['documentation'].label = "Tutorial Website Link"
+        self.fields['mailing_list'].label = "Module Mailing List"
+        self.fields['issue'].label = "Module Issue Tracker"
         self.fields['coderepo'].label = "Link to the Code Repository"
         self.fields['contact'].label = "Contact Email"
 
