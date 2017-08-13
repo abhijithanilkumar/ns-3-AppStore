@@ -1,12 +1,15 @@
 {% extends "backend_base.html" %}
 
+{% load material_form %}
+
 {% block title %}{{ block.super }}New Release{% endblock %}
 
 {% block form_heading %}Add a New Release{% endblock %}
 
 {% block form %}
   <form method="POST">
-      {{ form }}
+      {% csrf_token %}
+      {% form form=form %}{% endform %}
       <button type="submit" name="_submit" class="btn">Submit</button>
   </form>
 {% endblock form %}

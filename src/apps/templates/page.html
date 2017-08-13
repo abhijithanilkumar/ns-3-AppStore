@@ -54,7 +54,7 @@
 				<li class="divider"></li>
 				<!--li><a data-toggle="modal" href="#delete_ratings_modal">Delete all ratings</a></li-->
 				<li><a href="/backend/maintenance/{{ app.id }}">Add/Edit Maintenance</a></li>
-				<li><a href="/backend/instructions/{{ app.id }}">Add/Edit Instructions</a></li>
+				<li><a href="/backend/instructions/{{ app.id }}">Add/Edit Installation</a></li>
 			</ul>
 		</div>
 	</div>
@@ -262,32 +262,20 @@
 			{% endif %}
 			{# End Releases tab #}
 
-			{# Instructions tab #}
+			{# Installation tab #}
 			{% if app.instructions %}
 			<div class="tab-pane" id="cy-app-instructions-tab">
 				<div class="row">
 					<div class="span8">
-						<h4>
-							Dependencies
-						</h4>
-						<div class="cy-app-release-notes">{{ app.instructions.dependencies }}</div>
-						<hr>
-					</div>
-				</div>
-				<div class="row">
-					<div class="span8">
-						<h4>
-							Installation
-						</h4>
-						<div class="cy-app-release-notes">{{ app.instructions.installation }}</div>
+						<div class="cy-app-release-notes">{{ app.instructions.installation|safe }}</div>
 						<hr>
 					</div>
 				</div>
 			</div>
 			{% endif %}
-			{# End Instructions tab #}
+			{# End Installation tab #}
 
-			{# Instructions tab #}
+			{# Maintenance tab #}
 			{% if app.maintenance %}
 			<div class="tab-pane" id="cy-app-maintenance-tab">
 				<div class="row">
@@ -295,7 +283,7 @@
 						<h4>
 							Maintenance Notes
 						</h4>
-						<div class="cy-app-release-notes">{{ app.maintenance.notes }}</div>
+						<div class="cy-app-release-notes">{{ app.maintenance.notes|safe }}</div>
 						<hr>
 					</div>
 				</div>

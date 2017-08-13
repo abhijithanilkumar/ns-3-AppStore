@@ -79,7 +79,6 @@ class Release(models.Model):
     require = models.ForeignKey(NsRelease)
     date = models.DateField(default=datetime.now, blank=True)
     notes = MarkdownxField()
-    dependencies = models.ManyToManyField('self', related_name='dependents', symmetrical='False', blank=True, null=True)
     filename = models.FileField(upload_to='release_files/%Y-%m-%d/', blank=True, null=True)
     url = models.URLField(blank=True, null=True)
 
@@ -116,7 +115,6 @@ class Screenshot(models.Model):
 class Instructions(models.Model):
     app = models.OneToOneField(App)
     default_release = models.OneToOneField(Release)
-    dependencies = MarkdownxField()
     installation = MarkdownxField()
 
     def __str__(self):

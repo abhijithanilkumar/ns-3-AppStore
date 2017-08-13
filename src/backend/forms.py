@@ -62,7 +62,6 @@ class ReleaseForm(forms.ModelForm):
         self.fields['require'].label = "Requires ns-3 Version"
         self.fields['require'].required = True
         self.fields['notes'].label = "Release Notes"
-        self.fields['dependencies'].label = "Package Dependencies"
         self.fields['filename'].label = "Release File (bakeconf.xml)"
         self.fields['url'].label = "Release Url"
 
@@ -100,7 +99,6 @@ class InstructionsForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(forms.ModelForm, self).__init__(*args, **kwargs)
         self.fields['default_release'].label = "Default Release"
-        self.fields['dependencies'].label = "Instructions to setup dependencies (Markdown Supported)"
         self.fields['installation'].label = "Installation instructions (Markdown Supported)"
 
     def clean(self):
