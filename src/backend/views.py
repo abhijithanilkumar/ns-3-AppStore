@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from forms import CreateAppForm, EditAppForm, ReleaseForm, AuthorForm, \
-        InstructionsForm, MaintenanceForm
+        InstructionsForm, MaintenanceForm, EditDetailsForm
 from django.apps import apps
 from util.img_util import scale_img
 
@@ -206,3 +206,24 @@ def modifyMaintenance(request, num):
     else:
         return render(request, 'message.html', {'message': "You are not authorized to view this page!"})
     return render(request, 'maintenance.html', {'form':form})
+
+@login_required
+def editDetails(request, num):
+    App = apps.get_model('apps', 'App')
+    try:
+        edit_app = App.objects.get(id=num)
+    except:
+        return render(request, 'message.html', {'message': "Requested App does not Exist!"})
+    editors = edit_app.editors.all()
+    if request.user in editors or request.user.is_staff:
+        if request.method == 'GET':
+            form = EditDetailsForm(instance=edit_app)
+        elif request.method == 'POST':
+            form = EditDetailsForm(request.POST, instance=edit_app)
+            if form.is_valid():
+                edited_app = form.save()
+                edited_app.save()
+                return render(request, 'message.html', {'message': "App Page edited Successfully!"})
+    else:
+        return render(request, 'message.html', {'message': "You are not authorized to view this page!"})
+    return render(request, 'edit_details.html', {'form':form})

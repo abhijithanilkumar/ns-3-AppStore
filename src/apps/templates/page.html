@@ -53,8 +53,9 @@
 				<li><a href="/backend/create/release/{{ app.id }}">Submit a new release</a></li>
 				<li class="divider"></li>
 				<!--li><a data-toggle="modal" href="#delete_ratings_modal">Delete all ratings</a></li-->
-				<li><a href="/backend/maintenance/{{ app.id }}">Add/Edit Maintenance</a></li>
+				<li><a href="/backend/details/{{ app.id }}">Edit Details</a></li>
 				<li><a href="/backend/instructions/{{ app.id }}">Add/Edit Installation</a></li>
+				<li><a href="/backend/maintenance/{{ app.id }}">Add/Edit Maintenance</a></li>
 			</ul>
 		</div>
 	</div>
@@ -75,27 +76,7 @@
 		<span id="rating-count">({{ app.votes|escapejs }})</span>
 		{# End Ratings #}
 
-		{# Downloads #}
-		{#% if app.has_releases %#}
-		<!--span class="app-usage-info-divider"></span>
-		<a href="" target="_blank">
-			{{ app.downloads }} downloads
-		</a-->
-		{#% endif %#}
-		{# End Downloads #}
-
 		<span class="app-usage-info-divider"></span>
-
-		{# badges #}
-		{#% if app.has_releases %#}
-		<!--img src="{% get_static_prefix %}apps/img/cy3_sticker.png" class="has-tooltip" data-toggle="tooltip" data-title="This app is available for Cytoscape 3.0 and above."-->
-		{#% endif %#}
-
-		{#% if app.competition_winner_dec_2012 %#}
-		<!--a href="http://nrnb.org/competitions.html" target="_blank">
-			<img src="{% get_static_prefix %}apps/img/trophy.png" class="has-tooltip" data-toggle="tooltip" data-title="This app won the December 2012 App Competition.">
-		</a-->
-		{#% endif %#}
 
 		{% if app.coderepo %}
 		<a href="{{ app.coderepo }}" target="_blank">
@@ -280,9 +261,6 @@
 			<div class="tab-pane" id="cy-app-maintenance-tab">
 				<div class="row">
 					<div class="span8">
-						<h4>
-							Maintenance Notes
-						</h4>
 						<div class="cy-app-release-notes">{{ app.maintenance.notes|safe }}</div>
 						<hr>
 					</div>
@@ -327,20 +305,22 @@
 				<li class="nav-header">
 					Resources
 				</li>
-				<li><a href="https://groups.google.com/forum/?fromgroups#!newtopic/ns-3-users" target="_blank">
-					<i class="icon-question-sign"></i>
-					Ask a question
-				</a></li>
+				{% if app.mailing_list %}
+				<li>
+					<a href="{{ app.mailing_list}}" target="_blank">
+						<i class="icon-question-sign"></i>
+						Ask a question
+					</a>
+				</li>
+				{% endif %}
 
-				<li><a href="https://www.nsnam.org/support/report-a-bug/" target="_blank">
+				{% if app.issue %}
+				<li>
+					<a href="{{ app.issue }}" target="_blank">
 					<i class="icon-question-sign"></i>
 					Report a Bug
 				</a></li>
-
-				<li><a href="https://groups.google.com/forum/?fromgroups#!searchin/ns-3-users/{{ app.title }}" target="_blank">
-					<i class="icon-comment"></i>
-					Search posts
-				</a></li>
+				{% endif %}
 
 				<li class="divider"></li>
 
@@ -350,15 +330,9 @@
 				</a></li>
 				{% endif %}
 
-				{% if app.tutorial %}
+				{% if app.documentation %}
 				<li><a href="{{ app.tutorial }}" target="_blank">
-					<i class="icon-book"></i> Tutorial
-				</a></li>
-				{% endif %}
-
-				{% if app.citation %}
-				<li><a href="http://www.ncbi.nlm.nih.gov/pubmed/{{ app.citation }}" target="_blank">
-					<i class="icon-heart"></i> Cite this App
+					<i class="icon-book"></i> Documentation
 				</a></li>
 				{% endif %}
 

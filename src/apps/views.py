@@ -72,13 +72,13 @@ def download(request, num):
     }
     return render(request, 'download.html', context)
 
-def tagSearch(request, name):
-    if num:
+def tagSearch(request, name="all"):
+    if name != "all":
         try:
             apps = App.objects.filter(tags__identity=name).filter(active=True)
             active_tag = Tag.objects.get(identity=name)
         except:
-            return render(request, 'home.html')
+            return render(request, 'message.html')
         top_tags, not_top_tags = findTags()
         context = {
             'apps':apps,

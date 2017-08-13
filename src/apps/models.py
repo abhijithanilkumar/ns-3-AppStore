@@ -48,7 +48,7 @@ class App(models.Model):
     editors = models.ManyToManyField(settings.AUTH_USER_MODEL)
     latest_release_date = models.DateField(auto_now_add=True)
     website = models.URLField(blank=True, null=True)
-    tutorial = models.URLField(blank=True, null=True)
+    documentation = models.URLField(blank=True, null=True)
     coderepo = models.URLField(blank=True, null=True)
     license_text = models.URLField(blank=True, null=True)
     contact = models.EmailField(blank=True, null=True)
@@ -57,6 +57,8 @@ class App(models.Model):
     votes = models.PositiveIntegerField(default=0)
     downloads = models.PositiveIntegerField(default=0)
     has_releases = models.BooleanField(default=False)
+    issue = models.URLField(blank=True, null=True)
+    mailing_list = models.URLField(blank=True, null=True)
 
     def __str__(self):
         return self.title

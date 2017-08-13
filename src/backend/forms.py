@@ -53,6 +53,21 @@ class EditAppForm(forms.ModelForm):
             'has_releases',
         ]
 
+class EditDetailsForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(forms.ModelForm, self).__init__(*args, **kwargs)
+        self.fields['description'].label = "Details (Markdown Supported)"
+
+    def clean(self):
+        return self.cleaned_data
+
+    class Meta:
+        model = apps.get_model('apps', 'App')
+        fields = [
+            'description'
+        ]
+
 class ReleaseForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
