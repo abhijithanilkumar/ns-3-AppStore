@@ -89,7 +89,6 @@ class ReleaseForm(forms.ModelForm):
         model = apps.get_model('apps', 'Release')
         exclude = [
             'app',
-            'date',
         ]
 
 class AuthorForm(forms.ModelForm):

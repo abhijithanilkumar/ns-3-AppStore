@@ -17,7 +17,7 @@ class NsRelease(models.Model):
         return u'%s-%s' % ("ns", self.name)
 
 class Author(models.Model):
-    identity = models.CharField(max_length=50)
+    identity = models.CharField(max_length=50, editable=False)
     name = models.CharField(max_length=50)
     institution = models.CharField(max_length=255, null=True, blank=True)
 
@@ -28,7 +28,7 @@ class Author(models.Model):
             return u'%s (%s)' % (self.name, self.institution)
 
 class Tag(models.Model):
-    identity = models.CharField(max_length=127)
+    identity = models.CharField(max_length=127, editable=False)
     name = models.CharField(max_length=127)
 
     def __str__(self):
