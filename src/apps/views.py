@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-from models import App, Release, Tag, Author, Comment, Screenshot
+from models import App, Release, Tag, Comment, Screenshot
 from markdownx.utils import markdownify
 from forms import CommentForm
 
@@ -39,7 +39,6 @@ def appPage(request, name):
         screenshots = Screenshot.objects.filter(app=app)
         for release in releases:
             release.notes = markdownify(release.notes)
-        authors = app.authors.all()
         if releases:
             latest = releases.latest('date')
         else:
@@ -54,7 +53,6 @@ def appPage(request, name):
             'tags':tags,
             'releases':releases,
             'screenshots':screenshots,
-            'authors':authors,
             'latest':latest,
             #'comments':comments,
             'go_back_to_url':go_back_to_url,
@@ -108,22 +106,6 @@ def tagSearch(request, name="all"):
             'navbar_selected_link':"all",
         }
         return render(request, 'apps.html', context)
-
-def authorSearch(request, name):
-    try:
-        apps = App.objects.filter(authors__identity=name).filter(active=True)
-        active_author = Author.objects.get(identity=name)
-    except:
-        return render(request, 'home.html')
-    apps_name = apps.order_by('title')
-    top_tags, not_top_tags = findTags()
-    context = {
-        'apps':apps,
-        'top_tags':top_tags,
-        'not_top_tags':not_top_tags,
-        'author_name':active_author.name,
-    }
-    return render(request, 'apps_author.html', context)
 
 @login_required
 def feedback(request, num):

@@ -1,15 +1,11 @@
 {% extends "backend_base.html" %}
 
-{% load material_form %}
+{% load crispy_forms_tags %}
 
 {% block title %}{{ block.super }}New Release{% endblock %}
 
 {% block form_heading %}Add a New Release{% endblock %}
 
 {% block form %}
-  <form method="POST">
-      {% csrf_token %}
-      {% form form=form %}{% endform %}
-      <button type="submit" name="_submit" class="btn">Submit</button>
-  </form>
+  {% crispy form %}
 {% endblock form %}

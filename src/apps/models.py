@@ -16,17 +16,6 @@ class NsRelease(models.Model):
     def __str__(self):
         return u'%s-%s' % ("ns", self.name)
 
-class Author(models.Model):
-    identity = models.CharField(max_length=50, editable=False)
-    name = models.CharField(max_length=50)
-    institution = models.CharField(max_length=255, null=True, blank=True)
-
-    def __str__(self):
-        if not self.institution:
-            return self.name
-        else:
-            return u'%s (%s)' % (self.name, self.institution)
-
 class Tag(models.Model):
     identity = models.CharField(max_length=127, editable=False)
     name = models.CharField(max_length=127)
@@ -43,7 +32,6 @@ class App(models.Model):
     abstract = models.CharField(max_length=255, default="NA")
     description = MarkdownxField()
     icon = models.ImageField(upload_to='app_icon_thumbnail/%Y-%m-%d/', blank=True)
-    authors = models.ManyToManyField(Author, blank=True)
     tags = models.ManyToManyField(Tag, blank=True)
     editors = models.ManyToManyField(settings.AUTH_USER_MODEL)
     latest_release_date = models.DateField(auto_now_add=True)
@@ -136,12 +124,6 @@ def update_name(sender, instance=None, created=False, **kwargs):
 
 @receiver(post_save, sender=Tag)
 def update_tag_identity(sender, instance=None, created=False, **kwargs):
-    if created:
-        instance.identity = instance.name.replace(" ","").lower()
-        instance.save()
-
-@receiver(post_save, sender=Author)
-def update_author_identity(sender, instance=None, created=False, **kwargs):
     if created:
         instance.identity = instance.name.replace(" ","").lower()
         instance.save()

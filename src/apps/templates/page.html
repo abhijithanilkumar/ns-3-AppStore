@@ -161,24 +161,6 @@
 				{% endif %}
 				{# End Details #}
 
-				{# Authors #}
-				{% if authors %}
-				<div class="row">
-					<div class="span8">
-						Authors:
-						<ul>
-							{% for author in authors %}
-							<li>
-								<a href="/tag/author/{{ author.identity }}">
-									{{ author.name }} {% if author.institution %} ({{ author.institution }}){% endif %}
-								</a>
-							</li>
-							{% endfor %}
-						</ul>
-					</div>
-				</div>
-				{% endif %}
-				{# End Authors #}
 			</div>
 			{# End Details tab #}
 

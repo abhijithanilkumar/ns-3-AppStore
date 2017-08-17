@@ -1,5 +1,6 @@
 from django import forms
 from django.apps import apps
+from crispy_forms.helper import FormHelper
 
 class CreateAppForm(forms.ModelForm):
 
@@ -19,7 +20,6 @@ class CreateAppForm(forms.ModelForm):
             'title',
             'abstract',
             'description',
-            'authors',
             'editors',
         ]
 
@@ -27,13 +27,13 @@ class EditAppForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(forms.ModelForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
         self.fields['title'].label = "Title"
         self.fields['title'].required = True
         self.fields['abstract'].label = "Abstract (255 characters)"
         self.fields['abstract'].required = True
         self.fields['description'].label = "Description (Markdown Supported!)"
         self.fields['icon'].label = "App Icon"
-        self.fields['authors'].label = "Authors of the App"
         self.fields['tags'].label = "Tags related to the App"
         self.fields['website'].label = "Website of the App"
         self.fields['documentation'].label = "Tutorial Website Link"
@@ -89,25 +89,6 @@ class ReleaseForm(forms.ModelForm):
         model = apps.get_model('apps', 'Release')
         exclude = [
             'app',
-        ]
-
-class AuthorForm(forms.ModelForm):
-
-    def __init__(self, *args, **kwargs):
-        super(forms.ModelForm, self).__init__(*args, **kwargs)
-        self.fields['name'].label = "Name"
-        self.fields['name'].required = True
-        self.fields['institution'].label = "Institution"
-        self.fields['institution'].required = True
-
-    def clean(self):
-        return self.cleaned_data
-
-    class Meta:
-        model = apps.get_model('apps', 'Author')
-        fields = [
-            'name',
-            'institution'
         ]
 
 class InstructionsForm(forms.ModelForm):
