@@ -159,7 +159,7 @@ def update_download_link(sender, instance=None, created=False, **kwargs):
         if releases:
             release = releases.latest('date')
         choice = instance.download_option
-        link = "https://ns-apps.washington.edu.in/"+instance.app.name+"/#cy-app-instructions-tab"
+        link = "https://ns-apps.washington.edu/"+instance.app.name+"/#cy-app-instructions-tab"
         if choice == 'I':
             instance.download_link = link
         elif choice == 'D':
