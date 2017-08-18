@@ -5,9 +5,11 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from forms import CreateAppForm, EditAppForm, ReleaseForm, \
         InstallationForm, MaintenanceForm, EditDetailsForm, \
-        DownloadForm
+        DownloadForm, DevelopmentForm
 from django.apps import apps
 from util.img_util import scale_img
+from django.views.generic.edit import DeleteView
+from django.core.urlresolvers import reverse
 
 @login_required
 def createApp(request):
@@ -19,9 +21,19 @@ def createApp(request):
             if form.is_valid():
                 new_app = form.save()
                 new_app.save()
-                return render(request, 'message.html', {'message': "New App Page created Successfully!"})
+                context = {
+                    'message':"New App Page created Successfully!",
+                    'go_back_to_url':"/app/"+app.name,
+                    'go_back_to_title':"App Page",
+                }
+                return render(request, 'message.html', context)
     else:
-        return render(request, 'message.html', {'message': "You are not authorized to view this page!"})
+        context = {
+            'message':"You are not authorized to view this page!",
+            'go_back_to_url':"/app/"+app.name,
+            'go_back_to_title':"App Page",
+        }
+        return render(request, 'message.html', context)
     return render(request, 'create.html', {'form':form})
 
 @login_required
@@ -30,7 +42,12 @@ def editApp(request, num):
     try:
         edit_app = App.objects.get(id=num)
     except:
-        return render(request, 'message.html', {'message': "Requested App does not Exist!"})
+        context = {
+            'message':"Requested App does not Exist!",
+            'go_back_to_url':"/app/"+edi_app.name,
+            'go_back_to_title':"App Page",
+        }
+        return render(request, 'message.html', context)
     editors = edit_app.editors.all()
     if request.user in editors or request.user.is_staff:
         if request.method == 'GET':
@@ -43,9 +60,19 @@ def editApp(request, num):
                     icon_file = request.FILES['icon']
                     edited_app.icon = scale_img(icon_file, icon_file.name, 128, 'both')
                 edited_app.save()
-                return render(request, 'message.html', {'message': "App Page edited Successfully!"})
+                context = {
+                    'message':"App Page edited Successfully!",
+                    'go_back_to_url':"/app/"+edit_app.name,
+                    'go_back_to_title':"App Page",
+                }
+                return render(request, 'message.html', context)
     else:
-        return render(request, 'message.html', {'message': "You are not authorized to view this page!"})
+        context = {
+            'message':"You are not authorized to view this page!",
+            'go_back_to_url':"/app/"+edit_app.name,
+            'go_back_to_title':"App Page",
+        }
+        return render(request, 'message.html', context)
     return render(request, 'edit.html', {'form':form})
 
 @login_required
@@ -54,7 +81,12 @@ def createRelease(request, num):
     try:
         release_app = App.objects.get(id=num)
     except:
-        return render(request, 'message.html', {'message': "Requested App does not Exist!"})
+        context = {
+            'message':"Requested App does not Exist!",
+            'go_back_to_url':"/app/"+release_app.name,
+            'go_back_to_title':"App Page",
+        }
+        return render(request, 'message.html', context)
     editors = release_app.editors.all()
     if request.user in editors or request.user.is_staff:
         if request.method == 'GET':
@@ -65,9 +97,19 @@ def createRelease(request, num):
                 new_release = form.save(commit=False)
                 new_release.app = release_app
                 new_release.save()
-                return render(request, 'message.html', {'message': "Release added Successfully!"})
+                context = {
+                    'message':"Release added Successfully!",
+                    'go_back_to_url':"/app/"+release_app.name,
+                    'go_back_to_title':"App Page",
+                }
+                return render(request, 'message.html', context)
     else:
-        return render(request, 'message.html', {'message': "You are not authorized to view this page!"})
+        context = {
+            'message':"You are not authorized to view this page!",
+            'go_back_to_url':"/app/"+release_app.name,
+            'go_back_to_title':"App Page",
+        }
+        return render(request, 'message.html', context)
     return render(request, 'create_release.html', {'form':form})
 
 @login_required
@@ -77,7 +119,12 @@ def editRelease(request, num):
     try:
         edit_release = Release.objects.get(id=num)
     except:
-        return render(request, 'message.html', {'message': "Requested App does not Exist!"})
+        context = {
+            'message':"Requested App does not Exist!",
+            'go_back_to_url':"/app/"+edit_release.app.name,
+            'go_back_to_title':"App Page",
+        }
+        return render(request, 'message.html', context)
     editors = edit_release.app.editors.all()
     if request.user in editors or request.user.is_staff:
         if request.method == 'GET':
@@ -87,9 +134,19 @@ def editRelease(request, num):
             if form.is_valid():
                 edited_release = form.save()
                 edited_release.save()
-                return render(request, 'message.html', {'message': "Release edited Successfully!"})
+                context = {
+                    'message':"Release edited Successfully!",
+                    'go_back_to_url':"/app/"+edit_release.app.name,
+                    'go_back_to_title':"App Page",
+                }
+                return render(request, 'message.html', context)
     else:
-        return render(request, 'message.html', {'message': "You are not authorized to view this page!"})
+        context = {
+            'message':"You are not authorized to view this page!",
+            'go_back_to_url':"/app/"+edit_release.app.name,
+            'go_back_to_title':"App Page",
+        }
+        return render(request, 'message.html', context)
     return render(request, 'edit_release.html', {'form':form})
 
 @login_required
@@ -100,7 +157,12 @@ def modifyInstallation(request, num):
     try:
         app = App.objects.get(id=num)
     except:
-        return render(request, 'message.html', {'message': "Requested App does not Exits!"})
+        context = {
+            'message':"Requested App does not Exist!",
+            'go_back_to_url':"/app/"+app.name,
+            'go_back_to_title':"App Page",
+        }
+        return render(request, 'message.html', context)
     if Installation.objects.filter(app=app).exists():
         existing = True
         edit_Installation = Installation.objects.get(app=app)
@@ -123,9 +185,19 @@ def modifyInstallation(request, num):
                     installation = form.save(commit=False)
                     installation.app = app
                     installation.save()
-                return render(request, 'message.html', {'message': "Installation modified Successfully!"})
+                context = {
+                    'message':"Installation modified Successfully!",
+                    'go_back_to_url':"/app/"+app.name,
+                    'go_back_to_title':"App Page",
+                }
+                return render(request, 'message.html', context)
     else:
-        return render(request, 'message.html', {'message': "You are not authorized to view this page!"})
+        context = {
+            'message':"You are not authorized to view this page!",
+            'go_back_to_url':"/app/"+app.name,
+            'go_back_to_title':"App Page",
+        }
+        return render(request, 'message.html', context)
     return render(request, 'installation.html', {'form':form})
 
 @login_required
@@ -136,7 +208,12 @@ def modifyMaintenance(request, num):
     try:
         app = App.objects.get(id=num)
     except:
-        return render(request, 'message.html', {'message': "Requested App does not Exits!"})
+        context = {
+            'message':"Requested App does not Exist!",
+            'go_back_to_url':"/app/"+app.name,
+            'go_back_to_title':"App Page",
+        }
+        return render(request, 'message.html', context)
     if Maintenance.objects.filter(app=app).exists():
         existing = True
         edit_maintenance = Maintenance.objects.get(app=app)
@@ -159,9 +236,19 @@ def modifyMaintenance(request, num):
                     maintenance = form.save(commit=False)
                     maintenance.app = app
                     maintenance.save()
-                return render(request, 'message.html', {'message': "Maintenance notes modified Successfully!"})
+                context = {
+                    'message':"Maintenance notes modified Successfully!",
+                    'go_back_to_url':"/app/"+app.name,
+                    'go_back_to_title':"App Page",
+                }
+                return render(request, 'message.html', context)
     else:
-        return render(request, 'message.html', {'message': "You are not authorized to view this page!"})
+        context = {
+            'message':"You are not authorized to view this page!",
+            'go_back_to_url':"/app/"+app.name,
+            'go_back_to_title':"App Page",
+        }
+        return render(request, 'message.html', context)
     return render(request, 'maintenance.html', {'form':form})
 
 @login_required
@@ -170,7 +257,12 @@ def editDetails(request, num):
     try:
         edit_app = App.objects.get(id=num)
     except:
-        return render(request, 'message.html', {'message': "Requested App does not Exist!"})
+        context = {
+            'message':"Requested App does not Exist!",
+            'go_back_to_url':"/app/"+edit_app.name,
+            'go_back_to_title':"App Page",
+        }
+        return render(request, 'message.html', context)
     editors = edit_app.editors.all()
     if request.user in editors or request.user.is_staff:
         if request.method == 'GET':
@@ -180,9 +272,19 @@ def editDetails(request, num):
             if form.is_valid():
                 edited_app = form.save()
                 edited_app.save()
-                return render(request, 'message.html', {'message': "App Page edited Successfully!"})
+                context = {
+                    'message':"Edited Details Successfully!",
+                    'go_back_to_url':"/app/"+edit_app.name,
+                    'go_back_to_title':"App Page",
+                }
+                return render(request, 'message.html', context)
     else:
-        return render(request, 'message.html', {'message': "You are not authorized to view this page!"})
+        context = {
+            'message':"You are not authorized to view this page!",
+            'go_back_to_url':"/app/"+app.name,
+            'go_back_to_title':"App Page",
+        }
+        return render(request, 'message.html', context)
     return render(request, 'edit_details.html', {'form':form})
 
 @login_required
@@ -194,7 +296,12 @@ def modifyDownload(request, num):
     try:
         app = App.objects.get(id=num)
     except:
-        return render(request, 'message.html', {'message': "Requested App does not Exits!"})
+        context = {
+            'message':"Requested App does not Exist!",
+            'go_back_to_url':"/app/"+app.name,
+            'go_back_to_title':"App Page",
+        }
+        return render(request, 'message.html', context)
     if Download.objects.filter(app=app).exists():
         existing = True
         edit_download = Download.objects.get(app=app)
@@ -236,7 +343,108 @@ def modifyDownload(request, num):
                     download = form.save(commit=False)
                     download.app = app
                     download.save()
-                return render(request, 'message.html', {'message': "Instructions modified Successfully!"})
+                context = {
+                    'message':"Download Details modified Successfully!",
+                    'go_back_to_url':"/app/"+app.name,
+                    'go_back_to_title':"App Page",
+                }
+                return render(request, 'message.html', context)
     else:
-        return render(request, 'message.html', {'message': "You are not authorized to view this page!"})
+        context = {
+            'message':"You are not authorized to view this page!",
+            'go_back_to_url':"/app/"+app.name,
+            'go_back_to_title':"App Page",
+        }
+        return render(request, 'message.html', context)
     return render(request, 'download.html', {'form':form})
+
+@login_required
+def modifyDevelopment(request, num):
+    existing = False
+    App = apps.get_model('apps', 'App')
+    Development = apps.get_model('apps', 'Development')
+    try:
+        app = App.objects.get(id=num)
+    except:
+        context = {
+            'message':"Requested App does not Exist!",
+            'go_back_to_url':"/app/"+app.name,
+            'go_back_to_title':"App Page",
+        }
+        return render(request, 'message.html', context)
+    if Development.objects.filter(app=app).exists():
+        existing = True
+        edit_development = Development.objects.get(app=app)
+    if request.user.is_staff or request.user in app.editors.all():
+        if request.method == 'GET':
+            if existing:
+                form = DevelopmentForm(instance=edit_development)
+            else:
+                form = DevelopmentForm()
+        elif request.method == 'POST':
+            if existing:
+                form = DevelopmentForm(request.POST, instance=edit_development)
+            else:
+                form = DevelopmentForm(request.POST)
+            if form.is_valid():
+                if existing:
+                    edited_development = form.save()
+                    edited_development.save()
+                else:
+                    development = form.save(commit=False)
+                    development.app = app
+                    development.save()
+                context = {
+                    'message':"Development Version modified Successfully!",
+                    'go_back_to_url':"/app/"+app.name,
+                    'go_back_to_title':"App Page",
+                }
+                return render(request, 'message.html', context)
+    else:
+        context = {
+            'message':"You are not authorized to view this page!",
+            'go_back_to_url':"/app/"+app.name,
+            'go_back_to_title':"App Page",
+        }
+        return render(request, 'message.html', context)
+    return render(request, 'development.html', {'form':form})
+
+def deleteReleasePrompt(request, num):
+    Release = apps.get_model('apps', 'Release')
+    release = Release.objects.get(id=num)
+    app = release.app
+    go_back_to_url = "/app/"+app.name
+    print app
+    if request.user.is_staff or request.user in app.editors.all():
+        context = {
+            'release_id':num,
+            'name':app.name,
+            'go_back_to_url':go_back_to_url,
+            'go_back_to_title':"App Page",
+        }
+        return render(request, 'prompt.html', context)
+    else:
+        message = "You are not authorized to view this page!"
+        context = {
+            'message':message,
+            'go_back_to_url':go_back_to_url,
+            'go_back_to_title':"App Page",
+        }
+        return render(request, 'message.html', context)
+
+def deleteRelease(request, num):
+    Release = apps.get_model('apps', 'Release')
+    release = Release.objects.get(id=num)
+    app = release.app
+    if request.user.is_staff or request.user in app.editors.all():
+        release.delete()
+        message = "Release Deleted Successfully!"
+    else:
+        message = "You are not authorized to view this page!"
+    go_back_to_url = "/app/"+app.name
+    context = {
+        'message':message,
+        'go_back_to_url':go_back_to_url,
+        'go_back_to_title':"App Page",
+    }
+    return render(request, 'message.html', context)

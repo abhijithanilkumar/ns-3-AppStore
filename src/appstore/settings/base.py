@@ -166,3 +166,4 @@ HAYSTACK_CONNECTIONS = {
 }
 
 HAYSTACK_DEFAULT_OPERATOR = 'OR'
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'

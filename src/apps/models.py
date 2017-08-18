@@ -129,6 +129,16 @@ class Download(models.Model):
     def __str__(self):
         return '%s Download Details' % (self.app.title)
 
+class Development(models.Model):
+    app = models.OneToOneField(App)
+    notes = MarkdownxField()
+    filename = models.FileField(upload_to='release_files/%Y-%m-%d/', blank=True, null=True)
+    url = models.URLField(blank=True, null=True)
+
+    def __str__(self):
+        return '%s Development Version' % (self.app.title)
+
+
 @receiver(post_save, sender=App)
 def update_name(sender, instance=None, created=False, **kwargs):
     if created:

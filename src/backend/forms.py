@@ -124,7 +124,7 @@ class ReleaseForm(forms.ModelForm):
             Field('require',),
             Field('notes', placeholder="Release Notes"),
             Field('filename',),
-            Field('url', placeholder="URL that points to the latest release"),
+            Field('url', placeholder="URL that points to the release"),
             Submit('release', 'Submit',
                    css_class="btn btn-lg btn-primary btn-block"),
             )
@@ -207,4 +207,30 @@ class DownloadForm(forms.ModelForm):
         exclude = [
             'app',
             'download_link',
+        ]
+
+class DevelopmentForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(forms.ModelForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.fields['notes'].label = "Notes (Markdown Supported)"
+        self.fields['filename'].label = "File (bakeconf.xml)"
+        self.fields['url'].label = "Url"
+
+        self.helper.layout = Layout(
+            Field('notes', placeholder="Release Notes", autofocus=""),
+            Field('filename',),
+            Field('url', placeholder="URL that points to the Development release"),
+            Submit('release', 'Submit',
+                   css_class="btn btn-lg btn-primary btn-block"),
+            )
+
+    def clean(self):
+        return self.cleaned_data
+
+    class Meta:
+        model = apps.get_model('apps', 'Development')
+        exclude = [
+            'app',
         ]
