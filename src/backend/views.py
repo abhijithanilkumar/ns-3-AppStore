@@ -23,15 +23,15 @@ def createApp(request):
                 new_app.save()
                 context = {
                     'message':"New App Page created Successfully!",
-                    'go_back_to_url':"/app/"+app.name,
+                    'go_back_to_url':"/app/"+new_app.name,
                     'go_back_to_title':"App Page",
                 }
                 return render(request, 'message.html', context)
     else:
         context = {
             'message':"You are not authorized to view this page!",
-            'go_back_to_url':"/app/"+app.name,
-            'go_back_to_title':"App Page",
+            'go_back_to_url':"/",
+            'go_back_to_title':"Home Page",
         }
         return render(request, 'message.html', context)
     return render(request, 'create.html', {'form':form})
@@ -281,7 +281,7 @@ def editDetails(request, num):
     else:
         context = {
             'message':"You are not authorized to view this page!",
-            'go_back_to_url':"/app/"+app.name,
+            'go_back_to_url':"/app/"+edit_app.name,
             'go_back_to_title':"App Page",
         }
         return render(request, 'message.html', context)
