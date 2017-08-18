@@ -103,7 +103,6 @@ class Screenshot(models.Model):
 
 class Instructions(models.Model):
     app = models.OneToOneField(App)
-    default_release = models.OneToOneField(Release)
     installation = MarkdownxField()
 
     def __str__(self):
@@ -116,6 +115,20 @@ class Maintenance(models.Model):
     def __str__(self):
         return '%s Maintenance' % (self.app.title)
 
+class Download(models.Model):
+    CHOICES = [('I', 'Point to the Installation tab'),
+               ('D', 'Point to the Default Release'),
+               ('U', 'Point to a URL of your Choice'),
+            ]
+    app = models.OneToOneField(App)
+    download_option = models.CharField(max_length=1, default='I', choices=CHOICES)
+    default_release = models.OneToOneField(Release)
+    external_url = models.URLField(blank=True, null=True)
+    download_link = models.URLField(editable=False)
+
+    def __str__(self):
+        return '%s Download Details' % (self.app.title)
+
 @receiver(post_save, sender=App)
 def update_name(sender, instance=None, created=False, **kwargs):
     if created:
@@ -126,6 +139,18 @@ def update_name(sender, instance=None, created=False, **kwargs):
 def update_tag_identity(sender, instance=None, created=False, **kwargs):
     if created:
         instance.identity = instance.name.replace(" ","").lower()
+        instance.save()
+
+@receiver(post_save, sender=Download)
+def update_download_link(sender, instance=None, created=False, **kwargs):
+    if created:
+        choice = instance.download_option
+        if choice == 'I':
+            instance.download_link = "https://ns-apps.washington.edu.in/"+instance.app.name+"/"
+        elif choice == 'D':
+            instance.download_link = instance.default_release.url
+        elif choice == 'U':
+            instance.download_link = instance.external_url
         instance.save()
 
 """

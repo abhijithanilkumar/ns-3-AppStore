@@ -1,0 +1,11 @@
+{% extends "backend_base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}{{ block.super }}Edit Author{% endblock %}
+
+{% block form_heading %}Edit Author Details{% endblock %}
+
+{% block form %}
+  {% crispy form %}
+{% endblock form %}
