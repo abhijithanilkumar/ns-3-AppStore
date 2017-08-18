@@ -4,7 +4,7 @@ from django.conf import settings
 from django.db import models
 from markdownx.models import MarkdownxField
 from datetime import datetime
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 from util.img_util import scale_img
 
@@ -101,12 +101,12 @@ class Screenshot(models.Model):
     def __str__(self):
         return 'Screenshot of %s' % (self.app.title)
 
-class Instructions(models.Model):
+class Installation(models.Model):
     app = models.OneToOneField(App)
     installation = MarkdownxField()
 
     def __str__(self):
-        return '%s Instructions' % (self.app.title)
+        return '%s Installation' % (self.app.title)
 
 class Maintenance(models.Model):
     app = models.OneToOneField(App)
@@ -144,13 +144,24 @@ def update_tag_identity(sender, instance=None, created=False, **kwargs):
 @receiver(post_save, sender=Download)
 def update_download_link(sender, instance=None, created=False, **kwargs):
     if created:
+        release = None
+        releases = Release.objects.filter(app=instance.app)
+        if releases:
+            release = releases.latest('date')
         choice = instance.download_option
+        link = "https://ns-apps.washington.edu.in/"+instance.app.name+"/#cy-app-instructions-tab"
         if choice == 'I':
-            instance.download_link = "https://ns-apps.washington.edu.in/"+instance.app.name+"/"
+            instance.download_link = link
         elif choice == 'D':
-            instance.download_link = instance.default_release.url
+            instance.download_link = release.url
+            if not release:
+                instance.download_link = link
         elif choice == 'U':
             instance.download_link = instance.external_url
+            if not instance.external_url:
+                instance.download_link = link
+        if not instance.default_release:
+            instance.default_release = release
         instance.save()
 
 """

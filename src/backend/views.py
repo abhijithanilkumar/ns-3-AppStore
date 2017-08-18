@@ -4,7 +4,8 @@ from __future__ import unicode_literals
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from forms import CreateAppForm, EditAppForm, ReleaseForm, \
-        InstructionsForm, MaintenanceForm, EditDetailsForm
+        InstallationForm, MaintenanceForm, EditDetailsForm, \
+        DownloadForm
 from django.apps import apps
 from util.img_util import scale_img
 
@@ -92,40 +93,40 @@ def editRelease(request, num):
     return render(request, 'edit_release.html', {'form':form})
 
 @login_required
-def modifyInstructions(request, num):
+def modifyInstallation(request, num):
     existing = False
     App = apps.get_model('apps', 'App')
-    Instructions = apps.get_model('apps', 'Instructions')
+    Installation = apps.get_model('apps', 'Installation')
     try:
         app = App.objects.get(id=num)
     except:
         return render(request, 'message.html', {'message': "Requested App does not Exits!"})
-    if Instructions.objects.filter(app=app).exists():
+    if Installation.objects.filter(app=app).exists():
         existing = True
-        edit_instructions = Instructions.objects.get(app=app)
+        edit_Installation = Installation.objects.get(app=app)
     if request.user.is_staff or request.user in app.editors.all():
         if request.method == 'GET':
             if existing:
-                form = InstructionsForm(instance=edit_instructions)
+                form = InstallationForm(instance=edit_installation)
             else:
-                form = InstructionsForm()
+                form = InstallationForm()
         elif request.method == 'POST':
             if existing:
-                form = InstructionsForm(request.POST, instance=edit_instructions)
+                form = InstallationForm(request.POST, instance=edit_installation)
             else:
-                form = InstructionsForm(request.POST)
+                form = InstallationForm(request.POST)
             if form.is_valid():
                 if existing:
-                    edited_instructions = form.save()
-                    edited_instructions.save()
+                    edited_installation = form.save()
+                    edited_installation.save()
                 else:
-                    instructions = form.save(commit=False)
-                    instructions.app = app
-                    instructions.save()
-                return render(request, 'message.html', {'message': "Instructions modified Successfully!"})
+                    installation = form.save(commit=False)
+                    installation.app = app
+                    installation.save()
+                return render(request, 'message.html', {'message': "Installation modified Successfully!"})
     else:
         return render(request, 'message.html', {'message': "You are not authorized to view this page!"})
-    return render(request, 'instructions.html', {'form':form})
+    return render(request, 'installation.html', {'form':form})
 
 @login_required
 def modifyMaintenance(request, num):
@@ -183,3 +184,59 @@ def editDetails(request, num):
     else:
         return render(request, 'message.html', {'message': "You are not authorized to view this page!"})
     return render(request, 'edit_details.html', {'form':form})
+
+@login_required
+def modifyDownload(request, num):
+    existing = False
+    App = apps.get_model('apps', 'App')
+    Download = apps.get_model('apps', 'Download')
+    Release = apps.get_model('apps', 'Release')
+    try:
+        app = App.objects.get(id=num)
+    except:
+        return render(request, 'message.html', {'message': "Requested App does not Exits!"})
+    if Download.objects.filter(app=app).exists():
+        existing = True
+        edit_download = Download.objects.get(app=app)
+    if request.user.is_staff or request.user in app.editors.all():
+        if request.method == 'GET':
+            if existing:
+                form = DownloadForm(instance=edit_download)
+            else:
+                form = DownloadForm()
+        elif request.method == 'POST':
+            if existing:
+                form = DownloadForm(request.POST, instance=edit_download)
+            else:
+                form = DownloadForm(request.POST)
+            if form.is_valid():
+                if existing:
+                    instance = form.save()
+                    release = None
+                    releases = Release.objects.filter(app=instance.app)
+                    if releases:
+                        release = releases.latest('date')
+                    choice = instance.download_option
+                    link = "https://ns-apps.washington.edu.in/"+instance.app.name+"/#cy-app-instructions-tab"
+                    if choice == 'I':
+                        instance.download_link = link
+                    elif choice == 'D':
+                        instance.download_link = release.url
+                        if not release:
+                            instance.download_link = link
+                    elif choice == 'U':
+                        instance.download_link = instance.external_url
+                        if not instance.external_url:
+                            instance.download_link = link
+                    if not instance.default_release:
+                        instance.default_release = release
+                    print instance.download_link
+                    instance.save()
+                else:
+                    download = form.save(commit=False)
+                    download.app = app
+                    download.save()
+                return render(request, 'message.html', {'message': "Instructions modified Successfully!"})
+    else:
+        return render(request, 'message.html', {'message': "You are not authorized to view this page!"})
+    return render(request, 'download.html', {'form':form})

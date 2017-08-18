@@ -138,7 +138,7 @@ class ReleaseForm(forms.ModelForm):
             'app',
         ]
 
-class InstructionsForm(forms.ModelForm):
+class InstallationForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(forms.ModelForm, self).__init__(*args, **kwargs)
@@ -155,7 +155,7 @@ class InstructionsForm(forms.ModelForm):
         return self.cleaned_data
 
     class Meta:
-        model = apps.get_model('apps', 'Instructions')
+        model = apps.get_model('apps', 'Installation')
         exclude = [
             'app',
         ]
@@ -180,4 +180,31 @@ class MaintenanceForm(forms.ModelForm):
         model = apps.get_model('apps', 'Maintenance')
         exclude = [
             'app',
+        ]
+
+class DownloadForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(forms.ModelForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.fields['download_option'].label = "Download Button Points to"
+        self.fields['default_release'].label = "Default Release"
+        self.fields['external_url'].label = "External Download URL"
+
+        self.helper.layout = Layout(
+            Field('download_option', placeholder="Download Button Points to", autofocus=""),
+            Field('default_release', placeholder="Default release for the App"),
+            Field('external_url', placeholder="eg: Link to a .tar file"),
+            Submit('maintenance', 'Submit',
+                   css_class="btn btn-lg btn-primary btn-block"),
+            )
+
+    def clean(self):
+        return self.cleaned_data
+
+    class Meta:
+        model = apps.get_model('apps', 'Download')
+        exclude = [
+            'app',
+            'download_link',
         ]

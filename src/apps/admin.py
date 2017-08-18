@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 
 from django.contrib import admin
 from models import Tag, App, Release, NsRelease, Comment, Screenshot, \
-        Maintenance, Instructions
+        Maintenance, Installation, Download
 
 # Register your models here.
 admin.site.register(Tag)
@@ -13,4 +13,5 @@ admin.site.register(NsRelease)
 admin.site.register(Comment)
 admin.site.register(Screenshot)
 admin.site.register(Maintenance)
-admin.site.register(Instructions)
+admin.site.register(Installation)
+admin.site.register(Download)

@@ -54,8 +54,9 @@
 				<li class="divider"></li>
 				<!--li><a data-toggle="modal" href="#delete_ratings_modal">Delete all ratings</a></li-->
 				<li><a href="/backend/details/{{ app.id }}">Edit Details</a></li>
-				<li><a href="/backend/instructions/{{ app.id }}">Add/Edit Installation</a></li>
+				<li><a href="/backend/installation/{{ app.id }}">Add/Edit Installation</a></li>
 				<li><a href="/backend/maintenance/{{ app.id }}">Add/Edit Maintenance</a></li>
+				<li><a href="/backend/download/{{ app.id }}">Add/Edit Download</a></li>
 			</ul>
 		</div>
 	</div>
@@ -374,11 +375,7 @@ $('.has-tooltip').tooltip();
 {% if app.has_releases %}
 AppPage.setup_install("{{ app.name|escapejs }}",
 	"{{ app.fullname|escapejs }}",
-	{% if app.instructions %}
-		"{{ app.instructions.default_release.url }}",
-	{% else %}
-		"{{ latest.url }}",
-	{% endif %}
+	"{{ app.download.download_link }}",
 	"{{ latest.version }}",
 	"");
 {% endif %}

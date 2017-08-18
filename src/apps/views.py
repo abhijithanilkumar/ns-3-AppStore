@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-from models import App, Release, Tag, Comment, Screenshot
+from models import App, Release, Tag, Comment, Screenshot, Download
 from markdownx.utils import markdownify
 from forms import CommentForm
 
@@ -39,10 +39,11 @@ def appPage(request, name):
         screenshots = Screenshot.objects.filter(app=app)
         for release in releases:
             release.notes = markdownify(release.notes)
-        if releases:
-            latest = releases.latest('date')
+        download = Download.objects.filter(app=app)
+        if download:
+            latest = app.download.default_release
         else:
-            latest = []
+            latest = None
         editors = app.editors.all()
         comments = Comment.objects.filter(app=app)
         go_back_to_url = "/"
