@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from models import App, Release, Tag, Comment, Screenshot, Download
 from markdownx.utils import markdownify
 from forms import CommentForm
+from django.http import HttpResponseRedirect
 
 # Create your views here.
 
@@ -33,53 +34,46 @@ def appPage(request, name):
         return render(request, 'apps.html', context)
     else:
         app = get_object_or_404(App, name=name)
-        app.description = markdownify(app.description)
-        releases = Release.objects.filter(app=app).order_by('-id')
-        tags = app.tags.all()
-        screenshots = Screenshot.objects.filter(app=app)
-        for release in releases:
-            release.notes = markdownify(release.notes)
-        download = Download.objects.filter(app=app)
-        if download:
-            latest = app.download.default_release
-        else:
-            latest = None
-        editors = app.editors.all()
-        comments = Comment.objects.filter(app=app)
-        go_back_to_url = "/"
-        go_back_to_title = "home"
-        context = {
-            'app':app,
-            'editors':editors,
-            'tags':tags,
-            'releases':releases,
-            'screenshots':screenshots,
-            'latest':latest,
-            #'comments':comments,
-            'go_back_to_url':go_back_to_url,
-            'go_back_to_title':go_back_to_title,
-        }
-        return render(request, 'page.html', context)
-
-def download(request, num):
-    app = App.objects.get(id=num)
-    releases = Release.objects.filter(app=app).order_by('-id')
-    bake = 0
-    code = 0
-    website = 0
-    if releases:
-        release = releases.latest('date')
-        bake = release.filename
-    if app.coderepo:
-        code = app.coderepo
-    if app.website:
-        website = app.website
-    context = {
-        'bake':bake,
-        'code':code,
-        'website':website,
-    }
-    return render(request, 'download.html', context)
+        if request.method == 'POST':
+            rating_n = request.POST.get('rating')
+            try:
+                rating_n = int(rating_n)
+                if not (0 <= rating_n <= 5):
+                    raise ValueError()
+            except ValueError:
+                raise ValueError('rating is "%s" but must be an integer between 0 and 5' % rating_n)
+            app.votes += 1
+            app.stars += rating_n
+            app.save()
+            return HttpResponseRedirect('/app/'+app.name)
+        if request.method == 'GET':
+            app.description = markdownify(app.description)
+            releases = Release.objects.filter(app=app).order_by('-id')
+            tags = app.tags.all()
+            screenshots = Screenshot.objects.filter(app=app)
+            for release in releases:
+                release.notes = markdownify(release.notes)
+            download = Download.objects.filter(app=app)
+            if download:
+                latest = app.download.default_release
+            else:
+                latest = None
+            editors = app.editors.all()
+            comments = Comment.objects.filter(app=app)
+            go_back_to_url = "/"
+            go_back_to_title = "home"
+            context = {
+                'app':app,
+                'editors':editors,
+                'tags':tags,
+                'releases':releases,
+                'screenshots':screenshots,
+                'latest':latest,
+                #'comments':comments,
+                'go_back_to_url':go_back_to_url,
+                'go_back_to_title':go_back_to_title,
+            }
+            return render(request, 'page.html', context)
 
 def tagSearch(request, name="all"):
     if name != "all":

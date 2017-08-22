@@ -383,7 +383,6 @@ AppPage.setup_install("{{ app.name|escapejs }}",
 	"{{ latest.version }}",
 	"");
 {% endif %}
-AppPage.setup_cy_2x_download_popover('{% get_static_prefix %}apps/img/plugins_dir.png');
 
 {% if app.details %}
 AppPage.setup_details();

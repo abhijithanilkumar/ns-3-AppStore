@@ -30,7 +30,6 @@ def list_of_apps(apps, include_relevancy = False):
     # a list of sort buttons to display
                     # button name       div attr name          attr type
     sort_criteria = (('name',           'fullname',            'str'),
-                     ('downloads',      'downloads',           'int'),
                      ('votes',          'votes',               'int'),
                      ('newest release', 'latest_release_date', 'date'))
     if (include_relevancy):
