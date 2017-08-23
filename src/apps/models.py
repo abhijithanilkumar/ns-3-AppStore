@@ -108,12 +108,20 @@ class Installation(models.Model):
     def __str__(self):
         return '%s Installation' % (self.app.title)
 
+    class Meta:
+        verbose_name = 'Installation'
+        verbose_name_plural = 'Installation Notes'
+
 class Maintenance(models.Model):
     app = models.OneToOneField(App)
     notes = MarkdownxField()
 
     def __str__(self):
         return '%s Maintenance' % (self.app.title)
+
+    class Meta:
+        verbose_name = 'Maintenance'
+        verbose_name_plural = 'Maintenance Notes'
 
 class Download(models.Model):
     CHOICES = [('I', 'Point to the Installation tab'),
@@ -138,6 +146,9 @@ class Development(models.Model):
     def __str__(self):
         return '%s Development Version' % (self.app.title)
 
+    class Meta:
+        verbose_name = 'Development Version'
+        verbose_name_plural = 'Development Versions'
 
 @receiver(post_save, sender=App)
 def update_name(sender, instance=None, created=False, **kwargs):
