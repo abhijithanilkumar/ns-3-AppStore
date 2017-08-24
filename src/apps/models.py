@@ -54,10 +54,6 @@ class App(models.Model):
     def stars_percentage(self):
         return 100 * self.stars / self.votes / 5 if self.votes != 0 else 0
 
-    def update_has_releases(self):
-        self.has_releases = (Release.objects.filter(app=self).count > 0)
-        self.save()
-
     def update_latest_release_date(self):
         self.latest_release_date = (Release.objects.filter(app=self).latest('date')).date
         self.save()
@@ -75,23 +71,23 @@ class Release(models.Model):
         return '%s %s' % (self.app.title, self.version)
 
 class Comment(models.Model):
-    CHOICES = [
-        (1, 'Not Useful'),
-        (2, 'Needs Improvement'),
-        (3, 'Okay'),
-        (4, 'Great'),
-        (5, 'Awesome'),
-    ]
-
     app = models.ForeignKey(App)
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
     title = models.CharField(max_length=50)
-    stars = models.PositiveIntegerField(choices=CHOICES)
     content = MarkdownxField()
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return 'Comment on %s by %s' % (self.app.title, self.user.get_full_name)
+
+class CommentReply(models.Model):
+    comment = models.ForeignKey(Comment)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)
+    content = MarkdownxField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return 'Reply to %s' % (self.comment)
 
 class Screenshot(models.Model):
     app = models.ForeignKey(App)
@@ -149,6 +145,14 @@ class Development(models.Model):
     class Meta:
         verbose_name = 'Development Version'
         verbose_name_plural = 'Development Versions'
+
+@receiver(post_save, sender=Release)
+def update_has_releases(sender, instance=None, created=False, **kwargs):
+    if created:
+        app = instance.app
+        if not app.has_releases:
+            app.has_releases = True
+            app.save()
 
 @receiver(post_save, sender=App)
 def update_name(sender, instance=None, created=False, **kwargs):

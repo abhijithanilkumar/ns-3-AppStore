@@ -9,11 +9,14 @@ class CreateAppForm(forms.ModelForm):
         super(forms.ModelForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.fields['title'].required = True
+        self.fields['name'].required = True
+        self.fields['name'].label = "Module Name"
         self.fields['editors'].required = True
         self.fields['description'].label = "Description (Markdown Supported)"
 
         self.helper.layout = Layout(
             Field('title', placeholder="Title of the App", autofocus=""),
+            Field('name', placeholder="Module Name. eg: sift-ns3", autofocus=""),
             Field('editors', placeholder="Editors of the App"),
             Field('abstract', placeholder="App Abstract (fill dummy data if the abstract is not available)"),
             Field('description', placeholder="App Details (fill dummy data if the description is not available)"),
@@ -28,6 +31,7 @@ class CreateAppForm(forms.ModelForm):
         model = apps.get_model('apps', 'App')
         fields = [
             'title',
+            'name',
             'abstract',
             'description',
             'editors',

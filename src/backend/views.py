@@ -165,7 +165,7 @@ def modifyInstallation(request, num):
         return render(request, 'message.html', context)
     if Installation.objects.filter(app=app).exists():
         existing = True
-        edit_Installation = Installation.objects.get(app=app)
+        edit_installation = Installation.objects.get(app=app)
     if request.user.is_staff or request.user in app.editors.all():
         if request.method == 'GET':
             if existing:
