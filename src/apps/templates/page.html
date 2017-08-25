@@ -107,7 +107,7 @@
 				</a>
 			</li>
 			{% endif %}
-			{% if app.installation %}
+			{% if app.instructions %}
 			<li>
 				<a href="#cy-app-instructions-tab" data-toggle="tab">
 					<b>Installation</b>
@@ -118,6 +118,13 @@
 			<li>
 				<a href="#cy-app-maintenance-tab" data-toggle="tab">
 					<b>Maintenance</b>
+				</a>
+			</li>
+			{% endif %}
+			{% if app.development %}
+			<li>
+				<a href="#cy-app-development-tab" data-toggle="tab">
+					<b>Development</b>
 				</a>
 			</li>
 			{% endif %}
@@ -209,36 +216,14 @@
 			{# End Releases tab #}
 
 			{# Installation tab #}
-			{% if app.installation %}
+			{% if app.instructions %}
 			<div class="tab-pane" id="cy-app-instructions-tab">
 				<div class="row">
 					<div class="span8">
-						<h4>Release Versions<h4>
 						<div class="cy-app-release-notes">{{ app.instructions.installation|safe }}</div>
 						<hr>
 					</div>
 				</div>
-				{% if app.development %}
-				<div class="row">
-					<div class="span8">
-						<h4>
-							<a href="{{ app.development.url }}">
-								Development Version
-							</a>
-						</h4>
-						{% if app.development.filename %}
-						<p>
-							<strong>Bake</strong>
-							{{ app.development.filename }}
-						</p>
-						{% endif %}
-						{% if app.development.notes %}
-						<p><strong>Notes</strong></p>
-						<div class="cy-app-release-notes">{{ app.development.notes }}</div>
-						{% endif %}
-					</div>
-				</div>
-				{% endif %}
 			</div>
 			{% endif %}
 			{# End Installation tab #}
@@ -255,6 +240,22 @@
 			</div>
 			{% endif %}
 			{# End Maintenance tab #}
+
+			{# Development tab #}
+			{% if app.development %}
+			<div class="tab-pane" id="cy-app-development-tab">
+				<div class="row">
+					<div class="span8">
+						<div class="cy-app-release-notes">{{ app.development.notes|safe }}</div>
+						<hr>
+					</div>
+				</div>
+				{% if app.development.filename %}
+					<b>Bakefile : </b>{{ app.development.filename }}
+				{% endif %}
+			</div>
+			{% endif %}
+			{# End Maintenance tab #}
 		</div>
 	</div>
 	{# End Tab content #}
@@ -263,7 +264,7 @@
 	<div class="span3 offset1">
 
 		{# Download panel #}
-		{% if app.has_releases %}
+		{% if app.download %}
 		<div class="well">
 			<button class="btn btn-large btn-block" id="cy-app-install-btn">
 				<i></i> {# <-- download button icon will go here #}
@@ -274,11 +275,10 @@
 			<p><strong>Works with</strong> <a href="https://www.nsnam.org/ns-3.26" target="_blank">{{ latest.require }}</a></p>
 			{% if latest.filename %}<p><strong>Bake</strong> <a href="/media/{{ latest.filename }}" target="_blank">bakeconf.xml</a>{% endif %}
 		</div>
-		{% endif %}
 		{# end Download panel #}
 
 		{# in case there are no downloads... #}
-		{% if not app.has_releases %}
+		{% else %}
 		<div class="alert alert-error">
 			No download available.
 		</div>

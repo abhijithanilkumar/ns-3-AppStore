@@ -220,12 +220,10 @@ class DevelopmentForm(forms.ModelForm):
         self.helper = FormHelper()
         self.fields['notes'].label = "Notes (Markdown Supported)"
         self.fields['filename'].label = "File (bakeconf.xml)"
-        self.fields['url'].label = "Url"
 
         self.helper.layout = Layout(
             Field('notes', placeholder="Release Notes", autofocus=""),
             Field('filename',),
-            Field('url', placeholder="URL that points to the Development release"),
             Submit('release', 'Submit',
                    css_class="btn btn-lg btn-primary btn-block"),
             )

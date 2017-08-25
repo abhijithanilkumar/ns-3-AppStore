@@ -27,7 +27,7 @@ class Tag(models.Model):
         return self.name
 
 class App(models.Model):
-    name = models.CharField(max_length=127, unique=True, editable=False)
+    name = models.CharField(max_length=127, unique=True)
     title = models.CharField(max_length=127, unique=True)
     abstract = models.CharField(max_length=255, default="NA")
     description = MarkdownxField()
@@ -137,7 +137,6 @@ class Development(models.Model):
     app = models.OneToOneField(App)
     notes = MarkdownxField()
     filename = models.FileField(upload_to='release_files/%Y-%m-%d/', blank=True, null=True)
-    url = models.URLField(blank=True, null=True)
 
     def __str__(self):
         return '%s Development Version' % (self.app.title)
@@ -153,12 +152,6 @@ def update_has_releases(sender, instance=None, created=False, **kwargs):
         if not app.has_releases:
             app.has_releases = True
             app.save()
-
-@receiver(post_save, sender=App)
-def update_name(sender, instance=None, created=False, **kwargs):
-    if created:
-        instance.name = instance.title.replace(" ","").lower()
-        instance.save()
 
 @receiver(post_save, sender=Tag)
 def update_tag_identity(sender, instance=None, created=False, **kwargs):
