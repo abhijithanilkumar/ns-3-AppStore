@@ -16,6 +16,9 @@ class NsRelease(models.Model):
     def __str__(self):
         return u'%s-%s' % ("ns", self.name)
 
+    class Meta:
+        ordering = ['-name']
+
 class Tag(models.Model):
     identity = models.CharField(max_length=127, editable=False)
     name = models.CharField(max_length=127)

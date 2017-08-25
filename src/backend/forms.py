@@ -121,6 +121,7 @@ class ReleaseForm(forms.ModelForm):
         self.fields['require'].label = "Requires ns-3 Version"
         self.fields['require'].required = True
         self.fields['notes'].label = "Release Notes (Markdown Supported)"
+        self.fields['date'].label = "Release Date"
         self.fields['filename'].label = "Release File (bakeconf.xml)"
         self.fields['url'].label = "Release Url"
 
@@ -128,6 +129,7 @@ class ReleaseForm(forms.ModelForm):
             Field('version', placeholder="Release Version", autofocus=""),
             Field('require',),
             Field('notes', placeholder="Release Notes"),
+            Field('date'),
             Field('filename',),
             Field('url', placeholder="URL that points to the release"),
             Submit('release', 'Submit',
