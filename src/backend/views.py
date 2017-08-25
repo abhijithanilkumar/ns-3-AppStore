@@ -38,6 +38,7 @@ def createApp(request):
 
 @login_required
 def editApp(request, num):
+    print "1"
     App = apps.get_model('apps', 'App')
     try:
         edit_app = App.objects.get(id=num)
@@ -50,11 +51,15 @@ def editApp(request, num):
         return render(request, 'message.html', context)
     editors = edit_app.editors.all()
     if request.user in editors or request.user.is_staff:
+        print "2"
         if request.method == 'GET':
+            print "3"
             form = EditAppForm(instance=edit_app)
         elif request.method == 'POST':
+            print "4"
             form = EditAppForm(request.POST, request.FILES, instance=edit_app)
             if form.is_valid():
+                print "hello"
                 edited_app = form.save(commit=False)
                 if 'icon' in request.FILES:
                     icon_file = request.FILES['icon']
@@ -92,7 +97,7 @@ def createRelease(request, num):
         if request.method == 'GET':
             form = ReleaseForm()
         elif request.method == 'POST':
-            form = ReleaseForm(request.POST)
+            form = ReleaseForm(request.POST, request.FILES)
             if form.is_valid():
                 new_release = form.save(commit=False)
                 new_release.app = release_app
@@ -130,7 +135,7 @@ def editRelease(request, num):
         if request.method == 'GET':
             form = ReleaseForm(instance=edit_release)
         elif request.method == 'POST':
-            form = ReleaseForm(request.POST, instance=edit_release)
+            form = ReleaseForm(request.POST, request.FILES, instance=edit_release)
             if form.is_valid():
                 edited_release = form.save()
                 edited_release.save()
@@ -383,9 +388,9 @@ def modifyDevelopment(request, num):
                 form = DevelopmentForm()
         elif request.method == 'POST':
             if existing:
-                form = DevelopmentForm(request.POST, instance=edit_development)
+                form = DevelopmentForm(request.POST, request.FILES, instance=edit_development)
             else:
-                form = DevelopmentForm(request.POST)
+                form = DevelopmentForm(request.POST, request.FILES)
             if form.is_valid():
                 if existing:
                     edited_development = form.save()

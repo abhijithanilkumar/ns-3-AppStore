@@ -64,7 +64,7 @@ class Release(models.Model):
     require = models.ForeignKey(NsRelease)
     date = models.DateField(default=datetime.now, blank=True)
     notes = MarkdownxField()
-    filename = models.FileField(upload_to='release_files/%Y-%m-%d/', blank=True, null=True)
+    filename = models.FileField(upload_to='release_files/', blank=True, null=True)
     url = models.URLField(blank=True, null=True)
 
     def __str__(self):
@@ -136,7 +136,7 @@ class Download(models.Model):
 class Development(models.Model):
     app = models.OneToOneField(App)
     notes = MarkdownxField()
-    filename = models.FileField(upload_to='release_files/%Y-%m-%d/', blank=True, null=True)
+    filename = models.FileField(upload_to='release_files/', blank=True, null=True)
 
     def __str__(self):
         return '%s Development Version' % (self.app.title)
@@ -149,9 +149,8 @@ class Development(models.Model):
 def update_has_releases(sender, instance=None, created=False, **kwargs):
     if created:
         app = instance.app
-        if not app.has_releases:
-            app.has_releases = True
-            app.save()
+        app.has_releases = True
+        app.save()
 
 @receiver(post_save, sender=Tag)
 def update_tag_identity(sender, instance=None, created=False, **kwargs):
@@ -167,7 +166,7 @@ def update_download_link(sender, instance=None, created=False, **kwargs):
         if releases:
             release = releases.latest('date')
         choice = instance.download_option
-        link = "https://ns-apps.washington.edu/"+instance.app.name+"/#cy-app-instructions-tab"
+        link = "https://ns-apps.washington.edu/"+instance.app.name+"/#cy-app-installation-tab"
         if choice == 'I':
             instance.download_link = link
         elif choice == 'D':

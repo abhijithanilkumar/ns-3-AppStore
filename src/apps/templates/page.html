@@ -107,9 +107,9 @@
 				</a>
 			</li>
 			{% endif %}
-			{% if app.instructions %}
+			{% if app.installation %}
 			<li>
-				<a href="#cy-app-instructions-tab" data-toggle="tab">
+				<a href="#cy-app-installation-tab" data-toggle="tab">
 					<b>Installation</b>
 				</a>
 			</li>
@@ -198,6 +198,12 @@
 						<p><strong>Release Notes</strong></p>
 						<div class="cy-app-release-notes">{{ release.notes }}</div>
 						{% endif %}
+
+						{% if release.filename %}
+						<strong>Bakefile : </strong>
+						<a href="/media/{{ release.filename }}">Link</a>
+						<br><br>
+						{% endif %}
 						{% if user.is_staff or user in editors %}
 						<a class="btn btn-warning" href="/backend/edit/release/{{ release.id }}">
 							Edit Release
@@ -216,11 +222,11 @@
 			{# End Releases tab #}
 
 			{# Installation tab #}
-			{% if app.instructions %}
-			<div class="tab-pane" id="cy-app-instructions-tab">
+			{% if app.installation %}
+			<div class="tab-pane" id="cy-app-installation-tab">
 				<div class="row">
 					<div class="span8">
-						<div class="cy-app-release-notes">{{ app.instructions.installation|safe }}</div>
+						<div class="cy-app-release-notes">{{ app.installation.installation|safe }}</div>
 						<hr>
 					</div>
 				</div>
@@ -247,12 +253,12 @@
 				<div class="row">
 					<div class="span8">
 						<div class="cy-app-release-notes">{{ app.development.notes|safe }}</div>
-						<hr>
 					</div>
 				</div>
 				{% if app.development.filename %}
-					<b>Bakefile : </b>{{ app.development.filename }}
+					<b>Bakefile : </b><a href="/media/{{ app.development.filename }}/">Link</a>
 				{% endif %}
+				<hr>
 			</div>
 			{% endif %}
 			{# End Maintenance tab #}
