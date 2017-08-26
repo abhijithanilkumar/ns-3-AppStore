@@ -22,6 +22,13 @@ def findTags():
 
     return top_tags, not_top_tags
 
+def userHome(request):
+    apps = App.objects.all()
+    context = {
+        'your_apps':apps,
+    }
+    return render(request, 'landing.html', context)
+
 def appPage(request, name):
     if name == "inactive":
         apps = App.objects.all().filter(active=False).order_by('title')
