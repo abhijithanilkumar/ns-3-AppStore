@@ -1,11 +1,20 @@
 from __future__ import unicode_literals
 from django.views import generic
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from . import forms
 from . import models
+from django.apps import apps
 
+
+def userLanding(request):
+    App = apps.get_model('apps', 'App')
+    your_apps = App.objects.filter(editors__id=request.user.id)
+    context = {
+        'your_apps':your_apps,
+    }
+    return render(request, 'landing.html', context)
 
 class ShowProfile(LoginRequiredMixin, generic.TemplateView):
     template_name = "profiles/show_profile.html"
