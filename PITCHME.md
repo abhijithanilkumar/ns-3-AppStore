@@ -7,7 +7,7 @@ An App Store for contributed ns-3 modules. This project will help in modularisin
 able to use the App Store to advertise their apps. ns-3 Users will be able to download the modules according to their 
 requirement from the Store. The project created a web-interface for the App Store infrastructure.
 +++
-![Home](https://github.com/abhijithanilkumar/Images-ns3-AppStore/blob/master/home.jpg)
+![Home](https://github.com/abhijithanilkumar/Images-ns3-AppStore/blob/master/home.png)
 ---
 ## Work Done
 
@@ -32,7 +32,7 @@ requirement from the Store. The project created a web-interface for the App Stor
 ---
 ## Future Work
 
-* Integrate the App Store with Bake. Bake is the build orchestration tool used in ns-3. Bake uses XML to describe modules. By using a standardized XML schema that describes an ns-3 module, it can be used in both the app store and also in bake. Once integrated, the App Store will be able to retrieve data from the xml file and the data will be autopopulated.  
+* Integrate the App Store with Bake. Bake is the build orchestration tool used in ns-3. Bake uses XML to describe modules. By using a standardized XML schema that describes an ns-3 module, it can be used in both the app store and also in bake. Once integrated, the App Store will be able to retrieve data from the xml file and the data will be auto-populated.  
 +++
 * Bake integration can be done once the structure of the bakeconf.xml file for each module is finalised. Currently, the App Store has the ability to extract data from xml, using `xml.etree.ElementTree`. To create/edit modules with data from bake file, `src/util/parse_bake.py` file has to be modified to do the same. Then the `parse_xml` function has to be called from the appropriate view. 
 +++
