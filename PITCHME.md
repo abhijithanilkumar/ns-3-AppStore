@@ -7,8 +7,7 @@ An App Store for contributed ns-3 modules. This project will help in modularisin
 able to use the App Store to advertise their apps. ns-3 Users will be able to download the modules according to their 
 requirement from the Store. The project created a web-interface for the App Store infrastructure.
 +++
-## Final Product - HomePage
-[[https://github.com/abhijithanilkumar/Images-ns3-AppStore/blob/master/home.jpg]]
+![Home](https://github.com/abhijithanilkumar/Images-ns3-AppStore/blob/master/home.jpg)
 ---
 ## Work Done
 
@@ -22,7 +21,7 @@ requirement from the Store. The project created a web-interface for the App Stor
 
 * The Source Code is available [here](https://github.com/abhijithanilkumar/ns-3-AppStore). 
 * The base project was created using [Edge](https://django-edge.readthedocs.io/en/latest/) and the frontend code is taken from [CyAppStore](https://github.com/cytoscape/appstore).
-* Backend design, integration of different components and deployment of the website was done during GSoC. [Contributions](https://github.com/abhijithanilkumar/ns-3-AppStore/graphs/contributors)
+* Backend design, integration of different components and deployment of the website was done during GSoC. ([Contributions](https://github.com/abhijithanilkumar/ns-3-AppStore/graphs/contributors))
 * The design details and project progress over the summer is available [here](https://www.nsnam.org/wiki/GSOC2017AppStore).
 ---
 ## Setup and Usage
@@ -38,6 +37,6 @@ requirement from the Store. The project created a web-interface for the App Stor
 * Bake integration can be done once the structure of the bakeconf.xml file for each module is finalised. Currently, the App Store has the ability to extract data from xml, using `xml.etree.ElementTree`. To create/edit modules with data from bake file, `src/util/parse_bake.py` file has to be modified to do the same. Then the `parse_xml` function has to be called from the appropriate view. 
 +++
 * Integrate the web interface with the command-line. This can be done by creating APIs for the command-line tool to interact with using [Django Rest Framework](http://www.django-rest-framework.org/). Once this is done, the user should be able to install a module by the command `bake install <module-name>`
-+++
+---
 ## Wrapping Up
 I would like to thank my mentor, [Tom Henderson](https://github.com/tomhenderson) for guiding me during GSoC and providing me with constructive feedback during development. I thank all ns-3 developers who provided their feedback during the development of the website. I have built this website up from scratch, and I will be working post-GSoC to get the web-interface integrated with the command-line tool.
