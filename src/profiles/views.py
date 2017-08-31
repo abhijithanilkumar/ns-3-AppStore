@@ -7,11 +7,26 @@ from . import forms
 from . import models
 from django.apps import apps
 
+def findTags():
+    Tag = apps.get_model('apps', 'Tag')
+    min_tag_count = 3
+    num_of_top_tags = 20
+    tag_cloud_max_font_size_em = 2.0
+    tag_cloud_min_font_size_em = 1.0
+    tag_cloud_delta_font_size_em = tag_cloud_max_font_size_em - tag_cloud_min_font_size_em
+
+    top_tags = Tag.objects.all()
+    not_top_tags = []
+
+    return top_tags, not_top_tags
 
 def userLanding(request):
     App = apps.get_model('apps', 'App')
     your_apps = App.objects.filter(editors__id=request.user.id)
+    top_tags, not_top_tags = findTags()
     context = {
+        'top_tags' :top_tags,
+        'not_top_tags' :not_top_tags,
         'your_apps':your_apps,
     }
     return render(request, 'landing.html', context)

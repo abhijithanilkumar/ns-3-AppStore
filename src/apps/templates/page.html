@@ -51,6 +51,7 @@
 			<ul class="dropdown-menu pull-right">
 				<li><a href="/backend/edit/{{ app.id }}">Edit this page</a></li>
 				<li><a href="/backend/create/release/{{ app.id }}">Submit a new release</a></li>
+				<li><a href="/backend/screenshots/{{ app.id }}">Add a new screenshot</a></li>
 				<li><a href="/backend/development/{{ app.id }}">Add/Edit Development Version Details</a></li>
 				<li class="divider"></li>
 				<!--li><a data-toggle="modal" href="#delete_ratings_modal">Delete all ratings</a></li-->
@@ -156,6 +157,11 @@
 						<a href="/media/{{ screenshot.screenshot }}" target="_blank">
 							<img src="/media/{{ screenshot.thumbnail }}"/>
 						</a>
+						{% if user.is_staff or user in editors %}
+						<a class="btn btn-warning" href="/backend/screenshotdelete/{{ screenshot.id }}" style="margin-bottom:120px">
+							x
+						</a>
+						{% endif %}
 						{% endfor %}
 					</div>
 				</div>

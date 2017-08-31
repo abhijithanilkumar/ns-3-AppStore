@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404, render
 from django.contrib.auth.decorators import login_required
 from forms import CreateAppForm, EditAppForm, ReleaseForm, \
         InstallationForm, MaintenanceForm, EditDetailsForm, \
-        DownloadForm, DevelopmentForm
+        DownloadForm, DevelopmentForm, ScreenshotForm
 from django.apps import apps
 from util.img_util import scale_img
 from django.views.generic.edit import DeleteView
@@ -419,10 +419,10 @@ def deleteReleasePrompt(request, num):
     release = Release.objects.get(id=num)
     app = release.app
     go_back_to_url = "/app/"+app.name
-    print app
+    url = "/backend/releasedelconf/"+str(release.id)
     if request.user.is_staff or request.user in app.editors.all():
         context = {
-            'release_id':num,
+            'url':url,
             'name':app.name,
             'go_back_to_url':go_back_to_url,
             'go_back_to_title':"App Page",
@@ -454,6 +454,7 @@ def deleteRelease(request, num):
     }
     return render(request, 'message.html', context)
 
+"""
 class _ScreenshotEditConfig:
 	max_img_size_b = 2 * 1024 * 1024
 	thumbnail_height_px = 150
@@ -486,8 +487,87 @@ _ScreenshotActions = {
 	'upload_screenshot':  _upload_screenshot,
 	'delete_screenshot':  _delete_screenshot,
 }
+"""
 
+@login_required
+def screenshots(request, num):
+    App = apps.get_model('apps', 'App')
+    try:
+        app = App.objects.get(id=num)
+    except:
+        context = {
+            'message':"Requested App does not Exist!",
+            'go_back_to_url':"/app/"+app.name,
+            'go_back_to_title':"App Page",
+        }
+        return render(request, 'message.html', context)
+    editors = app.editors.all()
+    if request.user in editors or request.user.is_staff:
+        if request.method == 'GET':
+            form = ScreenshotForm()
+        elif request.method == 'POST':
+            form = ScreenshotForm(request.POST, request.FILES)
+            if form.is_valid():
+                new_screenshot = form.save(commit=False)
+                new_screenshot.app = app
+                new_screenshot.save()
+                context = {
+                    'message':"Screenshot added Successfully!",
+                    'go_back_to_url':"/app/"+app.name,
+                    'go_back_to_title':"App Page",
+                }
+                return render(request, 'message.html', context)
+    else:
+        context = {
+            'message':"You are not authorized to view this page!",
+            'go_back_to_url':"/app/"+app.name,
+            'go_back_to_title':"App Page",
+        }
+        return render(request, 'message.html', context)
+    return render(request, 'create_screenshot.html', {'form':form})
 
+def deleteScreenshotPrompt(request, num):
+    Screenshot = apps.get_model('apps', 'Screenshot')
+    screenshot = Screenshot.objects.get(id=num)
+    app = screenshot.app
+    go_back_to_url = "/app/"+app.name
+    url = "/backend/screenshotdelconf/"+str(screenshot.id)
+    print app
+    if request.user.is_staff or request.user in app.editors.all():
+        context = {
+            'url':url,
+            'name':app.name,
+            'go_back_to_url':go_back_to_url,
+            'go_back_to_title':"App Page",
+        }
+        return render(request, 'prompt.html', context)
+    else:
+        message = "You are not authorized to view this page!"
+        context = {
+            'message':message,
+            'go_back_to_url':go_back_to_url,
+            'go_back_to_title':"App Page",
+        }
+        return render(request, 'message.html', context)
+
+def deleteScreenshot(request, num):
+    Screenshot = apps.get_model('apps', 'Screenshot')
+    screenshot = Screenshot.objects.get(id=num)
+    app = screenshot.app
+    if request.user.is_staff or request.user in app.editors.all():
+        screenshot.delete()
+        message = "Screenshot Deleted Successfully!"
+    else:
+        message = "You are not authorized to view this page!"
+    go_back_to_url = "/app/"+app.name
+    context = {
+        'message':message,
+        'go_back_to_url':go_back_to_url,
+        'go_back_to_title':"App Page",
+    }
+    return render(request, 'message.html', context)
+
+"""
 @login_required
 def screenshots(request, num):
     App = apps.get_model('apps', 'App')
@@ -516,3 +596,4 @@ def screenshots(request, num):
 		'thumbnail_height_px': _ScreenshotEditConfig.thumbnail_height_px,
 	}
     return render(request, 'screenshots.html', context)
+"""

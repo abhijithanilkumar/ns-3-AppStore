@@ -132,7 +132,7 @@ AppPageEdit.add_screenshot('{{ screenshot.thumbnail.url|escapejs }}').attr('back
 {% endif %}
 
 AppPageEdit.setup_details();
-AppPageEdit.set_app_page_url("/app/{{ app.name }}");
+AppPageEdit.set_app_page_url("/app/new-app/");
 AppPageEdit.set_loading_icon_url('{% get_static_prefix %}common/img/loading_small.gif');
 
 AppPageEdit.setup_cancel_btn();

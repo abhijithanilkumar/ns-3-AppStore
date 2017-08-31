@@ -243,3 +243,26 @@ class DevelopmentForm(forms.ModelForm):
         exclude = [
             'app',
         ]
+
+class ScreenshotForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(forms.ModelForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.fields['screenshot'].label = "Upload Screenshot"
+
+        self.helper.layout = Layout(
+            Field('screenshot',),
+            Submit('release', 'Submit',
+                   css_class="btn btn-lg btn-primary btn-block"),
+            )
+
+    def clean(self):
+        return self.cleaned_data
+
+    class Meta:
+        model = apps.get_model('apps', 'Screenshot')
+        exclude = [
+            'app',
+            'thumbnail',
+        ]

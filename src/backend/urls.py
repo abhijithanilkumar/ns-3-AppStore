@@ -15,4 +15,6 @@ urlpatterns = [
     url(r'^releasedelete/(?P<num>[0-9]+)/$', views.deleteReleasePrompt, name='delete_release_prompt'),
     url(r'^releasedelconf/(?P<num>[0-9]+)/$', views.deleteRelease, name='delete_release'),
     url(r'^screenshots/(?P<num>[0-9]+)/$', views.screenshots, name='screenshots'),
+    url(r'^screenshotdelete/(?P<num>[0-9]+)/$', views.deleteScreenshotPrompt, name='delete_screenshot_prompt'),
+    url(r'^screenshotdelconf/(?P<num>[0-9]+)/$', views.deleteScreenshot, name='delete_screenshot'),
 ]
