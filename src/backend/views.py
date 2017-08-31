@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from django.contrib.auth.decorators import login_required
 from forms import CreateAppForm, EditAppForm, ReleaseForm, \
         InstallationForm, MaintenanceForm, EditDetailsForm, \
@@ -313,14 +313,14 @@ def modifyDownload(request, num):
     if request.user.is_staff or request.user in app.editors.all():
         if request.method == 'GET':
             if existing:
-                form = DownloadForm(instance=edit_download)
+                form = DownloadForm(instance=edit_download, current_app=app)
             else:
-                form = DownloadForm()
+                form = DownloadForm(current_app=app)
         elif request.method == 'POST':
             if existing:
-                form = DownloadForm(request.POST, instance=edit_download)
+                form = DownloadForm(request.POST, instance=edit_download, current_app=app)
             else:
-                form = DownloadForm(request.POST)
+                form = DownloadForm(request.POST, current_app=app)
             if form.is_valid():
                 if existing:
                     instance = form.save()
@@ -453,3 +453,66 @@ def deleteRelease(request, num):
         'go_back_to_title':"App Page",
     }
     return render(request, 'message.html', context)
+
+class _ScreenshotEditConfig:
+	max_img_size_b = 2 * 1024 * 1024
+	thumbnail_height_px = 150
+
+def _upload_screenshot(app, request):
+	screenshot_f = request.FILES.get('file')
+	if not screenshot_f:
+		raise ValueError('no file submitted')
+	if screenshot_f.size > _ScreenshotEditConfig.max_img_size_b:
+		raise ValueError('image file is %d bytes but can be at most %d bytes' % (screenshot_f.size, _ScreenshotEditConfig.max_img_size_b))
+	thumbnail_f = scale_img(screenshot_f, screenshot_f.name, _ScreenshotEditConfig.thumbnail_height_px, 'h')
+	screenshot = Screenshot.objects.create(app = app)
+	screenshot.screenshot.save(screenshot_f.name, screenshot_f)
+	screenshot.thumbnail.save(thumbnail_f.name, thumbnail_f)
+	screenshot.save()
+
+def _delete_screenshot(app, request):
+	screenshot_id = request.POST.get('screenshot_id')
+	if not screenshot_id:
+		raise ValueError('no screenshot_id specified')
+
+	try:
+		screenshot_id = int(screenshot_id)
+		screenshot = Screenshot.objects.get(id = screenshot_id)
+	except ValueError, Screenshot.DoesNotExist:
+		raise ValueError('invalid screenshot_id')
+	screenshot.delete()
+
+_ScreenshotActions = {
+	'upload_screenshot':  _upload_screenshot,
+	'delete_screenshot':  _delete_screenshot,
+}
+
+
+@login_required
+def screenshots(request, num):
+    App = apps.get_model('apps', 'App')
+    Screenshot = apps.get_model('apps', 'Screenshot')
+    app = get_object_or_404(App, id=num)
+    if not request.user.is_staff or request.user not in app.editors.all():
+        return HttpResponseForbidden()
+    if request.method == 'POST':
+        print "hey"
+        action = request.POST.get('action')
+        if not action:
+            return HttpResponseBadRequest('no action specified')
+        if not action in _ScreenshotActions:
+            return HttpResponseBadRequest('action "%s" invalid--must be: %s' % (action, ', '.join(_ScreenshotActions)))
+        try:
+            result = _ScreenshotActions[action](app, request)
+        except ValueError as e:
+            return HttpResponseBadRequest(str(e))
+        if request.is_ajax():
+            return json_response(result)
+    screenshots = Screenshot.objects.filter(app=app)
+    print "entered"
+    context = {
+        'screenshots': screenshots,
+		'max_file_img_size_b': _ScreenshotEditConfig.max_img_size_b,
+		'thumbnail_height_px': _ScreenshotEditConfig.thumbnail_height_px,
+	}
+    return render(request, 'screenshots.html', context)

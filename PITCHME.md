@@ -4,10 +4,8 @@
 ## Final Product
 
 An App Store for contributed ns-3 modules. This project will help in modularising the ns-3 codebase. Developers will be
-able to use the App Store to advertise their apps. ns-3 Users will be able to download the modules according to their 
+able to use the App Store to advertise their apps. ns-3 Users will be able to download the modules according to their
 requirement from the Store. The project created a web-interface for the App Store infrastructure.
-+++
-![Home](https://github.com/abhijithanilkumar/Images-ns3-AppStore/blob/master/home.png)
 ---
 ## Work Done
 
@@ -19,7 +17,7 @@ requirement from the Store. The project created a web-interface for the App Stor
 ---
 ## Contributions
 
-* The Source Code is available [here](https://github.com/abhijithanilkumar/ns-3-AppStore). 
+* The Source Code is available [here](https://github.com/abhijithanilkumar/ns-3-AppStore).
 * The base project was created using [Edge](https://django-edge.readthedocs.io/en/latest/) and the frontend code is taken from [CyAppStore](https://github.com/cytoscape/appstore).
 * Backend design, integration of different components and deployment of the website was done during GSoC. ([Contributions](https://github.com/abhijithanilkumar/ns-3-AppStore/graphs/contributors))
 * The design details and project progress over the summer is available [here](https://www.nsnam.org/wiki/GSOC2017AppStore).
@@ -34,7 +32,7 @@ requirement from the Store. The project created a web-interface for the App Stor
 
 * Integrate the App Store with Bake. Bake is the build orchestration tool used in ns-3. Bake uses XML to describe modules. By using a standardized XML schema that describes an ns-3 module, it can be used in both the app store and also in bake. Once integrated, the App Store will be able to retrieve data from the xml file and the data will be auto-populated.  
 +++
-* Bake integration can be done once the structure of the bakeconf.xml file for each module is finalised. Currently, the App Store has the ability to extract data from xml, using `xml.etree.ElementTree`. To create/edit modules with data from bake file, `src/util/parse_bake.py` file has to be modified to do the same. Then the `parse_xml` function has to be called from the appropriate view. 
+* Bake integration can be done once the structure of the bakeconf.xml file for each module is finalised. Currently, the App Store has the ability to extract data from xml, using `xml.etree.ElementTree`. To create/edit modules with data from bake file, `src/util/parse_bake.py` file has to be modified to do the same. Then the `parse_xml` function has to be called from the appropriate view.
 +++
 * Integrate the web interface with the command-line. This can be done by creating APIs for the command-line tool to interact with using [Django Rest Framework](http://www.django-rest-framework.org/). Once this is done, the user should be able to install a module by the command `bake install <module-name>`
 ---

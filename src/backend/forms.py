@@ -192,10 +192,14 @@ class MaintenanceForm(forms.ModelForm):
 class DownloadForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
+        current_app = kwargs.pop('current_app')
         super(forms.ModelForm, self).__init__(*args, **kwargs)
+        Release = apps.get_model('apps', 'Release')
+        #print current_app
         self.helper = FormHelper()
         self.fields['download_option'].label = "Download Button Points to"
         self.fields['default_release'].label = "Default Release"
+        self.fields['default_release'].queryset = Release.objects.filter(app=current_app)
         self.fields['external_url'].label = "External Download URL"
 
         self.helper.layout = Layout(

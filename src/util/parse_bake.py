@@ -7,3 +7,4 @@ def parse_xml(f):
     module_collection = root[0].tag
     for module in module_collection:
         modules.append(module)
+    # Create/Edit Apps using the above data
