@@ -9,3 +9,4 @@ django-material==1.0.0
 django-markdownx==2.0.21
 django-haystack==2.6.1
 elasticsearch>=2.0.0,<3.0.0
+social-auth-app-django==2.1.0

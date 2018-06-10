@@ -19,6 +19,7 @@ urlpatterns = [
     url(r'^app/', include(apps.urls, namespace='apps')),
     url(r'^search/', include(search.urls, namespace='search')),
     url(r'^backend/', include(backend.urls, namespace='edit')),
+    url(r'^auth/', include('social_django.urls', namespace='social')),
 ]
 
 # User-uploaded files like profile pics need to be served in development
