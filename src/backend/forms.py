@@ -17,6 +17,7 @@ class CreateAppForm(forms.ModelForm):
         self.helper.layout = Layout(
             Field('title', placeholder="Title of the App", autofocus=""),
             Field('name', placeholder="Module Name. eg: sift-ns3", autofocus=""),
+            Field('app_type', placeholder="App Type"),
             Field('editors', placeholder="Editors of the App"),
             Field('abstract', placeholder="App Abstract (fill dummy data if the abstract is not available)"),
             Field('description', placeholder="App Details (fill dummy data if the description is not available)"),
@@ -32,6 +33,7 @@ class CreateAppForm(forms.ModelForm):
         fields = [
             'title',
             'name',
+            'app_type',
             'abstract',
             'description',
             'editors',
@@ -44,6 +46,8 @@ class EditAppForm(forms.ModelForm):
         self.helper = FormHelper()
         self.fields['title'].label = "Title"
         self.fields['title'].required = True
+        self.fields['app_type'].label = "Type"
+        self.fields['app_type'].required = True
         self.fields['abstract'].label = "Abstract (255 characters)"
         self.fields['abstract'].required = True
         self.fields['description'].label = "Description (Markdown Supported!)"
@@ -59,6 +63,7 @@ class EditAppForm(forms.ModelForm):
 
         self.helper.layout = Layout(
             Field('title', placeholder="Title of the App", autofocus=""),
+            Field('app_type', placeholder="Type of the App"),
             Field('editors', placeholder="Editors of the App"),
             Field('abstract', placeholder="App Abstract (fill dummy data if the abstract is not available)"),
             Field('description', placeholder="App Details (fill dummy data if the description is not available)"),
@@ -82,6 +87,7 @@ class EditAppForm(forms.ModelForm):
         model = apps.get_model('apps', 'App')
         exclude = [
             'name',
+            'app_type',
             'editors',
             'stars',
             'votes',

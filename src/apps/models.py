@@ -30,8 +30,12 @@ class Tag(models.Model):
         return self.name
 
 class App(models.Model):
+    TYPES = [ ('F', 'Fork'),
+              ('M', 'Module'),
+            ] 
     name = models.CharField(max_length=127, unique=True)
     title = models.CharField(max_length=127, unique=True)
+    app_type = models.CharField(max_length=6, choices=TYPES)
     abstract = models.CharField(max_length=255, default="NA")
     description = MarkdownxField()
     icon = models.ImageField(upload_to='app_icon_thumbnail/%Y-%m-%d/', blank=True)
