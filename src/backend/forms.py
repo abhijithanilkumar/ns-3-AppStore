@@ -87,7 +87,6 @@ class EditAppForm(forms.ModelForm):
         model = apps.get_model('apps', 'App')
         exclude = [
             'name',
-            'app_type',
             'editors',
             'stars',
             'votes',
