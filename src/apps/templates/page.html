@@ -289,18 +289,20 @@
 		{% if app.download %}
 		<div class="well">
 			<button class="btn btn-large btn-block" id="cy-app-install-btn">
-				{% if app.app_type == 'M' %}
+				{% if app.app_type == 'F' %}
 				<i></i> {# <-- download button icon will go here #}
-				<h4>Download</h4> {# <-- download button text will go here #}
+				<h4>Visit</h4> {# <-- download button text will go here #}
 				{% else %}
 				<i></i>
-				<h4>Visit</h4>
+				<h4>Download</h4>
 				{% endif %}
 			</button>
 			<p><strong>Version</strong> {{ latest.version }}</p>
 			<p><strong>Released</strong> {{ latest.date }}</p>
 			<p><strong>Works with</strong> <a href="https://www.nsnam.org/ns-3.26" target="_blank">{{ latest.require }}</a></p>
-			{% if latest.filename and app.app_type == 'M' %}<p><strong>Bake</strong> <a href="/media/{{ latest.filename }}" target="_blank">bakeconf.xml</a>{% endif %}
+			{%% if app.app_type == 'M' %}
+			{% if latest.filename %}<p><strong>Bake</strong> <a href="/media/{{ latest.filename }}" target="_blank">bakeconf.xml</a>{% endif %}
+			{% endif %}
 		</div>
 		{# end Download panel #}
 
