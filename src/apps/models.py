@@ -12,6 +12,7 @@ from util.img_util import scale_img
 
 class NsRelease(models.Model):
     name = models.CharField(max_length=4)
+    url = models.URLField(default="https://www.nsnam.org/ns-3.26/")
 
     def __str__(self):
         return u'%s-%s' % ("ns", self.name)
