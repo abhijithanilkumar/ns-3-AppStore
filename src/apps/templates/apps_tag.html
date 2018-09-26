@@ -10,16 +10,17 @@
     <div class="span12">
       <h1>{{ tag.name|capfirst }}</h1>
       <p>
-      <a href='"{{ tag.name }}"' target="_blank">
+      <!--a href='"{#{ tag.name }#}"' target="_blank">
         <i class="icon-comment"></i>
-        Search for posts about {{ tag.name }} &rarr;
+        Search for posts about {#{ tag.name }#} &rarr;
       </a>
       </p>
       <p>
       <a href="" target="_blank">
         <i class="icon-question-sign"></i>
-        Ask a question about {{ tag.name }} &rarr;
-      </a>
+        Ask a question about {#{ tag.name }#} &rarr;
+      </a-->
+      No results found for {{ tag.name }}
       </p>
     </div>
   </div>
