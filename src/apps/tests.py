@@ -34,4 +34,4 @@ class TagTestCase(TestCase):
     def test_tag_created(self):
         tag = Tag.objects.get(name='Tag1')
         self.assertTrue(isinstance(tag, Tag))
-        self.assertEqual(tag.identity, 'This is a test Tag')
+        self.assertEqual(tag.name, 'Tag1')
