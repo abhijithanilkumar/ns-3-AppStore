@@ -73,4 +73,3 @@ class ReleaseTestCase(TestCase):
         self.assertTrue(release_file.read(), 'Test me')
         release_file.close()
         self.assertTrue(release.url, 'https://www.nsnam.org/ns-3.29/')
-        
