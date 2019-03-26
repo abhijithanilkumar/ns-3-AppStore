@@ -34,6 +34,10 @@ Run migrations:
 
 ### Detailed instructions
 
+	$ cd ./ns-3-AppStore/src/appstore/settings/
+
+	$ cp ./local.sample.env ./local.env
+
 Take a look at the wiki/docs for more information.
 
 [0]: https://www.python.org/
