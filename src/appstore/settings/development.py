@@ -4,6 +4,17 @@ import logging.config
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+
+"""
+404 page is rendered only in production, for that DEBUG has to be False
+
+To visualise it in local development environment comment line 6 and add following two lines:
+
+DEBUG = False
+ALLOWED_HOSTS = ['*']
+
+"""
+
 TEMPLATES[0]['OPTIONS'].update({'debug': True})
 
 # Turn off debug while imported by Celery with a workaround
