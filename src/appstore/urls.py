@@ -33,5 +33,5 @@ if settings.DEBUG:
     ]
 
 #importing custom 404 page handler from "appstore" app views.py
-from appstore.views import handler404
-handler404 = handler404
+
+handler404 = views.handler404
