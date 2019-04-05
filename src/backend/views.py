@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 
 from django.shortcuts import get_object_or_404, render
 from django.contrib.auth.decorators import login_required
-from forms import CreateAppForm, EditAppForm, ReleaseForm, \
+from .forms import CreateAppForm, EditAppForm, ReleaseForm, \
         InstallationForm, MaintenanceForm, EditDetailsForm, \
         DownloadForm, DevelopmentForm, ScreenshotForm
 from django.apps import apps
@@ -38,28 +38,28 @@ def createApp(request):
 
 @login_required
 def editApp(request, num):
-    print "1"
+    print ("1")
     App = apps.get_model('apps', 'App')
     try:
         edit_app = App.objects.get(id=num)
     except:
         context = {
             'message':"Requested App does not Exist!",
-            'go_back_to_url':"/app/"+edi_app.name,
+            'go_back_to_url':"/app/"+edit_app.name,
             'go_back_to_title':"App Page",
         }
         return render(request, 'message.html', context)
     editors = edit_app.editors.all()
     if request.user in editors or request.user.is_staff:
-        print "2"
+        print ("2")
         if request.method == 'GET':
-            print "3"
+            print ("3")
             form = EditAppForm(instance=edit_app)
         elif request.method == 'POST':
-            print "4"
+            print ("4")
             form = EditAppForm(request.POST, request.FILES, instance=edit_app)
             if form.is_valid():
-                print "hello"
+                print ("hello")
                 edited_app = form.save(commit=False)
                 if 'icon' in request.FILES:
                     icon_file = request.FILES['icon']
@@ -342,7 +342,7 @@ def modifyDownload(request, num):
                             instance.download_link = link
                     if not instance.default_release:
                         instance.default_release = release
-                    print instance.download_link
+                    print (instance.download_link)
                     instance.save()
                 else:
                     download = form.save(commit=False)
@@ -532,7 +532,7 @@ def deleteScreenshotPrompt(request, num):
     app = screenshot.app
     go_back_to_url = "/app/"+app.name
     url = "/backend/screenshotdelconf/"+str(screenshot.id)
-    print app
+    print (app)
     if request.user.is_staff or request.user in app.editors.all():
         context = {
             'url':url,

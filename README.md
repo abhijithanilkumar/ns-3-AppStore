@@ -19,15 +19,15 @@ This project has the following basic apps:
 ### Quick start
 
 To set up a development environment quickly, first install Python 3. It
-comes with virtualenv built-in. So create a virtual env by:
+comes with virtualenv built-in. So create a virtual env by executing the commands:
 
-    1. `$ python3 -m venv appstore`
-    2. `$ . appstore/bin/activate`
+    1. $ python3 -m venv appstore
+    2. $ . appstore/bin/activate
 
 Install all dependencies:
 
     1. Move to the folder 'ns-3-Appstore' in which the file 'requirements.txt' is present
-    2. pip install -r requirements.txt
+    2. Execute pip install -r requirements.txt
 
 Set up the environment:
 
@@ -35,6 +35,7 @@ Set up the environment:
     2. cp local.sample.env local.env
 
 Run migrations:
+
     1. Move to the folder 'src' in which the file 'manage.py' is present
     2. python manage.py makemigrations
     3. python manage.py migrate

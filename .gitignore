@@ -71,3 +71,4 @@ migrations/
 # Media
 app_icon_thumbnail/
 release_files/
+.vscode/settings.json
