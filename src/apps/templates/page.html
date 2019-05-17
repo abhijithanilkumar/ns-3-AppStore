@@ -194,10 +194,12 @@
 						{# End Release version #}
 
 						{# Works with #}
+						{% if release.require %}
 						<p>
 							<strong>Works with</strong>
 							{{ release.require }}
 						</p>
+						{% endif %}
 						{# End Works with #}
 
 						{% if release.notes %}
