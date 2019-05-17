@@ -69,7 +69,7 @@ class App(models.Model):
 class Release(models.Model):
     app = models.ForeignKey(App)
     version = models.CharField(max_length=31)
-    require = models.ForeignKey(NsRelease, null=True)
+    require = models.ForeignKey(NsRelease, blank=True, null=True)
     date = models.DateField(default=datetime.now, blank=True)
     notes = MarkdownxField()
     filename = models.FileField(upload_to='release_files/', blank=True, null=True)
