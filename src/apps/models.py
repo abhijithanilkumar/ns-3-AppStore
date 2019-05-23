@@ -11,7 +11,7 @@ from util.img_util import scale_img
 # Create your models here.
 
 class NsRelease(models.Model):
-    name = models.CharField(max_length=4)
+    name = models.CharField(max_length=5)
     url = models.URLField(default="https://www.nsnam.org/ns-3.26/")
 
     def __str__(self):
