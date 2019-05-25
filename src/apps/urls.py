@@ -1,10 +1,13 @@
 from django.conf.urls import url
+from django.urls import path
 
 from . import views
 
+app_name = 'apps'
+
 urlpatterns = [
-    url(r'^(?P<name>[\w\-]+)/$', views.appPage, name="appPage"),
-    url(r'^tag/all/$', views.tagSearch, name="allApps"),
-    url(r'^tag/(?P<name>[\w\-]+)/$', views.tagSearch, name="tagSearch"),
-    url(r'^feedback/(?P<num>[0-9]+)/$', views.feedback, name="feedback"),
+    path('<slug:name>/', views.appPage, name='appPage'),
+    path('tag/all/', views.tagSearch, name='allApps'),
+    path('tag/<slug:name>/', views.tagSearch, name='tagSearch'),
+    path('feedback/<int:num>/', views.feedback, name='feedback'),
 ]

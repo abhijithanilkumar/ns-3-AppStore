@@ -7,5 +7,9 @@
 {% block form_heading %}Create a New App Page{% endblock %}
 
 {% block form %}
-  {% crispy form %}
+  <form method="post">
+  	{% csrf_token %}
+  	{{ form|crispy }}
+  <button type="submit" class="btn btn-primary">Create</button>
+</form>
 {% endblock form %}

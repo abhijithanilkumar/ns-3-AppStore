@@ -6,7 +6,8 @@ from crispy_forms.layout import Layout, Div, Submit, HTML, Button, Row, Field
 from crispy_forms.bootstrap import AppendedText, PrependedText, FormActions
 from authtools import forms as authtoolsforms
 from django.contrib.auth import forms as authforms
-from django.core.urlresolvers import reverse
+# from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 
 class LoginForm(AuthenticationForm):

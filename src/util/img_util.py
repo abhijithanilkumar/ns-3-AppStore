@@ -2,10 +2,11 @@
 
 from django.core.files import File
 from PIL import Image
-from cStringIO import StringIO
+# from cStringIO import StringIO
+from io import StringIO
 
 def scale_img(f, name, max_px, dim):
-    print name
+    print(name)
     try:
         img = Image.open(f, 'r')
     except IOError:

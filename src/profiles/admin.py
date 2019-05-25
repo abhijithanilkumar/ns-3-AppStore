@@ -3,7 +3,8 @@ from django.contrib import admin
 from authtools.admin import NamedUserAdmin
 from .models import Profile
 from django.contrib.auth import get_user_model
-from django.core.urlresolvers import reverse
+# from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 User = get_user_model()
 

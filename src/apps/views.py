@@ -3,9 +3,9 @@ from __future__ import unicode_literals
 
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-from models import App, Release, Tag, Comment, Screenshot, Download
+from .models import App, Release, Tag, Comment, Screenshot, Download
 from markdownx.utils import markdownify
-from forms import CommentForm
+from .forms import CommentForm
 from django.http import HttpResponseRedirect
 
 # Create your views here.

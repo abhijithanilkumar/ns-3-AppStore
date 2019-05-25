@@ -1,4 +1,5 @@
 from django.conf.urls import include, url
+from django.urls import path
 from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
@@ -10,16 +11,16 @@ import backend.urls
 from . import views
 
 urlpatterns = [
-    url(r'^$', views.homePage, name='home'),
-    url(r'^about/$', views.AboutPage.as_view(), name='about'),
-    url(r'^users/', include(profiles.urls, namespace='profiles')),
-    url(r'^admin/', include(admin.site.urls)),
-    url(r'^markdownx/', include('markdownx.urls')),
-    url(r'^', include(accounts.urls, namespace='accounts')),
-    url(r'^app/', include(apps.urls, namespace='apps')),
-    url(r'^search/', include(search.urls, namespace='search')),
-    url(r'^backend/', include(backend.urls, namespace='edit')),
-    url(r'^auth/', include('social_django.urls', namespace='social')),
+    path('', views.homePage, name='home'),
+    path('about/', views.AboutPage.as_view(), name='about'),
+    path('users/', include('profiles.urls', namespace='profiles')),
+    path('admin/', admin.site.urls),
+    path('markdownx/', include('markdownx.urls')),
+    path('', include('accounts.urls', namespace='accounts')),
+    path('app/', include('apps.urls', namespace='apps')),
+    path('search/', include('search.urls', namespace='search')),
+    path('backend/', include('backend.urls', namespace='edit')),
+    path('auth/', include('social_django.urls', namespace='social')),
 ]
 
 # User-uploaded files like profile pics need to be served in development

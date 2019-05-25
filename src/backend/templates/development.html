@@ -7,5 +7,8 @@
 {% block form_heading %}Modify Development Version Details{% endblock %}
 
 {% block form %}
-  {% crispy form %}
+  <form method="post">
+  	{% csrf_token %}
+  	{{ form|crispy }}
+  <button type="submit" class="btn btn-primary">Submit</button>
 {% endblock form %}

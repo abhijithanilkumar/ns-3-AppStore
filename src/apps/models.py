@@ -67,9 +67,9 @@ class App(models.Model):
         self.save()
 
 class Release(models.Model):
-    app = models.ForeignKey(App)
+    app = models.ForeignKey(App, on_delete=models.CASCADE)
     version = models.CharField(max_length=31)
-    require = models.ForeignKey(NsRelease)
+    require = models.ForeignKey(NsRelease, on_delete=models.CASCADE)
     date = models.DateField(default=datetime.now, blank=True)
     notes = MarkdownxField()
     filename = models.FileField(upload_to='release_files/', blank=True, null=True)
@@ -79,8 +79,8 @@ class Release(models.Model):
         return '%s %s' % (self.app.title, self.version)
 
 class Comment(models.Model):
-    app = models.ForeignKey(App)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL)
+    app = models.ForeignKey(App, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     title = models.CharField(max_length=50)
     content = MarkdownxField()
     timestamp = models.DateTimeField(auto_now_add=True)
@@ -89,8 +89,8 @@ class Comment(models.Model):
         return 'Comment on %s by %s' % (self.app.title, self.user.get_full_name)
 
 class CommentReply(models.Model):
-    comment = models.ForeignKey(Comment)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL)
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     content = MarkdownxField()
     timestamp = models.DateTimeField(auto_now_add=True)
 
@@ -98,7 +98,7 @@ class CommentReply(models.Model):
         return 'Reply to %s' % (self.comment)
 
 class Screenshot(models.Model):
-    app = models.ForeignKey(App)
+    app = models.ForeignKey(App, on_delete=models.CASCADE)
     screenshot = models.ImageField(upload_to='screenshot/%Y-%m-%d/')
     thumbnail = models.ImageField(upload_to='thumbnail/%Y-%m-%d/')
 
@@ -106,7 +106,7 @@ class Screenshot(models.Model):
         return 'Screenshot of %s' % (self.app.title)
 
 class Installation(models.Model):
-    app = models.OneToOneField(App)
+    app = models.OneToOneField(App, on_delete=models.CASCADE)
     installation = MarkdownxField()
 
     def __str__(self):
@@ -117,7 +117,7 @@ class Installation(models.Model):
         verbose_name_plural = 'Installation Notes'
 
 class Maintenance(models.Model):
-    app = models.OneToOneField(App)
+    app = models.OneToOneField(App,on_delete=models.CASCADE)
     notes = MarkdownxField()
 
     def __str__(self):
@@ -132,9 +132,9 @@ class Download(models.Model):
                ('D', 'Point to the Default Release'),
                ('U', 'Point to a URL of your Choice'),
             ]
-    app = models.OneToOneField(App)
+    app = models.OneToOneField(App, on_delete=models.CASCADE)
     download_option = models.CharField(max_length=1, default='I', choices=CHOICES)
-    default_release = models.OneToOneField(Release)
+    default_release = models.OneToOneField(Release, on_delete=models.CASCADE)
     external_url = models.URLField(blank=True, null=True)
     download_link = models.URLField(editable=False)
 
@@ -142,7 +142,7 @@ class Download(models.Model):
         return '%s Download Details' % (self.app.title)
 
 class Development(models.Model):
-    app = models.OneToOneField(App)
+    app = models.OneToOneField(App, on_delete=models.CASCADE)
     notes = MarkdownxField()
     filename = models.FileField(upload_to='release_files/', blank=True, null=True)
 
