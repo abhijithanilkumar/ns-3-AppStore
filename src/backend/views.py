@@ -10,6 +10,8 @@ from django.apps import apps
 from util.img_util import scale_img
 from django.views.generic.edit import DeleteView
 from django.urls import reverse
+from django.urls import reverse
+
 
 
 @login_required
@@ -40,7 +42,6 @@ def createApp(request):
 
 @login_required
 def editApp(request, num):
-    print("1")
     App = apps.get_model('apps', 'App')
     try:
         edit_app = App.objects.get(id=num)
@@ -53,16 +54,16 @@ def editApp(request, num):
         return render(request, 'message.html', context)
     editors = edit_app.editors.all()
     if request.user in editors or request.user.is_staff:
-        print("2")
         if request.method == 'GET':
-            print("3")
             form = EditAppForm(instance=edit_app)
         elif request.method == 'POST':
-            print("4")
             form = EditAppForm(request.POST, request.FILES, instance=edit_app)
             if form.is_valid():
-                print("hello")
                 edited_app = form.save(commit=False)
+                cleaned_data = form.clean()
+                tags = cleaned_data['tags']
+                for tag in tags:
+                    edited_app.tags.add(tag)
                 if 'icon' in request.FILES:
                     icon_file = request.FILES['icon']
                     edited_app.icon = scale_img(
@@ -359,7 +360,6 @@ def modifyDownload(request, num):
                             instance.download_link = link
                     if not instance.default_release:
                         instance.default_release = release
-                    print(instance.download_link)
                     instance.save()
                 else:
                     download = form.save(commit=False)
@@ -478,36 +478,36 @@ def deleteRelease(request, num):
 
 """
 class _ScreenshotEditConfig:
-	max_img_size_b = 2 * 1024 * 1024
-	thumbnail_height_px = 150
+    max_img_size_b = 2 * 1024 * 1024
+    thumbnail_height_px = 150
 
 def _upload_screenshot(app, request):
-	screenshot_f = request.FILES.get('file')
-	if not screenshot_f:
-		raise ValueError('no file submitted')
-	if screenshot_f.size > _ScreenshotEditConfig.max_img_size_b:
-		raise ValueError('image file is %d bytes but can be at most %d bytes' % (screenshot_f.size, _ScreenshotEditConfig.max_img_size_b))
-	thumbnail_f = scale_img(screenshot_f, screenshot_f.name, _ScreenshotEditConfig.thumbnail_height_px, 'h')
-	screenshot = Screenshot.objects.create(app = app)
-	screenshot.screenshot.save(screenshot_f.name, screenshot_f)
-	screenshot.thumbnail.save(thumbnail_f.name, thumbnail_f)
-	screenshot.save()
+    screenshot_f = request.FILES.get('file')
+    if not screenshot_f:
+        raise ValueError('no file submitted')
+    if screenshot_f.size > _ScreenshotEditConfig.max_img_size_b:
+        raise ValueError('image file is %d bytes but can be at most %d bytes' % (screenshot_f.size, _ScreenshotEditConfig.max_img_size_b))
+    thumbnail_f = scale_img(screenshot_f, screenshot_f.name, _ScreenshotEditConfig.thumbnail_height_px, 'h')
+    screenshot = Screenshot.objects.create(app = app)
+    screenshot.screenshot.save(screenshot_f.name, screenshot_f)
+    screenshot.thumbnail.save(thumbnail_f.name, thumbnail_f)
+    screenshot.save()
 
 def _delete_screenshot(app, request):
-	screenshot_id = request.POST.get('screenshot_id')
-	if not screenshot_id:
-		raise ValueError('no screenshot_id specified')
+    screenshot_id = request.POST.get('screenshot_id')
+    if not screenshot_id:
+        raise ValueError('no screenshot_id specified')
 
-	try:
-		screenshot_id = int(screenshot_id)
-		screenshot = Screenshot.objects.get(id = screenshot_id)
-	except ValueError, Screenshot.DoesNotExist:
-		raise ValueError('invalid screenshot_id')
-	screenshot.delete()
+    try:
+        screenshot_id = int(screenshot_id)
+        screenshot = Screenshot.objects.get(id = screenshot_id)
+    except ValueError, Screenshot.DoesNotExist:
+        raise ValueError('invalid screenshot_id')
+    screenshot.delete()
 
 _ScreenshotActions = {
-	'upload_screenshot':  _upload_screenshot,
-	'delete_screenshot':  _delete_screenshot,
+    'upload_screenshot':  _upload_screenshot,
+    'delete_screenshot':  _delete_screenshot,
 }
 """
 
@@ -556,7 +556,6 @@ def deleteScreenshotPrompt(request, num):
     app = screenshot.app
     go_back_to_url = "/app/" + app.name
     url = "/backend/screenshotdelconf/" + str(screenshot.id)
-    print(app)
     if request.user.is_staff or request.user in app.editors.all():
         context = {
             'url': url,
@@ -618,8 +617,8 @@ def screenshots(request, num):
     print "entered"
     context = {
         'screenshots': screenshots,
-		'max_file_img_size_b': _ScreenshotEditConfig.max_img_size_b,
-		'thumbnail_height_px': _ScreenshotEditConfig.thumbnail_height_px,
-	}
+        'max_file_img_size_b': _ScreenshotEditConfig.max_img_size_b,
+        'thumbnail_height_px': _ScreenshotEditConfig.thumbnail_height_px,
+    }
     return render(request, 'screenshots.html', context)
 """

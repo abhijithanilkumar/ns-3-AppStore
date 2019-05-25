@@ -6,6 +6,7 @@ from . import views_api
 
 app_name = 'backend'
 
+
 urlpatterns = [
     path(
         'create/',
