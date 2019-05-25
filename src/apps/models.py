@@ -11,7 +11,7 @@ from util.img_util import scale_img
 # Create your models here.
 
 class NsRelease(models.Model):
-    name = models.CharField(max_length=4)
+    name = models.CharField(max_length=5)
     url = models.URLField(default="https://www.nsnam.org/ns-3.26/")
 
     def __str__(self):
@@ -69,7 +69,7 @@ class App(models.Model):
 class Release(models.Model):
     app = models.ForeignKey(App, on_delete=models.CASCADE)
     version = models.CharField(max_length=31)
-    require = models.ForeignKey(NsRelease, on_delete=models.CASCADE)
+    require = models.ForeignKey(NsRelease, blank=True, null=True, on_delete=models.CASCADE)
     date = models.DateField(default=datetime.now, blank=True)
     notes = MarkdownxField()
     filename = models.FileField(upload_to='release_files/', blank=True, null=True)
