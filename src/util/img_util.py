@@ -5,6 +5,7 @@ from PIL import Image
 # from cStringIO import StringIO
 from io import StringIO
 
+
 def scale_img(f, name, max_px, dim):
     print(name)
     try:
@@ -33,6 +34,6 @@ def scale_img(f, name, max_px, dim):
     scaled_img = img.resize((w, h), Image.ANTIALIAS)
     scaled_buffer = StringIO()
     scaled_img.save(scaled_buffer, 'PNG')
-    scaled_f = File(scaled_buffer, name = name + '.png')
+    scaled_f = File(scaled_buffer, name=name + '.png')
     scaled_f._set_size(len(scaled_buffer.getvalue()))
     return scaled_f

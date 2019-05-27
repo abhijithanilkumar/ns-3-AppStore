@@ -7,6 +7,7 @@ from . import forms
 from . import models
 from django.apps import apps
 
+
 def findTags():
     Tag = apps.get_model('apps', 'Tag')
     min_tag_count = 3
@@ -20,16 +21,18 @@ def findTags():
 
     return top_tags, not_top_tags
 
+
 def userLanding(request):
     App = apps.get_model('apps', 'App')
     your_apps = App.objects.filter(editors__id=request.user.id)
     top_tags, not_top_tags = findTags()
     context = {
-        'top_tags' :top_tags,
-        'not_top_tags' :not_top_tags,
-        'your_apps':your_apps,
+        'top_tags': top_tags,
+        'not_top_tags': not_top_tags,
+        'your_apps': your_apps,
     }
     return render(request, 'landing.html', context)
+
 
 class ShowProfile(LoginRequiredMixin, generic.TemplateView):
     template_name = "profiles/show_profile.html"
