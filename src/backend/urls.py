@@ -2,6 +2,7 @@ from django.conf.urls import url
 from django.urls import path
 
 from . import views
+from . import views_api
 
 app_name = 'backend'
 
@@ -62,4 +63,16 @@ urlpatterns = [
         'screenshotdelconf/<int:num>/',
         views.deleteScreenshot,
         name='delete_screenshot'),
+    path(
+        'api/install/<str:module_name>/',
+        views_api.install,
+        name='install'),
+    path(
+        'api/install/<str:module_name>/<str:version>/',
+        views_api.install,
+        name='install'),
+    path(
+        'api/search/<str:query>/',
+        views_api.search,
+        name='search'),
 ]

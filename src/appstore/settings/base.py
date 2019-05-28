@@ -98,6 +98,7 @@ INSTALLED_APPS = (
     'search',
     'backend',
     'help',
+    'rest_framework',
 
 )
 
