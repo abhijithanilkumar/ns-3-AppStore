@@ -33,7 +33,10 @@ def install(request, module_name, version=None):
     response['app_type'] = app.app_type
     response['coderepo'] = app.coderepo
     response['version'] = app_release.version
-    response['bakefile_url'] = settings.MEDIA_URL + str(app_release.filename)
+    if str(app_release.filename):
+        response['bakefile_url'] = settings.MEDIA_URL + str(app_release.filename)
+    else:
+        response['bakefile_url'] = None
     response['status'] = 200
     response['message'] = "Module: " + module_name + " with version: " + app_release.version + " found on the ns-3 AppStore."
     response = json.loads(json.dumps(response))
