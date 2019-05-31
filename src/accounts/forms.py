@@ -26,7 +26,7 @@ class LoginForm(AuthenticationForm):
             Field('remember_me'),
             Submit('sign_in', 'Log in',
                    css_class="btn btn-lg btn-primary btn-block"),
-            )
+        )
 
 
 class SignupForm(authtoolsforms.UserCreationForm):
@@ -42,7 +42,7 @@ class SignupForm(authtoolsforms.UserCreationForm):
             Field('password1', placeholder="Enter Password"),
             Field('password2', placeholder="Re-enter Password"),
             Submit('sign_up', 'Sign up', css_class="btn-warning"),
-            )
+        )
 
 
 class PasswordChangeForm(authforms.PasswordChangeForm):
@@ -57,7 +57,7 @@ class PasswordChangeForm(authforms.PasswordChangeForm):
             Field('new_password1', placeholder="Enter new password"),
             Field('new_password2', placeholder="Enter new password (again)"),
             Submit('pass_change', 'Change Password', css_class="btn-warning"),
-            )
+        )
 
 
 class PasswordResetForm(authtoolsforms.FriendlyPasswordResetForm):
@@ -70,7 +70,7 @@ class PasswordResetForm(authtoolsforms.FriendlyPasswordResetForm):
             Field('email', placeholder="Enter email",
                   autofocus=""),
             Submit('pass_reset', 'Reset Password', css_class="btn-warning"),
-            )
+        )
 
 
 class SetPasswordForm(authforms.SetPasswordForm):
@@ -83,4 +83,4 @@ class SetPasswordForm(authforms.SetPasswordForm):
                   autofocus=""),
             Field('new_password2', placeholder="Enter new password (again)"),
             Submit('pass_change', 'Change Password', css_class="btn-warning"),
-            )
+        )

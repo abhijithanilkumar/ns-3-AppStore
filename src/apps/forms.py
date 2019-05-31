@@ -1,6 +1,7 @@
 from django import forms
 from .models import Comment
 
+
 class CommentForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
