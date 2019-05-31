@@ -194,10 +194,12 @@
 						{# End Release version #}
 
 						{# Works with #}
+						{% if release.require %}
 						<p>
 							<strong>Works with</strong>
 							{{ release.require }}
 						</p>
+						{% endif %}
 						{# End Works with #}
 
 						{% if release.notes %}
@@ -299,7 +301,7 @@
 			</button>
 			<p><strong>Version</strong> {{ latest.version }}</p>
 			<p><strong>Released</strong> {{ latest.date }}</p>
-			<p><strong>Works with</strong> <a href="{{ latest.require.url }}" target="_blank">{{ latest.require }}</a></p>
+			{% if latest.require %}<p><strong>Works with</strong> <a href="{{ latest.require.url }}" target="_blank">{{ latest.require }}</a></p>{% endif %}
 			{% if app.app_type == 'M' %}
 			{% if latest.filename %}<p><strong>Bake</strong> <a href="/media/{{ latest.filename }}" target="_blank">bakeconf.xml</a>{% endif %}
 			{% endif %}
