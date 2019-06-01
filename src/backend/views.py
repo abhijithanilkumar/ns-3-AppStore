@@ -9,7 +9,6 @@ from .forms import CreateAppForm, EditAppForm, ReleaseForm, \
 from django.apps import apps
 from util.img_util import scale_img
 from django.views.generic.edit import DeleteView
-# from django.core.urlresolvers import reverse
 from django.urls import reverse
 
 
