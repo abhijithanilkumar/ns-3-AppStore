@@ -91,6 +91,7 @@ INSTALLED_APPS = (
     'markdownx',
     'haystack',
     'social_django',
+    'rest_framework',
 
     'profiles',
     'accounts',
