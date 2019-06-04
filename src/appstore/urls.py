@@ -20,6 +20,7 @@ urlpatterns = [
     path('app/', include('apps.urls', namespace='apps')),
     path('search/', include('search.urls', namespace='search')),
     path('backend/', include('backend.urls', namespace='edit')),
+    path('download/', include('download.urls', namespace='download')),
     path('auth/', include('social_django.urls', namespace='social')),
 ]
 
