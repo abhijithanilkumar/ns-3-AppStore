@@ -1,10 +1,27 @@
 import json
+import datetime
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from apps.models import App, Release
+from util.views import ipaddr_str_to_long
+from download.models import Download, ReleaseDownloadsByDate
 from django.conf import settings
 from django.db.models import Q
 from django.http import JsonResponse
+
+def _client_ipaddr(request):
+    forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if forwarded_for:
+        ipaddr_str = forwarded_for.split(',')[0]
+    else:
+        ipaddr_str = request.META.get('REMOTE_ADDR')
+    return ipaddr_str_to_long(ipaddr_str)
+
+
+def _increment_count(klass, **args):
+    obj, created = klass.objects.get_or_create(**args)
+    obj.count += 1
+    obj.save()
 
 
 @api_view(['GET'])
@@ -40,6 +57,22 @@ def install(request, module_name, version=None):
     response['status'] = 200
     response['message'] = "Module: " + module_name + " with version: " + app_release.version + " found on the ns-3 AppStore."
     response = json.loads(json.dumps(response))
+
+    ## Update the download statistics
+    ip4addr = _client_ipaddr(request)
+    when = datetime.date.today()
+    
+    # Update the App object
+    app_release.app.downloads += 1
+    app_release.app.save()
+
+     # Record the download as a Download object
+    Download.objects.create(release=app_release, ip4addr=ip4addr, when=when)
+    
+    # Record the download in the timeline
+    _increment_count(ReleaseDownloadsByDate, release = app_release, when = when)
+    _increment_count(ReleaseDownloadsByDate, release = None, when = when)
+
     return Response(response)
 
 
