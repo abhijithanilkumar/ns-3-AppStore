@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block more_head %}
+<link rel="stylesheet" type="text/css" media="all" href="{% get_static_prefix %}apps/css/app_page.css" />
+<link rel="stylesheet" type="text/css" media="all" href="{% get_static_prefix %}apps/css/app_stars.css" />
+<script type="text/javascript" src="{% get_static_prefix %}common/lib/js/jquery.timeago.js"></script>
+<script type="text/javascript" src="{% get_static_prefix %}common/lib/js/Markdown.Converter.js"></script>
+<script type="text/javascript" src="{% get_static_prefix %}common/lib/js/Markdown.Sanitizer.js"></script>
+<script type="text/javascript" src="{% get_static_prefix %}common/js/setup_ajax_for_csrf.js"></script>
+<script type="text/javascript" src="{% get_static_prefix %}common/js/markdown_util.js"></script>
+{% endblock %}
+
+{% block title %} - {{ app.title }} - Download Statistics{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="span12">
+    <div class="page-header">
+      <h1>
+        {{ app.title }}
+        <small>Download Statistics</small>
+      </h1>
+      <h3>Total downloads: {{ app.downloads }}</h3>
+    </div>
+  </div>
+</div>
+
+{% if app.downloads > 0 %}
+<div class="row">
+  <div class="span12">
+     <table class="table table-hover table-striped table-bordered">
+        <thead>
+            <th>Date</th>
+            {% for release in releases %}
+            <th>
+                {{ release.version }}
+            </th>
+            {% endfor %}
+        </thead>
+        <tbody>
+            {% for date, releases in app_timeline.items %}
+            <tr>
+                <td>{{ date }}</td>
+                {% for release, count in releases.items %}
+                    <td>{{ count }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+     	</tbody>
+     </table>
+  </div>
+</div>
+{% endif %}
+{% endblock %}
