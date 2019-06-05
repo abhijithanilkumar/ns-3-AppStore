@@ -1,21 +1,39 @@
-from django.shortcuts import render
-
+from django.shortcuts import render, get_object_or_404
+from apps.models import App
+from download.models import ReleaseDownloadsByDate
 
 def all_stats(request):
-    # TODO: Write logic for all apps stats
-    return 
-
-
-def all_stats_timeline(request):
-    # TODO: Write logic for all apps stats timeline wise
-    return 
+    apps = App.objects.filter(active=True)
+    context = {
+            'apps': apps,
+    }
+    return render(request, 'all_stats.html', context)
 
 
 def app_stats(request, name):
-    # TODO: Write logic for particular app stats
-    return 
+    app = get_object_or_404(App, active = True, name = name)
+    releases = app.release_set.all()
+    app_timeline = dict()
+    for r in releases:
+        temp = ReleaseDownloadsByDate.objects.filter(release=r)
+        for t in temp:
+            app_timeline[t.when] = {}
+    
+    for r in releases:
+        temp = ReleaseDownloadsByDate.objects.filter(release=r)
+        for t in temp:
+            for re in releases:
+                app_timeline[t.when][re.version]=0
 
+    for r in releases:
+        temp = ReleaseDownloadsByDate.objects.filter(release=r)
+        for t in temp:
+            app_timeline[t.when][t.release.version] = 0
+            app_timeline[t.when][t.release.version] += t.count
 
-def app_stats_timeline(request, name):
-    # TODO: Write logic for particular app stats
-    return 
+    context = {
+            'app': app,
+            'app_timeline': app_timeline,
+            'releases': releases
+    }
+    return render(request, 'app_stats.html', context)
