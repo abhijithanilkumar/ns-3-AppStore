@@ -71,4 +71,8 @@ urlpatterns = [
         'api/install/<str:module_name>/<str:version>/',
         views_api.install,
         name='install'),
+    path(
+        'api/search/<str:query>/',
+        views_api.search,
+        name='search'),
 ]
