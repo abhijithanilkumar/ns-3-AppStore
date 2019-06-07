@@ -47,4 +47,18 @@ def install(request, module_name, version=None):
 
 @api_view(['GET'])
 def search(request, query):
-    return 
+    apps = App.objects.filter(Q(name__icontains=query) | Q(abstract__icontains=query))
+    response = []
+    for app in apps:
+        temp_app = {}
+        try:
+            app_release = Release.objects.filter(app=app).order_by('-version').first()
+            temp_app['version'] = app_release.version
+        except BaseException:
+            temp_app['version'] = None
+        temp_app['name'] = app.name
+        temp_app['title'] = app.title
+        temp_app['abstract'] = app.abstract
+        response.append(temp_app)
+        
+    return Response(list(response))
