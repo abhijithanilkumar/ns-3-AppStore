@@ -72,7 +72,7 @@ urlpatterns = [
         views_api.install,
         name='install'),
     path(
-        'api/search/<str:query>/',
+        'api/search/',
         views_api.search,
         name='search'),
 ]

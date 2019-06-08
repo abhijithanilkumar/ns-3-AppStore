@@ -46,7 +46,8 @@ def install(request, module_name, version=None):
 
 
 @api_view(['GET'])
-def search(request, query):
+def search(request):
+    query = request.GET.get('q')
     apps = App.objects.filter(Q(name__icontains=query) | Q(abstract__icontains=query))
     response = []
     for app in apps:
