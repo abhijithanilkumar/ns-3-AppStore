@@ -2,12 +2,15 @@
 Returns json data about a module app name.
 
 - URL
+
 /backend/api/install/:name/:version
 
 - Method
+
 ```GET```
 
 - URL Params
+
  **Required:** 
  ```name=[string]```
  
@@ -51,12 +54,15 @@ Returns json data about a module app name.
 Returns array of json with modules having substring as passed
 
 - URL
+
 /backend/api/search/?q=[:name]
 
 - Method
+
 ```GET```
 
 - URL Params
+
  **Required:** 
  ```name=[string]```
 
