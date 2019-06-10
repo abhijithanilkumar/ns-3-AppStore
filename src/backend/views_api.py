@@ -35,6 +35,10 @@ def install(request, module_name, version=None):
     response['app_type'] = app.app_type
     response['coderepo'] = app.coderepo
     response['version'] = app_release.version
+    if str(app_release.require.name):
+        response['ns'] = app_release.require.name
+    else:
+        response['ns'] = None
     if str(app_release.filename):
         response['bakefile_url'] = settings.MEDIA_URL + str(app_release.filename)
     else:
