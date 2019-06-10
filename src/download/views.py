@@ -15,7 +15,7 @@ def app_stats(request, name):
     releases = app.release_set.all()
     app_timeline = dict()
     for r in releases:
-        temp = ReleaseDownloadsByDate.objects.filter(release=r)
+        temp = ReleaseDownloadsByDate.objects.filter(release=r).order_by('-when')
         for t in temp:
             app_timeline[t.when] = {}
     
