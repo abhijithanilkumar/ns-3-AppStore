@@ -59,13 +59,14 @@ Returns array of json with modules having substring as passed
 
 	/backend/api/search/?q=[:name]
 
-- Method
+- **Method**
 
 	```GET```
 
-- URL Params
+- **URL Params**
 
  	**Required:** 
+ 	
  	```name=[string]```
 
 
