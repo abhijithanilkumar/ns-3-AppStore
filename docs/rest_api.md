@@ -1,23 +1,25 @@
 # Module Details
 Returns json data about a module app name.
 
-- URL
+- **URL**
 
-/backend/api/install/:name/:version
+	/backend/api/install/:name/:version
 
-- Method
+- **Method**
 
-```GET```
+	```GET```
 
-- URL Params
+- **URL Params**
 
- **Required:** 
- ```name=[string]```
+ 	**Required:** 
+ 	
+ 	```name=[string]```
  
- **Optional**
- ```version=[float]```
+ 	**Optional**
+ 
+ 	```version=[float]```
 
- - Response:
+ - **Response:**
  	- Success Response Content: 
  	```json
  	{
@@ -53,18 +55,18 @@ Returns json data about a module app name.
 # Search API
 Returns array of json with modules having substring as passed
 
-- URL
+- **URL**
 
-/backend/api/search/?q=[:name]
+	/backend/api/search/?q=[:name]
 
 - Method
 
-```GET```
+	```GET```
 
 - URL Params
 
- **Required:** 
- ```name=[string]```
+ 	**Required:** 
+ 	```name=[string]```
 
 
 - Response:
