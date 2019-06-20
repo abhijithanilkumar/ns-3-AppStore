@@ -2,7 +2,15 @@ from rest_framework import serializers
 
 
 class App(object):
-    def __init__(self, name=None, app_type=None, coderepo=None, version=None, message=None, ns=None, bakefile_url=None):
+    def __init__(
+            self,
+            name=None,
+            app_type=None,
+            coderepo=None,
+            version=None,
+            message=None,
+            ns=None,
+            bakefile_url=None):
         self.name = name
         self.app_type = app_type
         self.coderepo = coderepo
