@@ -3,7 +3,7 @@ from django.contrib import admin
 from authtools.admin import NamedUserAdmin
 from .models import Profile
 from django.contrib.auth import get_user_model
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 User = get_user_model()
 
@@ -26,6 +26,7 @@ class NewUserAdmin(NamedUserAdmin):
         # Unicode hex b6 is the Pilcrow sign
         return '<a href="{}">{}</a>'.format(url, '\xb6')
     permalink.allow_tags = True
+
 
 admin.site.unregister(User)
 admin.site.register(User, NewUserAdmin)

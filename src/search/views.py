@@ -5,6 +5,7 @@ from django.shortcuts import render
 from django.apps import apps
 from haystack.query import SearchQuerySet
 
+
 def findTags():
     min_tag_count = 3
     num_of_top_tags = 20
@@ -18,6 +19,7 @@ def findTags():
 
     return top_tags, not_top_tags
 
+
 def search(request):
     App = apps.get_model('apps', 'App')
     Tag = apps.get_model('apps', 'Tag')
@@ -27,7 +29,9 @@ def search(request):
     sqs_tag = SearchQuerySet()
     sqs_app = sqs_app.models(App)
     sqs_tag = sqs_tag.models(Tag)
-    sqs_app = sqs_app.filter(title__contains=query).filter(abstract__contains=query).filter(
+    sqs_app = sqs_app.filter(
+        title__contains=query).filter(
+        abstract__contains=query).filter(
         description__contains=query)
     sqs_tag = sqs_tag.filter(title__contains=query)
     app = set()

@@ -7,7 +7,8 @@ from django.conf import settings
 
 class BaseProfile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL,
-                                primary_key=True)
+                                primary_key=True,
+                                on_delete=models.CASCADE)
     slug = models.UUIDField(default=uuid.uuid4, blank=True, editable=False)
     # Add more user profile fields here. Make sure they are nullable
     # or with default values
