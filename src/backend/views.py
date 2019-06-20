@@ -10,6 +10,8 @@ from django.apps import apps
 from util.img_util import scale_img
 from django.views.generic.edit import DeleteView
 from django.urls import reverse
+from django.urls import reverse
+
 
 
 @login_required
