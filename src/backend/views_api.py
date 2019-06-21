@@ -44,8 +44,8 @@ class SearchApiViewSet(viewsets.ViewSet):
     def list(self, request):
         query = request.GET.get('q')
         queryset = App.objects.filter(Q(name__icontains=query)
-                              | Q(abstract__icontains=query))
+                                      | Q(abstract__icontains=query))
         app_release = Release.objects.filter(
-                app__in=queryset).order_by('-version')
+            app__in=queryset).order_by('-version')
         serializer = AppReleaseSerializer(app_release, many=True)
         return Response(serializer.data)

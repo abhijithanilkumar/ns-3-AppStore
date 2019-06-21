@@ -39,6 +39,7 @@ class AppSearchSerializer(serializers.ModelSerializer):
 
 class AppReleaseSerializer(serializers.HyperlinkedModelSerializer):
     app = AppSearchSerializer()
+
     class Meta:
         model = Release
         fields = ('app', 'version')
