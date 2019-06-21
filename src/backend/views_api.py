@@ -7,7 +7,7 @@ from apps.models import App, Release
 from django.conf import settings
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
-from .serializers import App as AppObject, AppSerializer, AppSearch, AppSearchSerializer
+from .serializers import App as AppObject, AppSerializer, AppSearchSerializer, AppReleaseSerializer
 
 
 @api_view(['GET'])
@@ -40,33 +40,12 @@ def install(request, module_name, version=None):
     return Response(data=app_serialized.data, status=200)
 
 
-@api_view(['GET'])
-def search(request):
-    query = request.GET.get('q')
-    apps = App.objects.filter(Q(name__icontains=query)
-                              | Q(abstract__icontains=query))
-    response = []
-    for app in apps:
-        temp_app = {}
-        try:
-            app_release = Release.objects.filter(
-                app=app).order_by('-version').first()
-            temp_app['version'] = app_release.version
-        except BaseException:
-            temp_app['version'] = None
-        temp_app['name'] = app.name
-        temp_app['title'] = app.title
-        temp_app['abstract'] = app.abstract
-        response.append(temp_app)
-
-    return Response(list(response))
-
-
 class SearchApiViewSet(viewsets.ViewSet):
     def list(self, request):
         query = request.GET.get('q')
         queryset = App.objects.filter(Q(name__icontains=query)
                               | Q(abstract__icontains=query))
-        serializer = AppSearchSerializer(queryset, many=True)
+        app_release = Release.objects.filter(
+                app__in=queryset).order_by('-version')
+        serializer = AppReleaseSerializer(app_release, many=True)
         return Response(serializer.data)
-

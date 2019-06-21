@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from apps.models import App as AppModel, Release
 
+
 class App(object):
     def __init__(
             self,
@@ -30,25 +31,14 @@ class AppSerializer(serializers.Serializer):
     message = serializers.CharField(max_length=255)
 
 
-class AppSearch(object):
-    def __init__(
-            self,
-            name=None,
-            version=None,
-            title=None,
-            abstract=None
-        ):
-        self.name = name
-        self.version = version
-        self.title = title
-        self.abstract = abstract
-
-
-class AppSearchSerializer(serializers.HyperlinkedModelSerializer):
-    # name = serializers.CharField(max_length=127)
-    # version = serializers.CharField(max_length=31)
-    # title = serializers.CharField(max_length=127)
-    # abstract = serializers.CharField(max_length=255)
+class AppSearchSerializer(serializers.ModelSerializer):
     class Meta:
         model = AppModel
         fields = ('name', 'title', 'abstract')
+
+
+class AppReleaseSerializer(serializers.HyperlinkedModelSerializer):
+    app = AppSearchSerializer()
+    class Meta:
+        model = Release
+        fields = ('app', 'version')
