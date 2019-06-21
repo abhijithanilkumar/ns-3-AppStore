@@ -2,14 +2,12 @@ import json
 from rest_framework.decorators import api_view, throttle_classes
 from rest_framework.response import Response
 from rest_framework.throttling import AnonRateThrottle
+from rest_framework import viewsets
 from apps.models import App, Release
 from django.conf import settings
 from django.db.models import Q
-from django.db import models
-from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
-from .serializers import App as AppObject, AppSerializer
-from rest_framework.renderers import JSONRenderer
+from .serializers import App as AppObject, AppSerializer, AppSearch, AppSearchSerializer
 
 
 @api_view(['GET'])
@@ -62,3 +60,13 @@ def search(request):
         response.append(temp_app)
 
     return Response(list(response))
+
+
+class SearchApiViewSet(viewsets.ViewSet):
+    def list(self, request):
+        query = request.GET.get('q')
+        queryset = App.objects.filter(Q(name__icontains=query)
+                              | Q(abstract__icontains=query))
+        serializer = AppSearchSerializer(queryset, many=True)
+        return Response(serializer.data)
+
