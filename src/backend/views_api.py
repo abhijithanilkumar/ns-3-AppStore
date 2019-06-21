@@ -5,7 +5,9 @@ from rest_framework.throttling import AnonRateThrottle
 from apps.models import App, Release
 from django.conf import settings
 from django.db.models import Q
+from django.db import models
 from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
 from .serializers import App as AppObject, AppSerializer
 from rest_framework.renderers import JSONRenderer
 
@@ -13,49 +15,31 @@ from rest_framework.renderers import JSONRenderer
 @api_view(['GET'])
 @throttle_classes([AnonRateThrottle])
 def install(request, module_name, version=None):
-    app_found = True
-    try:
-        app = App.objects.get(name=module_name)
-    except BaseException:
-        # Request 404 for App not found on the AppStore
-        app_found = False
-        message = "Module: " + module_name + " was not found on the ns-3 AppStore."
+    app = get_object_or_404(App, name=module_name)
     # if version is not specified in the API Call, send the latest file config,
     # else the specified version config
     if version is None:
         app_release = Release.objects.filter(
             app=app).order_by('-version').first()
     else:
-        app_release = Release.objects.filter(app=app, version=version).first()
-        # Send 404 for App with not the requested version
-        if app_release is None:
-            app_found = False
-            message = "Module: " + module_name + " with version: " + \
-                version + " was not found on the ns-3 AppStore."
+        app_release = get_object_or_404(Release, app=app, version=version)
 
-    if app_release and str(app_release.filename):
-        bakefile_url = settings.MEDIA_URL + str(app_release.filename)
-    else:
-        bakefile_url = None
+    # it reaches here implies the module is found
+    bakefile_url = settings.MEDIA_URL + str(app_release.filename)
+    message = "Module: " + module_name + " with version: " + \
+        app_release.version + " found on the ns-3 AppStore."
 
-    # Return the response based on whether the app is found or not
-    if app_found:
-        message = "Module: " + module_name + " with version: " + \
-            app_release.version + " found on the ns-3 AppStore."
-        app_object = AppObject(
-            name=app.name,
-            app_type=app.app_type,
-            coderepo=app.coderepo,
-            version=app_release.version,
-            ns=app_release.require.name,
-            bakefile_url=bakefile_url,
-            message=message)
-        app_serialized = AppSerializer(app_object)
-        return Response(data=app_serialized.data, status=200)
-    else:
-        app_object = AppObject(message=message)
-        app_serialized = AppSerializer(app_object)
-        return Response(data=app_serialized.data, status=404)
+    app_object = AppObject(
+        name=app.name,
+        app_type=app.app_type,
+        coderepo=app.coderepo,
+        version=app_release.version,
+        ns=app_release.require.name,
+        bakefile_url=bakefile_url,
+        message=message)
+    app_serialized = AppSerializer(app_object)
+
+    return Response(data=app_serialized.data, status=200)
 
 
 @api_view(['GET'])
