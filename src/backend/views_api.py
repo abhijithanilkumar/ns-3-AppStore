@@ -41,6 +41,7 @@ def install(request, module_name, version=None):
 
 
 class SearchApiViewSet(viewsets.ViewSet):
+    @throttle_classes([AnonRateThrottle])
     def list(self, request):
         query = request.GET.get('q')
         queryset = App.objects.filter(Q(name__icontains=query)
