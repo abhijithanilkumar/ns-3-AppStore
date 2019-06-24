@@ -2,68 +2,57 @@ import json
 from rest_framework.decorators import api_view, throttle_classes
 from rest_framework.response import Response
 from rest_framework.throttling import AnonRateThrottle
+from rest_framework import viewsets
 from apps.models import App, Release
 from django.conf import settings
 from django.db.models import Q
-from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
+from .serializers import App as AppObject, AppSerializer, AppSearchSerializer, AppReleaseSerializer
 
 
 @api_view(['GET'])
 @throttle_classes([AnonRateThrottle])
 def install(request, module_name, version=None):
-    response = {}
-    try:
-        app = App.objects.get(name=module_name)
-    except BaseException:
-        # Request 404 for App not found on the AppStore
-        response['status'] = 404
-        response['message'] = "Module: " + module_name + " was not found on the ns-3 AppStore."
-        return Response(response)
-    # if version is not specified in the API Call, send the latest file config, 
+    app = get_object_or_404(App, name=module_name)
+    # if version is not specified in the API Call, send the latest file config,
     # else the specified version config
-    if version==None:
-        app_release = Release.objects.filter(app=app).order_by('-version').first()
+    if version is None:
+        app_release = Release.objects.filter(
+            app=app).order_by('-version').first()
     else:
-        app_release = Release.objects.filter(app=app, version=version).first()
-        # Send 404 for App with not the requested version
-        if app_release==None:
-            response['status'] = 404
-            response['message'] = "Module: " + module_name + " with version: " + version + " was not found on the ns-3 AppStore."
-            return Response(response)
+        app_release = get_object_or_404(Release, app=app, version=version)
 
-    response['name'] = app.name
-    response['app_type'] = app.app_type
-    response['coderepo'] = app.coderepo
-    response['version'] = app_release.version
-    if str(app_release.require.name):
-        response['ns'] = app_release.require.name
-    else:
-        response['ns'] = None
-    if str(app_release.filename):
-        response['bakefile_url'] = settings.MEDIA_URL + str(app_release.filename)
-    else:
-        response['bakefile_url'] = None
-    response['status'] = 200
-    response['message'] = "Module: " + module_name + " with version: " + app_release.version + " found on the ns-3 AppStore."
-    response = json.loads(json.dumps(response))
-    return Response(response)
+    # it reaches here implies the module is found
+    bakefile_url = settings.MEDIA_URL + str(app_release.filename)
+    message = "Module: " + module_name + " with version: " + \
+        app_release.version + " found on the ns-3 AppStore."
+
+    app_object = AppObject(
+        name=app.name,
+        app_type=app.app_type,
+        coderepo=app.coderepo,
+        version=app_release.version,
+        ns=app_release.require.name,
+        bakefile_url=bakefile_url,
+        message=message)
+    app_serialized = AppSerializer(app_object)
+
+    return Response(data=app_serialized.data, status=200)
 
 
-@api_view(['GET'])
-def search(request):
-    query = request.GET.get('q')
-    apps = App.objects.filter(Q(name__icontains=query) | Q(abstract__icontains=query))
-    response = []
-    for app in apps:
-        temp_app = {}
-        try:
-            app_release = Release.objects.filter(app=app).order_by('-version').first()
-            temp_app['version'] = app_release.version
-        except BaseException:
-            temp_app['version'] = None
-        temp_app['name'] = app.name
-        temp_app['title'] = app.title
-        temp_app['abstract'] = app.abstract
-        response.append(temp_app)
-        
-    return Response(list(response))
+class SearchApiViewSet(viewsets.ViewSet):
+    @throttle_classes([AnonRateThrottle])
+    def list(self, request):
+        query = request.GET.get('q')
+        if query:
+            queryset = App.objects.filter(Q(name__icontains=query)
+                                          | Q(abstract__icontains=query))
+            app_release = Release.objects.filter(
+                app__in=queryset).order_by('-version')[:1]
+            serializer = AppReleaseSerializer(app_release, many=True)
+            if len(serializer.data):
+                return Response(serializer.data, 200)
+            else:
+                return Response(serializer.data, 404)
+        else:
+            return Response([], 404)
