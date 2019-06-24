@@ -20,31 +20,34 @@ Returns json data about a module app name.
  	```version=[float]```
 
  - **Response:**
- 	- Success Response Content: 
+ 	- Success Response 
+ 		- **Code:** 200
+ 		- **Content:**
  	```json
  	{
 	    "name": "ns3-gym",
 	    "app_type": "M",
 	    "coderepo": "https://github.com/tkn-tub/ns3-gym",
 	    "version": "0.1",
+	    "ns": "3.29",
 	    "bakefile_url": "/media/release_files/ns3-gym_fWyo1Cs_LaB4ehm.xml",
-	    "status": 200,
 	    "message": "Module: ns3-gym with version: 0.1 found on the ns-3 AppStore."
 	}
 	```
 
-	- Error Response Content
+	- Error Response
+		- **Code:** 404
+		- **Content:**
 	```json
 	{
-	    "status": 404,
-	    "message": "Module: ns3 was not found on the ns-3 AppStore."
+	    "detail": "Not found."
 	}
 	```
 
 	OR
 
-	- Code: 429 Too Many Requests
-	- Content:
+	- **Code:** 429 Too Many Requests
+	- **Content:**
 	```json
 	{
     	"detail": "Request was throttled. Expected available in 86399 seconds."
@@ -71,22 +74,33 @@ Returns array of json with modules having substring as passed
 
 
 - Response:
- 	- Success Response Content: 
+ 	- Success Response:
+ 		- **Code:** 200
+ 		- **Content:**
  	```json
  	[
-    	{
-	        "version": "0.2",
-	        "name": "ns3-gym",
-	        "title": "ns3-gym: OpenAI Gym integration",
-	        "abstract": "The Playground for Reinforcement Learning in Networking Research"
-    	}
+	    {
+	        "app": {
+	            "name": "ns3-gym",
+	            "title": "ns3-gym: OpenAI Gym integration",
+	            "abstract": "The Playground for Reinforcement Learning in Networking Research"
+	        },
+	        "version": "0.2"
+	    }
 	]
+	```
+
+	- Error Response
+		- **Code:** 404
+		- **Content:**
+	```json
+	[ ]
 	```
 
 	OR
 
-	- Code: 429 Too Many Requests
-	- Content:
+	- **Code:** 429 Too Many Requests
+	- **Content:**
 	```json
 	{
     	"detail": "Request was throttled. Expected available in 86399 seconds."
