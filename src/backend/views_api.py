@@ -43,16 +43,21 @@ def install(request, module_name, version=None):
 class SearchApiViewSet(viewsets.ViewSet):
     @throttle_classes([AnonRateThrottle])
     def list(self, request):
-        query = request.GET.get('q')
-        if query:
-            queryset = App.objects.filter(Q(name__icontains=query)
-                                          | Q(abstract__icontains=query))
-            app_release = Release.objects.filter(
-                app__in=queryset).order_by('-version')[:1]
-            serializer = AppReleaseSerializer(app_release, many=True)
-            if len(serializer.data):
-                return Response(serializer.data, 200)
+        if request.GET:
+            query = request.GET.get('q')
+            if query:
+                queryset = App.objects.filter(Q(name__icontains=query)
+                                              | Q(abstract__icontains=query))
+                app_release = Release.objects.filter(
+                    app__in=queryset).order_by('-version')[:1]
+                serializer = AppReleaseSerializer(app_release, many=True)
+                if len(serializer.data):
+                    return Response(serializer.data, 200)
+                else:
+                    return Response(serializer.data, 404)
             else:
-                return Response(serializer.data, 404)
+                return Response([], 404)
         else:
-            return Response([], 404)
+            queryset = App.objects.all()
+            serializer = AppSearchSerializer(queryset, many=True)
+            return Response(serializer.data, 200)
