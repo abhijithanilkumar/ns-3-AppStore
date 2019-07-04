@@ -2,6 +2,7 @@ import json
 from rest_framework.decorators import api_view, throttle_classes
 from rest_framework.response import Response
 from rest_framework.throttling import AnonRateThrottle
+from rest_framework.pagination import PageNumberPagination
 from rest_framework import viewsets
 from apps.models import App, Release
 from django.conf import settings
@@ -46,24 +47,31 @@ class SearchApiViewSet(viewsets.ViewSet):
     def list(self, request):
         if request.GET:
             query = request.GET.get('q')
+            page = request.GET.get('page')
             if query:
-
                 queryset = App.objects.filter(Q(name__icontains=query)
                                               | Q(abstract__icontains=query))
-                print(queryset)
-                # App.objects.all().filter(active=True).order_by('title')
                 app_release = Release.objects.filter(
                     app__in=queryset).order_by('-version')
-                serializer = AppReleaseSerializer(app_release, many=True)
-                if len(serializer.data):
-                    return Response(serializer.data, 200)
+                if page is not None:
+                    paginator = PageNumberPagination()
+                    context = paginator.paginate_queryset(app_release, request)
+                    serializer = AppReleaseSerializer(context, many=True)
+                    return paginator.get_paginated_response(serializer.data)
                 else:
-                    return Response(serializer.data, 404)
-            else:
-                # return Response([], 404)
+                    serializer = AppReleaseSerializer(app_release, many=True)
+                    if len(serializer.data):
+                        return Response(serializer.data, 200)
+                    else:
+                        return Response(serializer.data, 404)
+            elif query is None and page is not None:
                 queryset = App.objects.all()
-                serializer = AppSearchSerializer(queryset, many=True)
-                return Response(serializer.data, 200)
+                paginator = PageNumberPagination()
+                context = paginator.paginate_queryset(queryset, request)
+                serializer = AppSearchSerializer(context, many=True)
+                return paginator.get_paginated_response(serializer.data)
+            else:
+                return Response([], 404)
         else:
             queryset = App.objects.all()
             serializer = AppSearchSerializer(queryset, many=True)
