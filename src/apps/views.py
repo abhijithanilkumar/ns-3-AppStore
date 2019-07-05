@@ -85,7 +85,9 @@ def tagSearch(request, name="all"):
         form = SearchFilterForm()
         if name != "all":
             try:
-                apps = App.objects.filter(tags__identity=name).filter(active=True)
+                apps = App.objects.filter(
+                    tags__identity=name).filter(
+                    active=True)
                 active_tag = Tag.objects.get(identity=name)
             except BaseException:
                 return render(request, 'message.html')
@@ -116,7 +118,10 @@ def tagSearch(request, name="all"):
             data = form.clean()
             tag = data['tag']
             app_type = data['app_type']
-            apps = App.objects.filter(active=True, app_type=app_type, tags=tag).order_by('title')
+            apps = App.objects.filter(
+                active=True,
+                app_type=app_type,
+                tags=tag).order_by('title')
             top_tags, not_top_tags = findTags()
             context = {
                 'apps': apps,

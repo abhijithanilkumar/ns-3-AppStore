@@ -4,6 +4,7 @@ from apps.models import App, Tag
 from apps.views import findTags
 from apps.forms import SearchFilterForm
 
+
 def homePage(request):
     new_releases = App.objects.all().filter(
         active=True).order_by('-latest_release_date')[:4]
