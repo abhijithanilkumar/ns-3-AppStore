@@ -1,13 +1,32 @@
 import json
+import datetime
 from rest_framework.decorators import api_view, throttle_classes
 from rest_framework.response import Response
 from rest_framework.throttling import AnonRateThrottle
+from rest_framework.pagination import PageNumberPagination
 from rest_framework import viewsets
 from apps.models import App, Release
+from util.views import ipaddr_str_to_long
+from download.models import Download, ReleaseDownloadsByDate
 from django.conf import settings
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from .serializers import App as AppObject, AppSerializer, AppSearchSerializer, AppReleaseSerializer
+
+
+def _client_ipaddr(request):
+    forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if forwarded_for:
+        ipaddr_str = forwarded_for.split(',')[0]
+    else:
+        ipaddr_str = request.META.get('REMOTE_ADDR')
+    return ipaddr_str_to_long(ipaddr_str)
+
+
+def _increment_count(klass, **args):
+    obj, created = klass.objects.get_or_create(**args)
+    obj.count += 1
+    obj.save()
 
 
 @api_view(['GET'])
@@ -37,22 +56,56 @@ def install(request, module_name, version=None):
         message=message)
     app_serialized = AppSerializer(app_object)
 
+    ## Update the download statistics
+    ip4addr = _client_ipaddr(request)
+    when = datetime.date.today()
+    
+    # Update the App object
+    app_release.app.downloads += 1
+    app_release.app.save()
+
+     # Record the download as a Download object
+    Download.objects.create(release=app_release, ip4addr=ip4addr, when=when)
+    
+    # Record the download in the timeline
+    _increment_count(ReleaseDownloadsByDate, release = app_release, when = when)
+    _increment_count(ReleaseDownloadsByDate, release = None, when = when)
+
     return Response(data=app_serialized.data, status=200)
 
 
 class SearchApiViewSet(viewsets.ViewSet):
+
     @throttle_classes([AnonRateThrottle])
     def list(self, request):
-        query = request.GET.get('q')
-        if query:
-            queryset = App.objects.filter(Q(name__icontains=query)
-                                          | Q(abstract__icontains=query))
-            app_release = Release.objects.filter(
-                app__in=queryset).order_by('-version')[:1]
-            serializer = AppReleaseSerializer(app_release, many=True)
-            if len(serializer.data):
-                return Response(serializer.data, 200)
+        if request.GET:
+            query = request.GET.get('q')
+            page = request.GET.get('page')
+            if query:
+                queryset = App.objects.filter(Q(name__icontains=query)
+                                              | Q(abstract__icontains=query))
+                app_release = Release.objects.filter(
+                    app__in=queryset).order_by('-version')
+                if page is not None:
+                    paginator = PageNumberPagination()
+                    context = paginator.paginate_queryset(app_release, request)
+                    serializer = AppReleaseSerializer(context, many=True)
+                    return paginator.get_paginated_response(serializer.data)
+                else:
+                    serializer = AppReleaseSerializer(app_release, many=True)
+                    if len(serializer.data):
+                        return Response(serializer.data, 200)
+                    else:
+                        return Response(serializer.data, 404)
+            elif query is None and page is not None:
+                queryset = App.objects.all()
+                paginator = PageNumberPagination()
+                context = paginator.paginate_queryset(queryset, request)
+                serializer = AppSearchSerializer(context, many=True)
+                return paginator.get_paginated_response(serializer.data)
             else:
-                return Response(serializer.data, 404)
+                return Response([], 404)
         else:
-            return Response([], 404)
+            queryset = App.objects.all()
+            serializer = AppSearchSerializer(queryset, many=True)
+            return Response(serializer.data, 200)

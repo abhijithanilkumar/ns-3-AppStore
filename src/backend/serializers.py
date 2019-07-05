@@ -34,7 +34,7 @@ class AppSerializer(serializers.Serializer):
 class AppSearchSerializer(serializers.ModelSerializer):
     class Meta:
         model = AppModel
-        fields = ('name', 'title', 'abstract')
+        fields = ('name', 'title', 'abstract', 'app_type')
 
 
 class AppReleaseSerializer(serializers.HyperlinkedModelSerializer):

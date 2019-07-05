@@ -2,11 +2,13 @@ from __future__ import unicode_literals
 from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Group
 from django.contrib import auth
 from django.contrib import messages
 from authtools import views as authviews
 from braces import views as bracesviews
 from django.conf import settings
+from profiles.models import Profile
 from . import forms
 
 User = get_user_model()
@@ -77,3 +79,11 @@ class PasswordResetDoneView(authviews.PasswordResetDoneView):
 class PasswordResetConfirmView(authviews.PasswordResetConfirmAndLoginView):
     template_name = 'accounts/password-reset-confirm.html'
     form_class = forms.SetPasswordForm
+
+
+def assign_group(backend, user, response, *args, **kwargs):
+    # Get the group to be assigned to and add the user
+    user_profile = Profile.objects.get(user=user)
+    if not user_profile.moderated:
+        group = Group.objects.get(name='Moderation')
+        group.user_set.add(user)

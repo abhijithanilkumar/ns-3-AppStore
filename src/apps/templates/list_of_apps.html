@@ -4,21 +4,45 @@
 {% if apps_with_releases %}
   <div class="row" style="margin-bottom: 4em;" id="apps-with-releases">
     <div class="span8">
-      <table style="margin-bottom: 1em;">
-        <tr>
-          <td><span style="margin-right: 0.5em;">Sort by</span></td>
-          <td>
-            <span id="sort_app_buttons" class="btn-group">
-              {% for button_name, attr_name, attr_type in sort_criteria %}
-              <button class="btn btn-small" attr_name="{{ attr_name }}" attr_type="{{ attr_type }}">
-                <span class="title">{{ button_name }}</span>
-                <span class="triangle"></span>
-              </button>
-              {% endfor %}
-            </span>
-          </td>
-        </tr>
-      </table>
+      <div class="row">
+        <div class="span4" align="left">
+          <table style="margin-bottom: 1em;">
+            <tr>
+              <td><span style="margin-right: 0.5em;">Sort by</span></td>
+              <td>
+                <span id="sort_app_buttons" class="btn-group">
+                {% for button_name, attr_name, attr_type in sort_criteria %}
+                <button class="btn btn-small" attr_name="{{ attr_name }}" attr_type="{{ attr_type }}">
+                  <span class="title">{{ button_name }}</span>
+                  <span class="triangle"></span>
+                </button>
+                {% endfor %}
+                </span>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="span4" align="right">
+          <table style="margin-bottom: 1em;">
+            <tr>
+              <td><span style="margin-right: 0.5em;">Filter by</span></td>
+              <td>
+                <span class="btn-group">
+                <button class="btn btn-small filter-button" data-filter="all">
+                  <span class="title">All</span>
+                </button>
+                <button class="btn btn-small filter-button" data-filter="F">
+                  <span class="title">Fork</span>
+                </button>
+                <button class="btn btn-small filter-button" data-filter="M">
+                  <span class="title">Modules</span>
+                </button>
+                </span>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
     </div>
     {% app_buttons apps_with_releases %}
   </div>
