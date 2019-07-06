@@ -42,7 +42,7 @@ def install(request, module_name, version=None):
 
 
 class SearchApiViewSet(viewsets.ViewSet):
-
+    
     @throttle_classes([AnonRateThrottle])
     def list(self, request):
         if request.GET:
