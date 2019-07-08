@@ -21,6 +21,8 @@ class CommentForm(forms.ModelForm):
         ]
 
 
+# The code isn't being in use currently
+# Can be used to take input from users for filtering
 class SearchFilterForm(forms.Form):
     tag = forms.ModelChoiceField(
         label="Select the Tag",

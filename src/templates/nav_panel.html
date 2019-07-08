@@ -72,12 +72,6 @@
         <a {% ifequal tag.name selected_tag_name %} class="cy-tag-cloud-active" {% endifequal %} style="font-size: {{ tag.font_size_em }}em" href="/app/tag/{{ tag.id }}">{{tag.name}}</a>
         {% endfor %}
       </div>
-      <h3>Filters</h3>
-      <form method="post" action="/app/tag/">
-          {% csrf_token %}
-          {{ form|crispy }}
-          <button type="submit" class="btn btn-primary">Search</button>
-      </form>
     </div>
   </div>
   <div class="span8">
