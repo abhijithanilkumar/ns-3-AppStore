@@ -14,3 +14,23 @@
     {% endif %}
   {% endfor %}
 </div>
+
+<script>
+$(document).ready(function () {
+  $(".filter-button").click(function () {
+    var value = $(this).attr('data-filter');
+    if (value == "all") {
+      $(".filter").not('.' + value).hide('3000');
+      $('.filter').filter('.' + value).show('3000');
+    }
+    else if(value == "F") {
+      $(".filter").not('.' + value).hide('3000');
+      $('.filter').filter('.' + value).show('3000');
+    }
+    else if (value == "M") {
+      $(".filter").not('.' + value).hide('3000');
+      $('.filter').filter('.' + value).show('3000');
+    }
+  });
+});
+</script>

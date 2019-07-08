@@ -1,6 +1,6 @@
 {% load static %}
 
-<div class="app_button"
+<div class="app_button filter all {{app.app_type}}"
   order_index="{{ order_index }}"
   fullname="{{ app.title }}"
   votes="{{ app.votes }}"
@@ -8,7 +8,7 @@
   onClick="window.location='/app/{{ app.name }}';">
 
   <a href="/app/{{ app.name }}">
-    <div class="partial">
+    <div class="partial all {{app.app_type}}">
       <table border="0" width="100%">
         <tr valign="top">
           <td width="64" rowspan="2">
