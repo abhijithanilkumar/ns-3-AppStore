@@ -21,8 +21,9 @@ class CommentForm(forms.ModelForm):
         ]
 
 
-# The code isn't being in use currently
-# Can be used to take input from users for filtering
+# This form can be used to take inputs from the User and filter the search results. 
+# The code is not in use right now, as we do not accept User inputs for filtering. 
+# The form can be enhanced to accept more fields and filter based on it in the future, if required.
 class SearchFilterForm(forms.Form):
     tag = forms.ModelChoiceField(
         label="Select the Tag",
