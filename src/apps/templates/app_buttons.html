@@ -20,16 +20,27 @@ $(document).ready(function () {
   $(".filter-button").click(function () {
     var value = $(this).attr('data-filter');
     if (value == "all") {
+      $(".text").remove();
       $(".filter").not('.' + value).hide('3000');
       $('.filter').filter('.' + value).show('3000');
     }
     else if(value == "F") {
+      $(".text").remove();
       $(".filter").not('.' + value).hide('3000');
       $('.filter').filter('.' + value).show('3000');
+
+      if($(".filter").not('.' + value).length == $(".filter").filter('.' + "all").length) {
+          $("#left").append("<p class=\"text\">No Apps found</p>");
+      }
     }
     else if (value == "M") {
+      $(".text").remove();
       $(".filter").not('.' + value).hide('3000');
       $('.filter').filter('.' + value).show('3000');
+
+      if($(".filter").not('.' + value).length == $(".filter").filter('.' + "all").length) {
+          $("#left").append("<p class=\"text\">No Apps found</p>");
+      }
     }
   });
 });
