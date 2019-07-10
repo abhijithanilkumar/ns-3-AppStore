@@ -198,8 +198,6 @@ HAYSTACK_CONNECTIONS = {
 HAYSTACK_DEFAULT_OPERATOR = 'OR'
 HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '148244346879-5c6g3u9st4l5pkqu0tl0ailqa20eo2s3.apps.googleusercontent.com'
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'CVTpiuzTKeLz6LRCSyh-edNx'
 SOCIAL_AUTH_USER_FIELDS = ['email']
 SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.social_auth.social_details',
@@ -212,6 +210,9 @@ SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.social_auth.load_extra_data',
     'social_core.pipeline.user.user_details',
 )
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = ''
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = ''
 
 SOCIAL_AUTH_GITHUB_KEY = ''
 SOCIAL_AUTH_GITHUB_SECRET = ''

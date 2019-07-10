@@ -16,12 +16,13 @@
     <div class="form-message">
     <hr>
     <a class="btn btn-primary btn btn-lg btn-primary btn-block" 
-      style="border-radius:10px; background:#dd4b39; color:white; padding:10px; font-size:20px; text-align:center; text-decoration:none;" 
-      href="{#% url 'social:begin' 'google-oauth2' %#}">  Sign in with Google </a>
+      style="background:#dd4b39;" 
+      href="{% url 'social:begin' 'google-oauth2' %}"><i class="fab fa-google"></i> Sign in with Google </a>
+    <a class="btn btn-primary btn-lg btn-block mb-2 text-lg-left"  
+      href="{% url 'social:begin' 'github' %}"><i class="fab fa-github"></i> Sign in with Github</a>
+    <a class="btn btn-primary btn-lg btn-block mb-2 text-lg-left"  
+      href="{% url 'social:begin' 'gitlab' %}"><i class="fab fa-gitlab"></i> Sign in with GitLab</a>
     </div>
   </div>
 
-  <a href="{% url 'social:begin' 'github' %}">Login with GitHub</a><br>
-  <a href="{% url 'social:begin' 'gitlab' %}">Login with GitLab</a><br>
-  
 {% endblock form %}
