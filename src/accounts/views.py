@@ -8,6 +8,7 @@ from django.contrib import messages
 from authtools import views as authviews
 from braces import views as bracesviews
 from django.conf import settings
+from profiles.models import Profile
 from . import forms
 
 User = get_user_model()
@@ -82,5 +83,7 @@ class PasswordResetConfirmView(authviews.PasswordResetConfirmAndLoginView):
 
 def assign_group(backend, user, response, *args, **kwargs):
     # Get the group to be assigned to and add the user
-    group = Group.objects.get(name='Moderation')
-    group.user_set.add(user)
+    user_profile = Profile.objects.get(user=user)
+    if not user_profile.moderated:
+        group = Group.objects.get(name='Moderation')
+        group.user_set.add(user)

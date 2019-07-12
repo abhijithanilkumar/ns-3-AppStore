@@ -2,6 +2,7 @@ from django.conf.urls import url, include
 from django.urls import path
 
 from . import views
+from . import views_admin
 
 app_name = 'accounts'
 
@@ -17,4 +18,6 @@ urlpatterns = [
         name='password-reset-done'),
     url(r'^password-reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$$', views.PasswordResetConfirmView.as_view(),  # NOQA
         name='password-reset-confirm'),
+    path('users', views_admin.moderate_users, name='users'),
+    path('delete_user', views_admin.delete_user, name='delete_user'),
 ]
