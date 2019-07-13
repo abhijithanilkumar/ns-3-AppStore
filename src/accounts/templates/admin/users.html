@@ -28,7 +28,16 @@
             <tr>
                 <td>{{ user.name }}</td>
                 <td>{{ user.email }}</td>
-                <td></td>
+                <td data-value="Moderation">
+                    <form action="/users" method="post" class="form-inline">{% csrf_token %}
+                        <input type="hidden" name="pk" value="{{ user.pk }}">
+                        <select class="form-control" name="group">
+                            <option value="Moderation" selected="selected">Moderation</option>
+                            <option value="Moderated" >Moderated</option>
+                        </select>
+                        <input class="btn btn-primary" type="submit" value="Save"/>
+                    </form>
+                </td>
                 <script type="text/javascript">
                     function delete{{ user.pk }}() {
                         configureModalDelete(
