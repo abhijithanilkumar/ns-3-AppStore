@@ -73,6 +73,13 @@ def editApp(request, num):
                     'go_back_to_title': "App Page",
                 }
                 return render(request, 'message.html', context)
+    else:
+        context = {
+            'message': "You are not authorized to view this page!",
+            'go_back_to_url': "/app/" + edit_app.name,
+            'go_back_to_title': "App Page",
+        }
+        return render(request, 'message.html', context)
     return render(request, 'edit.html', {'form': form})
 
 
@@ -351,7 +358,6 @@ def modifyDownload(request, num):
                             instance.download_link = link
                     if not instance.default_release:
                         instance.default_release = release
-
                     instance.save()
                 else:
                     download = form.save(commit=False)
