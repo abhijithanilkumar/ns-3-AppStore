@@ -73,6 +73,6 @@ urlpatterns = [
         name='install'),
     path(
         'api/search/',
-        views_api.search,
+        views_api.SearchApiViewSet.as_view({'get': 'list'}),
         name='search'),
 ]

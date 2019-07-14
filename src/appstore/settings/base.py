@@ -103,15 +103,6 @@ INSTALLED_APPS = (
 
 )
 
-# MIDDLEWARE_CLASSES = (
-#     'django.contrib.sessions.middleware.SessionMiddleware',
-#     'django.middleware.common.CommonMiddleware',
-#     'django.middleware.csrf.CsrfViewMiddleware',
-#     'django.contrib.auth.middleware.AuthenticationMiddleware',
-#     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
-#     'django.contrib.messages.middleware.MessageMiddleware',
-#     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-# )
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -121,6 +112,19 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_THROTTLE_CLASSES': (
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle'
+    ),
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '1000/day',
+        'user': '1000/day'
+    },
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 20
+}
 
 ROOT_URLCONF = 'appstore.urls'
 
@@ -205,4 +209,3 @@ SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.social_auth.load_extra_data',
     'social_core.pipeline.user.user_details',
 )
-
