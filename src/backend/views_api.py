@@ -42,7 +42,7 @@ def install(request, module_name, version=None):
 
 
 class SearchApiViewSet(viewsets.ViewSet):
-    
+
     @throttle_classes([AnonRateThrottle])
     def list(self, request):
         if request.GET:
@@ -76,3 +76,29 @@ class SearchApiViewSet(viewsets.ViewSet):
             queryset = App.objects.all()
             serializer = AppSearchSerializer(queryset, many=True)
             return Response(serializer.data, 200)
+
+
+    @throttle_classes([AnonRateThrottle])
+    def create(self, request):
+        """
+        Handles search based on the ns version & query
+        """
+        ns = request.data.get('ns')
+        query = request.data.get('q')
+        if query and ns:
+            queryset = App.objects.filter(Q(name__icontains=query)
+                                                  | Q(abstract__icontains=query))
+            app_release = Release.objects.filter(
+                        app__in=queryset).order_by('-version')
+            context = set()
+            for app in app_release:
+                if str(app.require) in ns:
+                    context.add(app)
+            serializer = AppReleaseSerializer(context, many=True)
+            return Response(serializer.data, 200)
+        elif query:
+            queryset = App.objects.all()
+            serializer = AppSearchSerializer(queryset, many=True)
+            return Response(serializer.data, 200)
+        else:
+            return Response([], 404)
