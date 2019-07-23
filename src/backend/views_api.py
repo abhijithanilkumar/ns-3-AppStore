@@ -96,7 +96,7 @@ class SearchApiViewSet(viewsets.ViewSet):
                     context.add(app)
             serializer = AppReleaseSerializer(context, many=True)
             return Response(serializer.data, 200)
-        elif query:
+        elif query is None and ns is None:
             queryset = App.objects.all()
             serializer = AppSearchSerializer(queryset, many=True)
             return Response(serializer.data, 200)
