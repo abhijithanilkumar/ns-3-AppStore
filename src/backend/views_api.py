@@ -11,9 +11,12 @@ from django.shortcuts import get_object_or_404
 from .serializers import App as AppObject, AppSerializer, AppSearchSerializer, AppReleaseSerializer
 
 
-@api_view(['GET'])
+@api_view(['POST'])
 @throttle_classes([AnonRateThrottle])
-def install(request, module_name, version=None):
+def install(request):
+    module_name = request.data.get('module_name')
+    version = request.data.get('version')
+    ns = request.data.get('ns')
     app = get_object_or_404(App, name=module_name)
     # if version is not specified in the API Call, send the latest file config,
     # else the specified version config
@@ -28,17 +31,20 @@ def install(request, module_name, version=None):
     message = "Module: " + module_name + " with version: " + \
         app_release.version + " found on the ns-3 AppStore."
 
-    app_object = AppObject(
-        name=app.name,
-        app_type=app.app_type,
-        coderepo=app.coderepo,
-        version=app_release.version,
-        ns=app_release.require.name,
-        bakefile_url=bakefile_url,
-        message=message)
-    app_serialized = AppSerializer(app_object)
+    if app_release.require.name in ns:
+        app_object = AppObject(
+            name=app.name,
+            app_type=app.app_type,
+            coderepo=app.coderepo,
+            version=app_release.version,
+            ns=app_release.require.name,
+            bakefile_url=bakefile_url,
+            message=message)
+        app_serialized = AppSerializer(app_object)
 
-    return Response(data=app_serialized.data, status=200)
+        return Response(data=app_serialized.data, status=200)
+    else:
+        return Response(data=[], status=404)
 
 
 class SearchApiViewSet(viewsets.ViewSet):

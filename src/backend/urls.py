@@ -68,7 +68,7 @@ urlpatterns = [
         views_api.install,
         name='install'),
     path(
-        'api/install/<str:module_name>/<str:version>/',
+        'api/install/',
         views_api.install,
         name='install'),
     path(
