@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from apps.models import App
 from download.models import ReleaseDownloadsByDate
 
+
 def all_stats(request):
     apps = App.objects.filter(active=True)
     context = {

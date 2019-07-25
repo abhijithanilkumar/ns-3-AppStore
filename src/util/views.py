@@ -5,8 +5,8 @@ from django.shortcuts import render
 import re
 
 
-IPAddrRE = re.compile(r'^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$')
 def ipaddr_str_to_long(ipaddr_str):
+    IPAddrRE = re.compile(r'^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$')
     m = IPAddrRE.match(ipaddr_str)
     if not m: return 0
     oct1, oct2, oct3, oct4 = m.groups()
