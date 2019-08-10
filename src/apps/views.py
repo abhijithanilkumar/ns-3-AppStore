@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from .models import App, Release, Tag, Comment, Screenshot, Download
 from markdownx.utils import markdownify
 from .forms import CommentForm, SearchFilterForm
+from util.parse_bake import get_dependency
 from django.http import HttpResponseRedirect
 
 # Create your views here.
@@ -62,6 +63,7 @@ def appPage(request, name):
                 latest = app.download.default_release
             else:
                 latest = None
+            dependency = get_dependency(app, latest)
             editors = app.editors.all()
             comments = Comment.objects.filter(app=app)
             go_back_to_url = "/"
