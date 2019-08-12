@@ -240,6 +240,19 @@
 			<div class="tab-pane" id="cy-app-installation-tab">
 				<div class="row">
 					<div class="span8">
+							{% if compulsory_dependency %}
+								<h3>Compulsory Dependencies</h3>
+								{% for cd in compulsory_dependency %}
+									{{ cd }}
+								{% endfor %}
+							{% endif %}
+
+							{% if optional_dependency %}
+								<h3>Optional Dependencies</h3>
+								{% for od in optional_dependency %}
+									{{ od }}
+								{% endfor %}
+							{% endif %}
 						<div class="cy-app-release-notes">{{ app.installation.installation|safe }}</div>
 						<hr>
 					</div>
