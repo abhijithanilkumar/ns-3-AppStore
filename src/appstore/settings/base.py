@@ -130,8 +130,6 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 20
 }
 
-# SITE_ID = 1
-
 ROOT_URLCONF = 'appstore.urls'
 
 WSGI_APPLICATION = 'appstore.wsgi.application'
