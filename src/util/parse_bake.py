@@ -22,6 +22,7 @@ def get_dependency(app, latest_release):
 			tree = ET.fromstring(data)
 		except:
 			print("Error Parsing the XML File")
+			return None, None
 		root = tree.findall('modules')
 		optional_dependency = []
 		compulsory_dependency = []
@@ -34,4 +35,4 @@ def get_dependency(app, latest_release):
 						compulsory_dependency.append(dependency.attrib['name'])
 		return compulsory_dependency, optional_dependency
 	else:
-		return None
+		return None, None
