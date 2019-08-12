@@ -63,7 +63,7 @@ def appPage(request, name):
                 latest = app.download.default_release
             else:
                 latest = None
-            dependency = get_dependency(app, latest)
+            compulsory_dependency, optional_dependency = get_dependency(app, latest)
             editors = app.editors.all()
             comments = Comment.objects.filter(app=app)
             go_back_to_url = "/"
@@ -75,6 +75,8 @@ def appPage(request, name):
                 'releases': releases,
                 'screenshots': screenshots,
                 'latest': latest,
+                'compulsory_dependency': compulsory_dependency,
+                'optional_dependency': optional_dependency,
                 # 'comments':comments,
                 'go_back_to_url': go_back_to_url,
                 'go_back_to_title': go_back_to_title,

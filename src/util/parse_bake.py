@@ -1,5 +1,6 @@
 import xml.etree.ElementTree as ET
 from django.conf import settings
+# from django.contrib.sites.models import Site
 
 
 def parse_xml(f):
@@ -13,6 +14,24 @@ def parse_xml(f):
 
 
 def get_dependency(app, latest_release):
-	bakefile_url = settings.MEDIA_URL + str(latest_release.filename)
-	# TODO: Write logic to get the dependencies from the bakefile
-	return None
+	if latest_release:
+		bakefile_url = settings.MEDIA_URL + str(latest_release.filename)
+		data = latest_release.filename.read()
+		tree = None
+		try:
+			tree = ET.fromstring(data)
+		except:
+			print("Error Parsing the XML File")
+		root = tree.findall('modules')
+		optional_dependency = []
+		compulsory_dependency = []
+		for modules in root:
+			for module in modules:
+				for dependency in module.findall('depends_on'):
+					if dependency.attrib['optional'] == "True":
+						optional_dependency.append(dependency.attrib['name'])
+					elif dependency.attrib['optional'] == "False":
+						compulsory_dependency.append(dependency.attrib['name'])
+		return compulsory_dependency, optional_dependency
+	else:
+		return None
