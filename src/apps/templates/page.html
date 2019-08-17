@@ -1,9 +1,12 @@
 {% extends "base.html" %}
 {% load static %}
+{% load ratings %}
 
 {% block more_head %}
 <link rel="stylesheet" type="text/css" media="all" href="{% get_static_prefix %}apps/css/app_page.css" />
 <link rel="stylesheet" type="text/css" media="all" href="{% get_static_prefix %}apps/css/app_stars.css" />
+<link rel="stylesheet" href="{% static 'star-ratings/css/star-ratings.css' %}">
+<script type="text/javascript" src="{% static 'star-ratings/js/dist/star-ratings.min.js' %}"></script>
 <script type="text/javascript" src="{% get_static_prefix %}common/lib/js/jquery.timeago.js"></script>
 <script type="text/javascript" src="{% get_static_prefix %}common/lib/js/Markdown.Converter.js"></script>
 <script type="text/javascript" src="{% get_static_prefix %}common/lib/js/Markdown.Sanitizer.js"></script>
@@ -71,12 +74,13 @@
 <div class="row">
 	<div class="span12" id="app-usage-info">
 		{# Ratings #}
-		<div class="rating-stars" data-placement="bottom" data-title="Rate this app! <a class='close' style='margin-left: 0.5em;'>&times;</a>" data-html="true">
+		<!-- <div class="rating-stars" data-placement="bottom" data-title="Rate this app! <a class='close' style='margin-left: 0.5em;'>&times;</a>" data-html="true">
 			<i class="rating-stars-empty icon-cy-stars-empty"></i>
 			<i class="rating-stars-filled icon-cy-stars-filled" style="width: {{ app.stars_percentage|escapejs }}%;"></i>
 			<span class="rating-spacer"></span>
 		</div>
-		<span id="rating-count">({{ app.votes|escapejs }})</span>
+		<span id="rating-count">({{ app.votes|escapejs }})</span> -->
+		{% ratings app %}
 		{# End Ratings #}
 		{# Downloads #}
 		{% if app.has_releases %}

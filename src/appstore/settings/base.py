@@ -10,6 +10,7 @@ https://docs.djangoproject.com/en/dev/ref/settings/
 # from django.core.urlresolvers import reverse_lazy
 from django.urls import reverse_lazy
 from os.path import dirname, join, exists
+import rest_framework
 
 # Build paths inside the project like this: join(BASE_DIR, "directory")
 BASE_DIR = dirname(dirname(dirname(__file__)))
@@ -36,6 +37,7 @@ TEMPLATES = [
                 'django.template.context_processors.media',
                 'django.template.context_processors.static',
                 'django.template.context_processors.tz',
+                'django.template.context_processors.request',
                 'django.contrib.messages.context_processors.messages',
                 'social_django.context_processors.backends',
                 'social_django.context_processors.login_redirect',
@@ -93,6 +95,7 @@ INSTALLED_APPS = (
     'haystack',
     'social_django',
     'rest_framework',
+    'star_ratings',
 
     'profiles',
     'accounts',
@@ -221,3 +224,6 @@ SOCIAL_AUTH_GITHUB_SECRET = ''
 
 SOCIAL_AUTH_GITLAB_KEY = ''
 SOCIAL_AUTH_GITLAB_SECRET = ''
+
+STAR_RATINGS_ANONYMOUS = True
+STAR_RATINGS_STAR_HEIGHT = 15
