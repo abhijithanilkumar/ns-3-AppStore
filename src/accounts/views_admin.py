@@ -11,8 +11,6 @@ User = get_user_model()
 @login_required
 def moderate_users(request):
     users = User.objects.filter(groups__name='Moderation')
-    # query_set = Group.objects.filter(user = users)
-    # print(query_set)
     if request.method == 'POST':
         user_pk = request.POST['pk']
         user_group = request.POST['group']

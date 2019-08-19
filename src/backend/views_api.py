@@ -29,9 +29,12 @@ def _increment_count(klass, **args):
     obj.save()
 
 
-@api_view(['GET'])
+@api_view(['POST'])
 @throttle_classes([AnonRateThrottle])
-def install(request, module_name, version=None):
+def install(request):
+    module_name = request.data.get('module_name')
+    version = request.data.get('version')
+    ns = request.data.get('ns')
     app = get_object_or_404(App, name=module_name)
     # if version is not specified in the API Call, send the latest file config,
     # else the specified version config
@@ -108,4 +111,31 @@ class SearchApiViewSet(viewsets.ViewSet):
         else:
             queryset = App.objects.all()
             serializer = AppSearchSerializer(queryset, many=True)
+
             return Response(serializer.data, 200)
+
+
+    @throttle_classes([AnonRateThrottle])
+    def create(self, request):
+        """
+        Handles search based on the ns version & query
+        """
+        ns = request.data.get('ns')
+        query = request.data.get('q')
+        if query and ns:
+            queryset = App.objects.filter(Q(name__icontains=query)
+                                                  | Q(abstract__icontains=query))
+            app_release = Release.objects.filter(
+                        app__in=queryset).order_by('-version')
+            context = set()
+            for app in app_release:
+                if str(app.require) in ns:
+                    context.add(app)
+            serializer = AppReleaseSerializer(context, many=True)
+            return Response(serializer.data, 200)
+        elif query is None and ns is None:
+            queryset = App.objects.all()
+            serializer = AppSearchSerializer(queryset, many=True)
+            return Response(serializer.data, 200)
+        else:
+            return Response([], 404)
