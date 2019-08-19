@@ -6,15 +6,19 @@ from django.contrib.auth.decorators import login_required
 from .forms import CreateAppForm, EditAppForm, ReleaseForm, \
     InstallationForm, MaintenanceForm, EditDetailsForm, \
     DownloadForm, DevelopmentForm, ScreenshotForm
+from profiles.models import Profile
 from django.apps import apps
 from util.img_util import scale_img
 from django.views.generic.edit import DeleteView
 from django.urls import reverse
+from django.contrib.auth.decorators import permission_required
 
 
 @login_required
+@permission_required('apps.add_app', login_url='/error/denied/')
 def createApp(request):
-    if request.user.is_staff:
+    profile = Profile.objects.get(user=request.user)
+    if request.user.is_staff or profile.moderated:
         if request.method == 'GET':
             form = CreateAppForm()
         elif request.method == 'POST':

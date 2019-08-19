@@ -49,6 +49,7 @@ AUTHENTICATION_BACKENDS = (
     'social_core.backends.google.GoogleOpenId',  # for Google authentication
     'social_core.backends.google.GoogleOAuth2',  # for Google authentication
     'social_core.backends.github.GithubOAuth2',  # for Github authentication
+    'social_core.backends.gitlab.GitLabOAuth2',  # for GitLab authentication
     'social_core.backends.facebook.FacebookOAuth2',  # for Facebook authentication
     'django.contrib.auth.backends.ModelBackend'
 )
@@ -111,6 +112,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'social_django.middleware.SocialAuthExceptionMiddleware'
 ]
 
 REST_FRAMEWORK = {
@@ -173,6 +176,7 @@ MESSAGE_TAGS = {
 AUTH_USER_MODEL = 'authtools.User'
 LOGIN_REDIRECT_URL = reverse_lazy("profiles:user_landing")
 LOGIN_URL = reverse_lazy("accounts:login")
+LOGOUT_URL = reverse_lazy("accounts:logout")
 
 THUMBNAIL_EXTENSION = 'png'     # Or any extn for your thumbnails
 
@@ -197,8 +201,6 @@ HAYSTACK_CONNECTIONS = {
 HAYSTACK_DEFAULT_OPERATOR = 'OR'
 HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '148244346879-5c6g3u9st4l5pkqu0tl0ailqa20eo2s3.apps.googleusercontent.com'
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'CVTpiuzTKeLz6LRCSyh-edNx'
 SOCIAL_AUTH_USER_FIELDS = ['email']
 SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.social_auth.social_details',
@@ -207,8 +209,17 @@ SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.social_auth.social_user',
     'social_core.pipeline.user.get_username',
     'social_core.pipeline.user.create_user',
+    'accounts.views.assign_group',
     'social_core.pipeline.social_auth.associate_user',
     'social_core.pipeline.social_auth.load_extra_data',
     'social_core.pipeline.user.user_details',
 )
 
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = ''
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = ''
+
+SOCIAL_AUTH_GITHUB_KEY = ''
+SOCIAL_AUTH_GITHUB_SECRET = ''
+
+SOCIAL_AUTH_GITLAB_KEY = ''
+SOCIAL_AUTH_GITLAB_SECRET = ''
