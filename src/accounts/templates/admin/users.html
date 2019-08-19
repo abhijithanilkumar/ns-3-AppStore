@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %} Moderate Users {% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="span12">
+    <div class="page-header">
+      <h1>
+        Moderate Users
+      </h1>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="span12">
+    <table class="table table-hover table-striped table-bordered">
+        <thead>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Group</th>
+            <th>Action</th>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.name }}</td>
+                <td>{{ user.email }}</td>
+                <td data-value="Moderation">
+                    <form action="/users" method="post" class="form-inline">{% csrf_token %}
+                        <input type="hidden" name="pk" value="{{ user.pk }}">
+                        <select class="form-control" name="group">
+                            <option value="Moderation" selected="selected">Moderation</option>
+                            <option value="Moderated" >Moderated</option>
+                        </select>
+                        <input class="btn btn-primary" type="submit" value="Save"/>
+                    </form>
+                </td>
+                <script type="text/javascript">
+                    function delete{{ user.pk }}() {
+                        configureModalDelete(
+                                {{ user.pk }},
+                                '{{ user.name }}'
+                        )
+                    };
+                </script>
+                <td> <button onclick="delete{{ user.pk }}()" type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete-modal">Delete</button></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+     </table>
+
+     {% include "admin/delete_user_modal.html" %}
+  </div>
+</div>
+<script type="text/javascript">
+
+    function configureModalDelete(pk, name) {
+        document.getElementById('delete-modal-body').innerHTML = 'Are you sure you want to delete the user '.concat(name, '?');
+        document.getElementById('delete-modal-hidden').value = pk;
+    }
+</script>
+
+{% endblock %}
