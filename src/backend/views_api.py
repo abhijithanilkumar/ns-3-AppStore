@@ -11,9 +11,12 @@ from django.shortcuts import get_object_or_404
 from .serializers import App as AppObject, AppSerializer, AppSearchSerializer, AppReleaseSerializer
 
 
-@api_view(['GET'])
+@api_view(['POST'])
 @throttle_classes([AnonRateThrottle])
-def install(request, module_name, version=None):
+def install(request):
+    module_name = request.data.get('module_name')
+    version = request.data.get('version')
+    ns = request.data.get('ns')
     app = get_object_or_404(App, name=module_name)
     # if version is not specified in the API Call, send the latest file config,
     # else the specified version config
@@ -28,21 +31,23 @@ def install(request, module_name, version=None):
     message = "Module: " + module_name + " with version: " + \
         app_release.version + " found on the ns-3 AppStore."
 
-    app_object = AppObject(
-        name=app.name,
-        app_type=app.app_type,
-        coderepo=app.coderepo,
-        version=app_release.version,
-        ns=app_release.require.name,
-        bakefile_url=bakefile_url,
-        message=message)
-    app_serialized = AppSerializer(app_object)
+    if app_release.require.name in ns:
+        app_object = AppObject(
+            name=app.name,
+            app_type=app.app_type,
+            coderepo=app.coderepo,
+            version=app_release.version,
+            ns=app_release.require.name,
+            bakefile_url=bakefile_url,
+            message=message)
+        app_serialized = AppSerializer(app_object)
 
-    return Response(data=app_serialized.data, status=200)
+        return Response(data=app_serialized.data, status=200)
+    else:
+        return Response(data=[], status=404)
 
 
 class SearchApiViewSet(viewsets.ViewSet):
-    
     @throttle_classes([AnonRateThrottle])
     def list(self, request):
         if request.GET:
@@ -76,3 +81,29 @@ class SearchApiViewSet(viewsets.ViewSet):
             queryset = App.objects.all()
             serializer = AppSearchSerializer(queryset, many=True)
             return Response(serializer.data, 200)
+
+
+    @throttle_classes([AnonRateThrottle])
+    def create(self, request):
+        """
+        Handles search based on the ns version & query
+        """
+        ns = request.data.get('ns')
+        query = request.data.get('q')
+        if query and ns:
+            queryset = App.objects.filter(Q(name__icontains=query)
+                                                  | Q(abstract__icontains=query))
+            app_release = Release.objects.filter(
+                        app__in=queryset).order_by('-version')
+            context = set()
+            for app in app_release:
+                if str(app.require) in ns:
+                    context.add(app)
+            serializer = AppReleaseSerializer(context, many=True)
+            return Response(serializer.data, 200)
+        elif query is None and ns is None:
+            queryset = App.objects.all()
+            serializer = AppSearchSerializer(queryset, many=True)
+            return Response(serializer.data, 200)
+        else:
+            return Response([], 404)
