@@ -101,6 +101,7 @@ INSTALLED_APPS = (
     'search',
     'backend',
     'help',
+    'download',
 
 )
 

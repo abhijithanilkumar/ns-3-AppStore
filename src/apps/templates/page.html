@@ -78,7 +78,13 @@
 		</div>
 		<span id="rating-count">({{ app.votes|escapejs }})</span>
 		{# End Ratings #}
-
+		{# Downloads #}
+		{% if app.has_releases %}
+		<span class="app-usage-info-divider"></span>
+		<a href="{% url 'download:app_stats' app.name %}" target="_blank">
+			{{ app.downloads }} downloads
+		{% endif %}
+		{# End Downloads #}
 		<span class="app-usage-info-divider"></span>
 
 		{% if app.coderepo %}
