@@ -78,3 +78,70 @@ class AppTestCase(TestCase):
         self.assertEqual(len(tags), 2)
         self.assertEqual(tags[0].name, 'tag1')
         self.assertEqual(tags[1].name, 'tag2')
+
+class DevelopmentTestCase(TestCase):
+    def setUp(self):
+        DApp = App.objects.create(name='DAp1',
+                           title='App Title',
+                           app_type='F',
+                           abstract='This is a test App for Development',
+                           description='This is a test App for Development')
+        Development.objects.create(app=DApp,
+                                   notes='#DEVELOPMENT \n View main repository for development notes',
+                                   filename=SimpleUploadedFile('development.md',str('This is a sample file for Development')))
+    def test_development_created(self):
+        development = Development.objects.get(app__name="DAp1")
+        self.assertTrue(isinstance(development, Development))
+        self.assertEqual(development.app.title, 'App Title')
+        self.assertEqual(development.app.app_type, 'F')
+        self.assertEqual(development.app.abstract, 'This is a test App for Development')
+        self.assertEqual(development.app.description, 'This is a test App for Development')
+        self.assertEqual(development.notes, '#DEVELOPMENT \n View main repository for development notes')
+        f = open(development.filename.url[1:], 'r')
+        self.assertEqual(f.read(), 'This is a sample file for Development')
+        f.close()
+
+class DownloadTestCase(TestCase):
+    def setUp(self):
+        downloadApp = App.objects.create(name='DoAp',
+                                         title='App Title',
+                                         app_type='F',
+                                         abstract='This is a test App for Download',
+                                         description='This is a test App for Download')
+        release_nsrelease = NsRelease.objects.create(name='NsR1',
+                                                     url='https://www.nsnam.org/ns-3.29/')
+        app_release = Release.objects.create(app=downloadApp,
+                                            version='0.1',
+                                            require=release_nsrelease,
+                                            date=datetime.date(2018,11,1),
+                                            notes='## usage \n This is a test Markdown text',
+                                            filename=SimpleUploadedFile('release.test',str('Test for Download')),
+                                            url='https://www.nsnam.org/ns-3.29/')
+        Download.objects.create(app=downloadApp,
+                                download_option='U',
+                                default_release=app_release,
+                                external_url='http://test-app.myapp.com/download',
+                                download_link='http://test.download.link/DoAp')
+    def test_download_created(self):
+        download = Download.objects.get(app__name='DoAp')
+        self.assertTrue(isinstance(download, Download))
+        self.assertEqual(download.app.title, 'App Title')
+        self.assertEqual(download.app.app_type, 'F')
+        self.assertEqual(download.app.abstract, 'This is a test App for Download')
+        self.assertEqual(download.app.description, 'This is a test App for Download')
+        self.assertEqual(download.download_option, 'U')
+        self.assertEqual(download.default_release.app.name, download.app.name)
+        self.assertEqual(download.default_release.app.title, download.app.title)
+        self.assertEqual(download.default_release.app.app_type, download.app.app_type)
+        self.assertEqual(download.default_release.app.abstract, download.app.abstract)
+        self.assertEqual(download.default_release.app.description, download.app.description)
+        self.assertEqual(download.default_release.version, '0.1')
+        self.assertEqual(download.default_release.require.name, 'NsR1')
+        self.assertEqual(download.default_release.require.url, 'https://www.nsnam.org/ns-3.29/')
+        self.assertEqual(download.default_release.date, datetime.date(2018,11,1))
+        self.assertEqual(download.default_release.notes, '## usage \n This is a test Markdown text')
+        f = open(download.default_release.filename.url[1:])
+        self.assertEqual(f.read(), 'Test for Download')
+        f.close()
+        self.assertEqual(download.default_release.url, 'https://www.nsnam.org/ns-3.29/')
+        self.assertEqual(download.external_url, 'http://test-app.myapp.com/download')
