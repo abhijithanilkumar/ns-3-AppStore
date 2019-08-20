@@ -145,3 +145,41 @@ class DownloadTestCase(TestCase):
         f.close()
         self.assertEqual(download.default_release.url, 'https://www.nsnam.org/ns-3.29/')
         self.assertEqual(download.external_url, 'http://test-app.myapp.com/download')
+
+class InstallationTestCase(TestCase):
+    def setUp(self):
+        installation_app = App.objects.create(name='Ins1',
+                                              title='App Title',
+                                              app_type='F',
+                                              abstract='This is a test App for Installation',
+                                              description='This is a test App for Installation')
+        installation_notes = '#INSTALLATION \n View parent repository for installation steps'
+        Installation.objects.create(app=installation_app,
+                                    installation=installation_notes)
+    def test_installation_created(self):
+        installation = Installation.objects.get(app__name="Ins1")
+        self.assertTrue(isinstance(installation,Installation))
+        self.assertEqual(installation.app.title,'App Title')
+        self.assertEqual(installation.app.app_type,'F')
+        self.assertEqual(installation.app.abstract,'This is a test App for Installation')
+        self.assertEqual(installation.app.description,'This is a test App for Installation')
+        self.assertEqual(installation.installation,'#INSTALLATION \n View parent repository for installation steps')
+
+class MaintenanceTestCase(TestCase):
+    def setUp(self):
+        maintenance_app = App.objects.create(name='Mnt1',
+                                             title='App Title',
+                                             app_type='F',
+                                             abstract='This is a test App for Maintenance',
+                                             description='This is a test App for Maintenance')
+        maintenance_notes = '#MAINTENANCE \n View parent repository for maintenance details'
+        Maintenance.objects.create(app=maintenance_app,
+                                   notes=maintenance_notes)
+    def test_maintenance_created(self):
+        maintenance = Maintenance.objects.get(app__name="Mnt1")
+        self.assertTrue(isinstance(maintenance,Maintenance))
+        self.assertEqual(maintenance.app.title,'App Title')
+        self.assertEqual(maintenance.app.app_type,'F')
+        self.assertEqual(maintenance.app.abstract,'This is a test App for Maintenance')
+        self.assertEqual(maintenance.app.description,'This is a test App for Maintenance')
+        self.assertEqual(maintenance.notes,'#MAINTENANCE \n View parent repository for maintenance details') 
