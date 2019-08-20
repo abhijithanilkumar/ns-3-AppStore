@@ -209,3 +209,29 @@ class CommentTestCase(TestCase):
         self.assertEqual(comment.user.password, 'user1pass')
         self.assertEqual(comment.title, 'Sample comment title')
         self.assertEqual(comment.content, 'Sample comment body')
+
+class NsReleaseTestCase(TestCase):
+    def setUp(self):
+        NsRelease.objects.create(name='Test',url='https://www.nsnam.org/')
+                               
+ 
+    def test_nsrelease_created(self):
+            nsrelease = NsRelease.objects.get(name='Test')
+           
+            self.assertTrue(isinstance(nsrelease, NsRelease))
+       
+            self.assertEqual(nsrelease.name,  'Test')
+            self.assertEqual(nsrelease.url,  'https://www.nsnam.org/')
+ 
+class TagTestCase(TestCase):
+    def setUp(self):
+        Tag.objects.create(identity='testname',name='TestName')
+                               
+ 
+    def test_tag_created(self):
+            tag = Tag.objects.get(name='TestName')
+           
+            self.assertTrue(isinstance(tag, Tag))
+       
+            self.assertEqual(tag.name,  'TestName')
+            self.assertEqual(tag.identity,  'testname')
