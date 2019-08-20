@@ -182,4 +182,30 @@ class MaintenanceTestCase(TestCase):
         self.assertEqual(maintenance.app.app_type,'F')
         self.assertEqual(maintenance.app.abstract,'This is a test App for Maintenance')
         self.assertEqual(maintenance.app.description,'This is a test App for Maintenance')
-        self.assertEqual(maintenance.notes,'#MAINTENANCE \n View parent repository for maintenance details') 
+        self.assertEqual(maintenance.notes,'#MAINTENANCE \n View parent repository for maintenance details')
+
+class CommentTestCase(TestCase):
+    def setUp(self):
+        CApp = App.objects.create(name='CAp1',
+                                  title='App Title',
+                                  app_type='F',
+                                  abstract='This is a test App',
+                                  description='This is a test App')
+        User = get_user_model()
+        commented_user = User.objects.create(email='user1@ml.lm',
+                                             password='user1pass')
+        Comment.objects.create(app=CApp,
+                               user=commented_user,
+                               title='Sample comment title',
+                               content='Sample comment body')
+    def test_comment_created(self):
+        comment = Comment.objects.get(app__name='CAp1')
+        self.assertTrue(isinstance(comment,Comment))
+        self.assertEqual(comment.app.title, 'App Title')
+        self.assertEqual(comment.app.app_type, 'F')
+        self.assertEqual(comment.app.abstract, 'This is a test App')
+        self.assertEqual(comment.app.description, 'This is a test App')
+        self.assertEqual(comment.user.email, 'user1@ml.lm')
+        self.assertEqual(comment.user.password, 'user1pass')
+        self.assertEqual(comment.title, 'Sample comment title')
+        self.assertEqual(comment.content, 'Sample comment body')
