@@ -82,7 +82,6 @@ class SearchApiViewSet(viewsets.ViewSet):
             serializer = AppSearchSerializer(queryset, many=True)
             return Response(serializer.data, 200)
 
-
     @throttle_classes([AnonRateThrottle])
     def create(self, request):
         """
@@ -92,9 +91,9 @@ class SearchApiViewSet(viewsets.ViewSet):
         query = request.data.get('q')
         if query and ns:
             queryset = App.objects.filter(Q(name__icontains=query)
-                                                  | Q(abstract__icontains=query))
+                                          | Q(abstract__icontains=query))
             app_release = Release.objects.filter(
-                        app__in=queryset).order_by('-version')
+                app__in=queryset).order_by('-version')
             context = set()
             for app in app_release:
                 if str(app.require) in ns:

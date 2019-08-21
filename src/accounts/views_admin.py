@@ -25,11 +25,11 @@ def moderate_users(request):
             g = Group.objects.get(name=user_group)
             g.user_set.add(user_obj)
         return HttpResponseRedirect('/users')
-    
+
     context = {
         'users': users
     }
-    return render(request, 'admin/users.html', context);
+    return render(request, 'admin/users.html', context)
 
 
 @login_required

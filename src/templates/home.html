@@ -1,22 +1,26 @@
-{% extends "nav_panel.html" %}
-{% load app_buttons %}
+{ % extends "nav_panel.html" % }
+{ % load app_buttons % }
 
-{% block main %}
-  <style type="text/css">
-    h2 { margin-bottom: 0.5em; }
-    .span4 { margin-bottom: 1em; }
-  </style>
-  <div class="row">
-    <div class="span4"><h2>Newest Releases</h2></div>
-    <div class="span4" style="text-align: right; margin-top: 1.0em;">
-      <a href="https://www.nsnam.org/docs/app-store-overview.pdf" class="btn btn-warning">Get Started with the App Store &raquo;</a>
-    </div>
-  </div>
-  <div class="row">{% app_buttons new_releases %}</div>
-  <div class="row">
-    <div class="span8" style="text-align: right;">
-      <a href="/app/tag/all/#newest release">more newest releases &raquo;</a>
-    </div>
-  </div>
-  <a style="display: none;" href="/media/fu.txt">fu skript kiddiez</a>
-{% endblock %}
+{ % block main % }
+   <style type = "text/css" >
+      h2 {margin - bottom: 0.5em
+           }
+        .span4 {margin - bottom: 1em
+                }
+    < / style >
+    <div class = "row" >
+        <div class = "span4" > <h2>Newest Releases</h2></div>
+        <div class = "span4" style = "text-align: right; margin-top: 1.0em;">
+            <a href = "https://www.nsnam.org/docs/app-store-overview.pdf" class ="btn btn-warning">Get Started with the App Store &raquo
+            < / a >
+        < / div >
+    < / div >
+    <div class = "row" > {% app_buttons new_releases %}</div>
+    <div class = "row" >
+        <div class = "span8" style = "text-align: right;">
+            <a href = "/app/tag/all/#newest release" >more newest releases &raquo
+            < / a >
+        < / div >
+    < / div >
+    <a style = "display: none;" href = "/media/fu.txt">fu skript kiddiez</a>
+{ % endblock % }
