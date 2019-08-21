@@ -235,3 +235,27 @@ class TagTestCase(TestCase):
        
             self.assertEqual(tag.name,  'TestName')
             self.assertEqual(tag.identity,  'testname')
+
+class ReleaseTestCase(TestCase):
+    def setUp(self):
+        ns=NsRelease.objects.create(name='Test',url='https://www.nsnam.org/')
+       
+       
+ 
+        app2=App.objects.create(name='App1',title='App Title',app_type='F',abstract='This is a test App',description='This is a test App')
+       
+            Release.objects.create(app=app2,version='TestVersion',require=ns,date= '2018-12-27',notes= 'TestNote',filename = SimpleUploadedFile('filename.txt', ''),url='https://www.nsnam.org/')
+                               
+ 
+    def test_release_created(self):
+            release = Release.objects.get(version='TestVersion')
+           
+            self.assertTrue(isinstance(release, Release))
+            self.assertEqual(release.notes, 'TestNote')
+            self.assertEqual(release.version, 'TestVersion')
+            self.assertEqual(release.date,   datetime.date(2018, 12, 27))
+            self.assertEqual(release.app.name, 'App1')
+            self.assertEqual(release.filename.name, 'release_files/filename.txt')
+            self.assertEqual(str(release.filename.file), '/home/bartekche/ns-3-AppStore/src/media/release_files/filename.txt')
+            self.assertEqual(release.require.name,  'Test')
+            self.assertEqual(release.require.url,  'https://www.nsnam.org/')
