@@ -22,6 +22,7 @@ urlpatterns = [
     path('backend/', include('backend.urls', namespace='edit')),
     path('download/', include('download.urls', namespace='download')),
     path('auth/', include('social_django.urls', namespace='social')),
+    path('ratings/', include('star_ratings.urls', namespace='ratings')),
 ]
 
 # User-uploaded files like profile pics need to be served in development
