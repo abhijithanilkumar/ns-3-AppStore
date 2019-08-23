@@ -80,22 +80,28 @@
 			<span class="rating-spacer"></span>
 		</div>
 		<span id="rating-count">({{ app.votes|escapejs }})</span> -->
-		{% ratings app %}
+		<div class="row">
+			<div class="span4">
+				{% ratings app %}
+			</div>
 		{# End Ratings #}
 		{# Downloads #}
-		{% if app.has_releases %}
-		<span class="app-usage-info-divider"></span>
-		<a href="{% url 'download:app_stats' app.name %}" target="_blank">
-			{{ app.downloads }} downloads
-		{% endif %}
+			<div class="span4">
+				{% if app.has_releases %}
+				<span class="app-usage-info-divider"></span>
+					<a href="{% url 'download:app_stats' app.name %}" target="_blank">
+					{{ app.downloads }} downloads</a>
+				{% endif %}
+			
 		{# End Downloads #}
-		<span class="app-usage-info-divider"></span>
+				<span class="app-usage-info-divider"></span>
 
-		{% if app.coderepo %}
-		<a href="{{ app.coderepo }}" target="_blank">
-			<img src="{% get_static_prefix %}apps/img/open-source.png" class="has-tooltip" data-toggle="tooltip" data-title="This app is open source.">
-		</a>
-		{% endif %}
+				{% if app.coderepo %}
+				<a href="{{ app.coderepo }}" target="_blank">
+					<img src="{% get_static_prefix %}apps/img/open-source.png" class="has-tooltip" data-toggle="tooltip" data-title="This app is open source.">
+				</a>
+				{% endif %}
+			</div>
 		{# end badges #}
 	</div>
 </div>
