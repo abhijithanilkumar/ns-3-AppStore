@@ -85,7 +85,6 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # 'django.contrib.sites',
 
     'material',
     'material.frontend',
@@ -132,8 +131,6 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 20
 }
-
-# SITE_ID = 1
 
 ROOT_URLCONF = 'appstore.urls'
 
