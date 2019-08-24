@@ -64,6 +64,10 @@ urlpatterns = [
         views.deleteScreenshot,
         name='delete_screenshot'),
     path(
+        'api/install/<str:module_name>/',
+        views_api.install,
+        name='install'),
+    path(
         'api/install/',
         views_api.install,
         name='install'),
