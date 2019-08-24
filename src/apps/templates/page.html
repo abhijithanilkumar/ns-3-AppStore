@@ -1,9 +1,12 @@
 {% extends "base.html" %}
 {% load static %}
+{% load ratings %}
 
 {% block more_head %}
 <link rel="stylesheet" type="text/css" media="all" href="{% get_static_prefix %}apps/css/app_page.css" />
 <link rel="stylesheet" type="text/css" media="all" href="{% get_static_prefix %}apps/css/app_stars.css" />
+<link rel="stylesheet" href="{% static 'star-ratings/css/star-ratings.css' %}">
+<script type="text/javascript" src="{% static 'star-ratings/js/dist/star-ratings.min.js' %}"></script>
 <script type="text/javascript" src="{% get_static_prefix %}common/lib/js/jquery.timeago.js"></script>
 <script type="text/javascript" src="{% get_static_prefix %}common/lib/js/Markdown.Converter.js"></script>
 <script type="text/javascript" src="{% get_static_prefix %}common/lib/js/Markdown.Sanitizer.js"></script>
@@ -71,21 +74,33 @@
 <div class="row">
 	<div class="span12" id="app-usage-info">
 		{# Ratings #}
-		<div class="rating-stars" data-placement="bottom" data-title="Rate this app! <a class='close' style='margin-left: 0.5em;'>&times;</a>" data-html="true">
+		<!-- <div class="rating-stars" data-placement="bottom" data-title="Rate this app! <a class='close' style='margin-left: 0.5em;'>&times;</a>" data-html="true">
 			<i class="rating-stars-empty icon-cy-stars-empty"></i>
 			<i class="rating-stars-filled icon-cy-stars-filled" style="width: {{ app.stars_percentage|escapejs }}%;"></i>
 			<span class="rating-spacer"></span>
 		</div>
-		<span id="rating-count">({{ app.votes|escapejs }})</span>
+		<span id="rating-count">({{ app.votes|escapejs }})</span> -->
+		<div class="row">
+			<div class="span4">
+				{% ratings app %}
+			</div>
 		{# End Ratings #}
+		{# Downloads #}
+			<div class="span4" style="margin-top: 8px;">
+				{% if app.has_releases %}
+				<span class="app-usage-info-divider"></span>
+					<a href="{% url 'download:app_stats' app.name %}" target="_blank">
+					{{ app.downloads }} downloads</a>
+				{% endif %}
+		{# End Downloads #}
+				<span class="app-usage-info-divider"></span>
 
-		<span class="app-usage-info-divider"></span>
-
-		{% if app.coderepo %}
-		<a href="{{ app.coderepo }}" target="_blank">
-			<img src="{% get_static_prefix %}apps/img/open-source.png" class="has-tooltip" data-toggle="tooltip" data-title="This app is open source.">
-		</a>
-		{% endif %}
+				{% if app.coderepo %}
+				<a href="{{ app.coderepo }}" target="_blank">
+					<img src="{% get_static_prefix %}apps/img/open-source.png" class="has-tooltip" data-toggle="tooltip" data-title="This app is open source.">
+				</a>
+				{% endif %}
+			</div>
 		{# end badges #}
 	</div>
 </div>
@@ -234,6 +249,36 @@
 			<div class="tab-pane" id="cy-app-installation-tab">
 				<div class="row">
 					<div class="span8">
+							<h1>Dependencies</h1>
+							 <div class="row">
+								<div class="span4">
+									{% if compulsory_dependency %}
+										<h4>Compulsory</h4>
+										<ul>
+										{% for cd in compulsory_dependency %}
+											<li>{{ cd }}</li>
+										{% endfor %}
+										</ul>
+									{% endif %}		
+								</div>
+								<div class="span4">
+									{% if optional_dependency %}
+										<h4>Optional</h4>
+										<ul>
+										{% for od in optional_dependency %}
+											<li>{{ od }}</li>
+										{% endfor %}
+										</ul>
+									{% endif %}
+								</div>
+							</div> 
+							
+
+							
+
+							{% if compulsory_dependency or optional_dependency %}
+							<hr>
+							{% endif %}
 						<div class="cy-app-release-notes">{{ app.installation.installation|safe }}</div>
 						<hr>
 					</div>

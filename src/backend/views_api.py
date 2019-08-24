@@ -1,14 +1,32 @@
 import json
+import datetime
 from rest_framework.decorators import api_view, throttle_classes
 from rest_framework.response import Response
 from rest_framework.throttling import AnonRateThrottle
 from rest_framework.pagination import PageNumberPagination
 from rest_framework import viewsets
 from apps.models import App, Release
+from util.views import ipaddr_str_to_long
+from download.models import Download, ReleaseDownloadsByDate
 from django.conf import settings
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from .serializers import App as AppObject, AppSerializer, AppSearchSerializer, AppReleaseSerializer
+
+
+def _client_ipaddr(request):
+    forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if forwarded_for:
+        ipaddr_str = forwarded_for.split(',')[0]
+    else:
+        ipaddr_str = request.META.get('REMOTE_ADDR')
+    return ipaddr_str_to_long(ipaddr_str)
+
+
+def _increment_count(klass, **args):
+    obj, created = klass.objects.get_or_create(**args)
+    obj.count += 1
+    obj.save()
 
 
 @api_view(['POST'])
@@ -42,12 +60,26 @@ def install(request):
             message=message)
         app_serialized = AppSerializer(app_object)
 
-        return Response(data=app_serialized.data, status=200)
-    else:
-        return Response(data=[], status=404)
+    ## Update the download statistics
+    ip4addr = _client_ipaddr(request)
+    when = datetime.date.today()
+    
+    # Update the App object
+    app_release.app.downloads += 1
+    app_release.app.save()
+
+     # Record the download as a Download object
+    Download.objects.create(release=app_release, ip4addr=ip4addr, when=when)
+    
+    # Record the download in the timeline
+    _increment_count(ReleaseDownloadsByDate, release = app_release, when = when)
+    _increment_count(ReleaseDownloadsByDate, release = None, when = when)
+
+    return Response(data=app_serialized.data, status=200)
 
 
 class SearchApiViewSet(viewsets.ViewSet):
+
     @throttle_classes([AnonRateThrottle])
     def list(self, request):
         if request.GET:
