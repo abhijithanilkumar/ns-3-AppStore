@@ -56,7 +56,7 @@ class AppTestCase(TestCase):
         f = open(app.icon.url[1:], 'rb')
         self.assertEqual(f.read(), self.test_image)
         f.close()
-        self.assertEqual(app.latest_release_date, datetime.date(2018,10,31))
+        self.assertEqual(app.latest_release_date, datetime.date.today())
         self.assertEqual(app.website, 'http://test.website.app')
         self.assertEqual(app.documentation, 'http://test.website.app/docs')
         self.assertEqual(app.coderepo, 'http://vcontrol-hub.com/my-app')
@@ -88,7 +88,7 @@ class DevelopmentTestCase(TestCase):
                            description='This is a test App for Development')
         Development.objects.create(app=DApp,
                                    notes='#DEVELOPMENT \n View main repository for development notes',
-                                   filename=SimpleUploadedFile('development.md',str('This is a sample file for Development')))
+                                   filename=SimpleUploadedFile('development.md',b'This is a sample file for Development'))
     def test_development_created(self):
         development = Development.objects.get(app__name="DAp1")
         self.assertTrue(isinstance(development, Development))
@@ -115,7 +115,7 @@ class DownloadTestCase(TestCase):
                                             require=release_nsrelease,
                                             date=datetime.date(2018,11,1),
                                             notes='## usage \n This is a test Markdown text',
-                                            filename=SimpleUploadedFile('release.test',str('Test for Download')),
+                                            filename=SimpleUploadedFile('release.test',b'Test for Download'),
                                             url='https://www.nsnam.org/ns-3.29/')
         Download.objects.create(app=downloadApp,
                                 download_option='U',
@@ -243,7 +243,7 @@ class ReleaseTestCase(TestCase):
         self.assertEqual(release.version, 'TestVersion')
         self.assertEqual(release.date,   datetime.date(2018, 12, 27))
         self.assertEqual(release.app.name, 'App1')
-        self.assertEqual(release.filename.name, 'release_files/filename.txt')
-        self.assertEqual(str(release.filename.file), '/home/bartekche/ns-3-AppStore/src/media/release_files/filename.txt')
+        self.assertNotEqual(release.filename.name.find('release_files/filename'), -1)
+        self.assertNotEqual(str(release.filename.file).find('ns-3-AppStore/src/media/release_files/filename'), -1)
         self.assertEqual(release.require.name,  'Test')
         self.assertEqual(release.require.url,  'https://www.nsnam.org/')
