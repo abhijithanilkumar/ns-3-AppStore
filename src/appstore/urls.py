@@ -34,3 +34,7 @@ if settings.DEBUG:
     urlpatterns += [
         url(r'^__debug__/', include(debug_toolbar.urls)),
     ]
+
+#importing custom 404 page handler from "appstore" app views.py
+
+handler404 = views.handler404
