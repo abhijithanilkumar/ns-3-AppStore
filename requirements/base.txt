@@ -10,4 +10,4 @@ django-markdownx==2.0.28
 django-haystack==2.6.1
 elasticsearch>=2.0.0,<3.0.0
 social-auth-app-django==2.1.0
-djangorestframework==3.9.4
+djangorestframework==3.11.2
